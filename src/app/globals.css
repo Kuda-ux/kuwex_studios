@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+ 
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+ 
+    --primary: 186 100% 50%; /* KuWeX Cyan */
+    --primary-foreground: 222.2 47.4% 11.2%;
+ 
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+ 
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+ 
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+ 
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 186 100% 50%;
+ 
+    --radius: 0.75rem;
+  }
+ 
+  .dark {
+    --background: 0 0% 0%; /* Pitch Black */
+    --foreground: 0 0% 100%; /* Pure White */
+ 
+    --card: 220 13% 10%; /* #16181C */
+    --card-foreground: 0 0% 100%;
+ 
+    --popover: 220 13% 10%;
+    --popover-foreground: 0 0% 100%;
+ 
+    --primary: 0 0% 100%; /* White for primary buttons like X */
+    --primary-foreground: 0 0% 0%; /* Black text on white buttons */
+ 
+    --secondary: 0 0% 0%; /* Black for secondary buttons */
+    --secondary-foreground: 0 0% 100%; /* White text */
+ 
+    --muted: 215 14% 34%; /* #536471 */
+    --muted-foreground: 215 14% 34%;
+ 
+    --accent: 186 100% 50%; /* KuWeX Cyan for accents */
+    --accent-foreground: 0 0% 0%;
+ 
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+ 
+    --border: 216 13% 21%; /* #2F3336 */
+    --input: 216 13% 21%;
+    --ring: 186 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-black text-white;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .glass-panel {
+    @apply bg-[#16181C] border border-[#2F3336];
+  }
+  
+  .glass-button {
+    @apply bg-white text-black hover:bg-gray-200 transition-all duration-300;
+  }
+
+  .x-card {
+    @apply bg-[#16181C] rounded-2xl border border-transparent hover:border-[#2F3336] transition-colors duration-300;
+  }
+  
+  .neon-text {
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+  }
+}
