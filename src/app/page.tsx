@@ -160,41 +160,56 @@ export default function Home() {
                         {/* Outer orbit ring */}
                         <div className="absolute w-[85%] h-[85%] rounded-full border border-kuwex-cyan/10" />
                         
-                        {/* Platform icons positioned in a circle */}
-                        {platformIcons.map((platform, i) => {
-                          const angle = (i * 360) / platformIcons.length;
-                          const radius = 42; // percentage from center
-                          const x = Math.cos((angle - 90) * (Math.PI / 180)) * radius;
-                          const y = Math.sin((angle - 90) * (Math.PI / 180)) * radius;
-                          
-                          return (
-                            <motion.div
-                              key={platform.name}
-                              initial={{ opacity: 0, scale: 0 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              transition={{ delay: 0.6 + i * 0.1 }}
-                              className="absolute w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shadow-lg hover:scale-125 transition-all duration-300 cursor-pointer group"
-                              style={{
-                                left: `calc(50% + ${x}% - 20px)`,
-                                top: `calc(50% + ${y}% - 20px)`,
-                                background: platform.gradient 
-                                  ? `linear-gradient(135deg, ${platform.color}20, ${platform.color}40)`
-                                  : `${platform.color}20`,
-                                border: `1px solid ${platform.color}50`,
-                              }}
-                            >
-                              <platform.icon 
-                                size={20} 
-                                style={{ color: platform.color }}
-                                className="sm:w-6 sm:h-6"
-                              />
-                              {/* Tooltip */}
-                              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                                {platform.name}
-                              </span>
-                            </motion.div>
-                          );
-                        })}
+                        {/* Rotating container for orbiting icons */}
+                        <motion.div
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                          className="absolute w-[85%] h-[85%]"
+                        >
+                          {/* Platform icons positioned in a circle */}
+                          {platformIcons.map((platform, i) => {
+                            const angle = (i * 360) / platformIcons.length;
+                            const radius = 42; // percentage from center
+                            const x = Math.cos((angle - 90) * (Math.PI / 180)) * radius;
+                            const y = Math.sin((angle - 90) * (Math.PI / 180)) * radius;
+                            
+                            return (
+                              <motion.div
+                                key={platform.name}
+                                initial={{ opacity: 0, scale: 0 }}
+                                animate={{ 
+                                  opacity: 1, 
+                                  scale: 1,
+                                  rotate: -360 // Counter-rotate to keep icons upright
+                                }}
+                                transition={{ 
+                                  opacity: { delay: 0.6 + i * 0.1, duration: 0.3 },
+                                  scale: { delay: 0.6 + i * 0.1, duration: 0.3 },
+                                  rotate: { duration: 20, repeat: Infinity, ease: "linear" }
+                                }}
+                                className="absolute w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shadow-lg hover:scale-125 transition-transform duration-300 cursor-pointer group"
+                                style={{
+                                  left: `calc(50% + ${x}% - 20px)`,
+                                  top: `calc(50% + ${y}% - 20px)`,
+                                  background: platform.gradient 
+                                    ? `linear-gradient(135deg, ${platform.color}20, ${platform.color}40)`
+                                    : `${platform.color}20`,
+                                  border: `1px solid ${platform.color}50`,
+                                }}
+                              >
+                                <platform.icon 
+                                  size={20} 
+                                  style={{ color: platform.color }}
+                                  className="sm:w-6 sm:h-6"
+                                />
+                                {/* Tooltip */}
+                                <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                  {platform.name}
+                                </span>
+                              </motion.div>
+                            );
+                          })}
+                        </motion.div>
                         
                         {/* Inner glow ring */}
                         <div className="absolute w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-gradient-to-r from-kuwex-cyan/5 to-kuwex-blue/5 animate-pulse" />
