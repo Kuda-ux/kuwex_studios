@@ -17,6 +17,7 @@ import {
   Clock,
   CheckCircle2,
   XCircle,
+  LucideIcon,
 } from "lucide-react";
 
 // Mock data - in production this would come from your database/API
@@ -383,7 +384,7 @@ function KPICard({
   title: string;
   value: string | number;
   change: number;
-  icon: React.ComponentType<{ size?: number; className?: string }>;
+  icon: LucideIcon;
   color: string;
 }) {
   const colorClasses: Record<string, string> = {
