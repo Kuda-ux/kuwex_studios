@@ -60,7 +60,7 @@ export default function TendersPage() {
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [selectedTender, setSelectedTender] = useState<ScrapedTender | null>(null);
-  const [activeTab, setActiveTab] = useState<"discover" | "tracked">("discover");
+  const [activeTab, setActiveTab] = useState<"discover" | "tracked" | "sources">("discover");
 
   // Fetch tenders from API
   const fetchTenders = async () => {
@@ -225,9 +225,137 @@ export default function TendersPage() {
         >
           My Tracked ({trackedTenders.length})
         </button>
+        <button
+          onClick={() => setActiveTab("sources")}
+          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+            activeTab === "sources" ? "bg-kuwex-cyan text-black" : "text-gray-400 hover:text-white"
+          }`}
+        >
+          🔗 Live Tender Sources
+        </button>
       </div>
 
-      {/* Filters */}
+      {/* Sources Tab Content */}
+      {activeTab === "sources" && (
+        <div className="space-y-6">
+          {/* Important Notice */}
+          <div className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20 rounded-2xl p-5">
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-xl bg-yellow-500/20 flex items-center justify-center flex-shrink-0">
+                <Lightbulb className="text-yellow-400" size={20} />
+              </div>
+              <div>
+                <h3 className="font-semibold text-white mb-1">📌 Access Real-Time Tenders</h3>
+                <p className="text-gray-400 text-sm">
+                  The tenders shown in the Discover tab are <strong className="text-white">sample opportunities</strong> representing typical listings. 
+                  For <strong className="text-yellow-400">live, real-time tenders</strong>, visit the official portals below and register as a supplier.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Primary Sources */}
+          <div>
+            <h3 className="text-lg font-semibold text-white mb-4">🏛️ Official Government Portals</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <a href="https://www.zimbabwetenders.com/" target="_blank" rel="noopener noreferrer" className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-5 hover:border-kuwex-cyan/50 transition-colors group">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center">
+                    <Building2 className="text-blue-400" size={20} />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-white group-hover:text-kuwex-cyan transition-colors">ZimbabweTenders</h4>
+                    <p className="text-xs text-green-400">✓ Free Access</p>
+                  </div>
+                  <ExternalLink className="ml-auto text-gray-500 group-hover:text-kuwex-cyan" size={18} />
+                </div>
+                <p className="text-sm text-gray-400">Major local tender aggregator with real-time government and private tenders. Shows new notices daily with category filtering.</p>
+              </a>
+              
+              <a href="https://egp.praz.org.zw/" target="_blank" rel="noopener noreferrer" className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-5 hover:border-kuwex-cyan/50 transition-colors group">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center">
+                    <Building2 className="text-green-400" size={20} />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-white group-hover:text-kuwex-cyan transition-colors">PRAZ eGP System</h4>
+                    <p className="text-xs text-yellow-400">🔐 Registration Required</p>
+                  </div>
+                  <ExternalLink className="ml-auto text-gray-500 group-hover:text-kuwex-cyan" size={18} />
+                </div>
+                <p className="text-sm text-gray-400">Official government e-procurement portal. Register as a supplier at <span className="text-kuwex-cyan">egp.praz.org.zw/Indexes/login</span> for full access to bid on tenders.</p>
+              </a>
+            </div>
+          </div>
+
+          {/* Aggregator Sources */}
+          <div>
+            <h3 className="text-lg font-semibold text-white mb-4">🌐 Tender Aggregators</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <a href="https://www.tendersontime.com/zimbabwe-tenders/" target="_blank" rel="noopener noreferrer" className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-5 hover:border-kuwex-cyan/50 transition-colors group">
+                <div className="flex items-center gap-3 mb-3">
+                  <h4 className="font-semibold text-white group-hover:text-kuwex-cyan transition-colors">TendersOnTime</h4>
+                  <ExternalLink className="ml-auto text-gray-500 group-hover:text-kuwex-cyan" size={16} />
+                </div>
+                <p className="text-xs text-gray-400">Global aggregator with Zimbabwe RFPs, RFQs, and procurement notices.</p>
+              </a>
+              
+              <a href="https://www.globaltenders.com/zw/zimbabwe-web-design-tenders" target="_blank" rel="noopener noreferrer" className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-5 hover:border-kuwex-cyan/50 transition-colors group">
+                <div className="flex items-center gap-3 mb-3">
+                  <h4 className="font-semibold text-white group-hover:text-kuwex-cyan transition-colors">GlobalTenders</h4>
+                  <ExternalLink className="ml-auto text-gray-500 group-hover:text-kuwex-cyan" size={16} />
+                </div>
+                <p className="text-xs text-gray-400">Web design, intranet systems, and IT services tenders in Zimbabwe.</p>
+              </a>
+              
+              <a href="https://www.biddetail.com/zimbabwe-tenders/social-media-tenders" target="_blank" rel="noopener noreferrer" className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-5 hover:border-kuwex-cyan/50 transition-colors group">
+                <div className="flex items-center gap-3 mb-3">
+                  <h4 className="font-semibold text-white group-hover:text-kuwex-cyan transition-colors">BidDetail</h4>
+                  <ExternalLink className="ml-auto text-gray-500 group-hover:text-kuwex-cyan" size={16} />
+                </div>
+                <p className="text-xs text-gray-400">Social media and digital marketing tender notices.</p>
+              </a>
+            </div>
+          </div>
+
+          {/* Search Keywords */}
+          <div className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-5">
+            <h3 className="font-semibold text-white mb-3">🔍 Recommended Search Keywords</h3>
+            <p className="text-sm text-gray-400 mb-4">Set alerts on the above portals for these keywords to catch relevant opportunities:</p>
+            <div className="flex flex-wrap gap-2">
+              {['digital marketing', 'website development', 'app developers', 'social media management', 'ICT services', 'web design', 'software development', 'multimedia', 'graphic design', 'IT consultancy'].map((keyword) => (
+                <span key={keyword} className="px-3 py-1.5 bg-[#0A0A0A] border border-[#2F3336] rounded-lg text-sm text-gray-300">{keyword}</span>
+              ))}
+            </div>
+          </div>
+
+          {/* Best Practices */}
+          <div className="bg-gradient-to-r from-purple-500/10 to-blue-500/10 border border-purple-500/20 rounded-2xl p-5">
+            <h3 className="font-semibold text-white mb-3">💡 Best Practices for KuWeX</h3>
+            <ul className="space-y-2 text-sm text-gray-400">
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="text-green-400 mt-0.5 flex-shrink-0" size={16} />
+                <span><strong className="text-white">Register on PRAZ eGP</strong> — Required for all government tenders</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="text-green-400 mt-0.5 flex-shrink-0" size={16} />
+                <span><strong className="text-white">Create accounts on ZimbabweTenders & TendersOnTime</strong> — For broader local + private opportunities</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="text-green-400 mt-0.5 flex-shrink-0" size={16} />
+                <span><strong className="text-white">Set daily email alerts</strong> — Get notified immediately when new relevant tenders are posted</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="text-green-400 mt-0.5 flex-shrink-0" size={16} />
+                <span><strong className="text-white">Prepare generic bid templates</strong> — Have company profile, portfolio, and compliance docs ready</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      )}
+
+      {/* Filters - Only show for discover/tracked tabs */}
+      {activeTab !== "sources" && (
       <div className="flex flex-col md:flex-row gap-4">
         <div className="flex-1 relative max-w-md">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
@@ -266,7 +394,7 @@ export default function TendersPage() {
       </div>
 
       {/* Loading State */}
-      {loading && (
+      {loading && activeTab !== "sources" && (
         <div className="flex items-center justify-center py-12">
           <Loader2 className="animate-spin text-kuwex-cyan" size={32} />
           <span className="ml-3 text-gray-400">Fetching tenders from Zimbabwe tender boards...</span>
@@ -274,7 +402,7 @@ export default function TendersPage() {
       )}
 
       {/* Tenders List */}
-      {!loading && (
+      {!loading && activeTab !== "sources" && (
         <div className="space-y-4">
           {filteredTenders.length === 0 ? (
             <div className="text-center py-12 text-gray-500">
