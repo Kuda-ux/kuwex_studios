@@ -79,12 +79,12 @@ INSERT INTO invoices (invoice_number, client_id, client_name, project_name, amou
 -- =====================================================
 -- TENDERS
 -- =====================================================
-INSERT INTO tenders (title, organization, value, deadline, status, category, requirements, submission_date) VALUES
-('Government Portal Development', 'Ministry of ICT', 85000, '2025-01-31', 'planning', 'Web Development', ARRAY['Company Registration', 'Tax Clearance', 'Portfolio'], '2024-12-15'),
-('University LMS Platform', 'Zimbabwe Open University', 45000, '2025-02-15', 'submitted', 'Web Development', ARRAY['Education Sector Experience', 'Technical Proposal'], '2024-12-10'),
-('Hospital Management System', 'Parirenyatwa Hospital', 120000, '2025-03-01', 'identified', 'Software Development', ARRAY['Healthcare Experience', 'Security Certification'], NULL),
-('Tourism Board Website', 'Zimbabwe Tourism Authority', 35000, '2024-12-20', 'won', 'Web Development', ARRAY['Tourism Portfolio', 'Multilingual Support'], '2024-11-20'),
-('Banking App Development', 'Reserve Bank of Zimbabwe', 200000, '2025-04-30', 'submitted', 'Mobile Apps', ARRAY['Financial Sector Experience', 'Security Audit'], '2024-12-01');
+INSERT INTO tenders (title, organization, value, deadline, status, category, description, requirements) VALUES
+('Government Portal Development', 'Ministry of ICT', 85000, '2025-01-31', 'planning', 'Web Development', 'Development of a citizen services portal', 'Company Registration, Tax Clearance, Portfolio'),
+('University LMS Platform', 'Zimbabwe Open University', 45000, '2025-02-15', 'submitted', 'Web Development', 'Learning management system for distance education', 'Education Sector Experience, Technical Proposal'),
+('Hospital Management System', 'Parirenyatwa Hospital', 120000, '2025-03-01', 'identified', 'Software Development', 'Integrated hospital management solution', 'Healthcare Experience, Security Certification'),
+('Tourism Board Website', 'Zimbabwe Tourism Authority', 35000, '2024-12-20', 'won', 'Web Development', 'Tourism promotion website with booking features', 'Tourism Portfolio, Multilingual Support'),
+('Banking App Development', 'Reserve Bank of Zimbabwe', 200000, '2025-04-30', 'submitted', 'Mobile Apps', 'Mobile banking application development', 'Financial Sector Experience, Security Audit');
 
 -- =====================================================
 -- VERIFY DATA
