@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { 
   projectsDb, 
   leadsDb, 
@@ -28,14 +28,14 @@ import {
   CompanySettings 
 } from '@/lib/supabase';
 
-// Generic hook for database operations
+// Generic hook for database operations - fixed to prevent infinite loops
 function useDbCollection<T>(
-  fetchFn: () => Promise<T[]>,
-  deps: unknown[] = []
+  fetchFn: () => Promise<T[]>
 ) {
   const [data, setData] = useState<T[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const hasFetched = useRef(false);
 
   const refresh = useCallback(async () => {
     try {
@@ -48,11 +48,14 @@ function useDbCollection<T>(
     } finally {
       setLoading(false);
     }
-  }, [fetchFn]);
+  }, []);
 
   useEffect(() => {
-    refresh();
-  }, [...deps, refresh]);
+    if (!hasFetched.current) {
+      hasFetched.current = true;
+      refresh();
+    }
+  }, [refresh]);
 
   return { data, loading, error, refresh, setData };
 }
