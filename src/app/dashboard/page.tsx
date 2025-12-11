@@ -20,40 +20,52 @@ import {
   LucideIcon,
   Loader2,
 } from "lucide-react";
-import { useProjects, useInvoices, useLeads, useClients } from "@/hooks/useDatabase";
-import { Project, Lead } from "@/lib/supabase";
-
-const aiAlerts = [
-  { id: 1, type: "warning", message: "Your revenue this month is 2% below target — consider promoting Web Development services.", action: "View Marketing" },
-  { id: 2, type: "action", message: "3 quotations pending follow-up for more than 5 days.", action: "View Quotations" },
-  { id: 3, type: "opportunity", message: "2 clients inactive for 30+ days. Send reactivation message?", action: "View Clients" },
-  { id: 4, type: "success", message: "Project 'TechStart Website' is ahead of schedule by 3 days!", action: "View Project" },
-];
-
-const revenueByService = [
-  { name: "Web Development", value: 18500, percentage: 40 },
-  { name: "Branding & Design", value: 11000, percentage: 24 },
-  { name: "Digital Marketing", value: 9200, percentage: 20 },
-  { name: "Mobile Apps", value: 4600, percentage: 10 },
-  { name: "Consultancy", value: 2450, percentage: 6 },
-];
+import { useProjects, useInvoices, useLeads, useClients, useQuotations, useTenders } from "@/hooks/useDatabase";
+import { Project, Lead, Invoice, Quotation, Client, Tender } from "@/lib/supabase";
 
 export default function Dashboard() {
   const { projects, loading: projectsLoading } = useProjects();
   const { invoices, loading: invoicesLoading } = useInvoices();
   const { leads, loading: leadsLoading } = useLeads();
   const { clients, loading: clientsLoading } = useClients();
+  const { quotations, loading: quotationsLoading } = useQuotations();
+  const { tenders, loading: tendersLoading } = useTenders();
 
-  const loading = projectsLoading || invoicesLoading || leadsLoading || clientsLoading;
+  const loading = projectsLoading || invoicesLoading || leadsLoading || clientsLoading || quotationsLoading || tendersLoading;
 
-  // Calculate KPIs from real data
-  const totalRevenue = invoices.reduce((sum, inv) => sum + (inv.paid_amount || 0), 0);
+  // Calculate KPIs from real database data
+  const totalRevenue = invoices.reduce((sum: number, inv: Invoice) => sum + (inv.paid_amount || 0), 0);
+  const totalInvoiced = invoices.reduce((sum: number, inv: Invoice) => sum + (inv.amount || 0), 0);
   const activeProjects = projects.filter((p: Project) => p.status === "in_progress").length;
+  const completedProjects = projects.filter((p: Project) => p.status === "completed").length;
   const newLeadsCount = leads.filter((l: Lead) => l.status === "new").length;
+  const qualifiedLeads = leads.filter((l: Lead) => l.status === "qualified" || l.status === "proposal").length;
   const totalClients = clients.length;
+  const activeClients = clients.filter((c: Client) => c.status === "active").length;
+  const pendingQuotations = quotations.filter((q: Quotation) => q.status === "sent" || q.status === "draft").length;
+  const activeTenders = tenders.filter((t: Tender) => t.status === "identified" || t.status === "submitted" || t.status === "planning").length;
 
-  // Get recent projects (last 4)
-  const recentProjects = projects.slice(0, 4);
+  // Calculate revenue by project category
+  const revenueByCategory: Record<string, number> = {};
+  projects.forEach((p: Project) => {
+    const category = p.category || "Other";
+    revenueByCategory[category] = (revenueByCategory[category] || 0) + (p.value || 0);
+  });
+  
+  const totalProjectValue = Object.values(revenueByCategory).reduce((a, b) => a + b, 0);
+  const revenueByService = Object.entries(revenueByCategory)
+    .map(([name, value]) => ({
+      name,
+      value,
+      percentage: totalProjectValue > 0 ? Math.round((value / totalProjectValue) * 100) : 0,
+    }))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 5);
+
+  // Get recent projects (last 4 active)
+  const recentProjects = projects
+    .filter((p: Project) => p.status !== "completed")
+    .slice(0, 4);
 
   // Get recent leads (last 3)
   const recentLeads = leads.slice(0, 3);
@@ -69,24 +81,40 @@ export default function Dashboard() {
       return {
         id: p.id,
         project: p.name,
-        task: "Deadline",
+        task: "Project Deadline",
         date: deadline.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
         daysLeft,
       };
     });
 
-  const kpiData = {
-    totalRevenue: { value: totalRevenue, change: 12.5, target: 100000 },
-    monthlyRevenue: { value: totalRevenue, change: 8.3, target: 8333 },
-    activeProjects: { value: activeProjects, change: 2 },
-    pendingQuotations: { value: 4, change: -1 },
-    newLeads: { value: newLeadsCount, change: 33 },
-    clientRetention: { value: 87, change: 5 },
-    websiteTraffic: { value: 2450, change: 18 },
-    activeTenders: { value: 3, change: 1 },
-  };
+  // Generate dynamic AI alerts based on real data
+  const aiAlerts = [];
+  
+  const overdueInvoices = invoices.filter((inv: Invoice) => inv.status === "overdue").length;
+  if (overdueInvoices > 0) {
+    aiAlerts.push({ id: 1, type: "warning", message: `${overdueInvoices} invoice(s) are overdue. Follow up to collect payment.`, action: "View Invoices" });
+  }
+  
+  if (pendingQuotations > 0) {
+    aiAlerts.push({ id: 2, type: "action", message: `${pendingQuotations} quotation(s) pending client response.`, action: "View Quotations" });
+  }
+  
+  const inactiveClients = clients.filter((c: Client) => c.status === "inactive").length;
+  if (inactiveClients > 0) {
+    aiAlerts.push({ id: 3, type: "opportunity", message: `${inactiveClients} client(s) inactive. Consider sending a reactivation message.`, action: "View Clients" });
+  }
+  
+  if (completedProjects > 0) {
+    aiAlerts.push({ id: 4, type: "success", message: `${completedProjects} project(s) completed successfully!`, action: "View Projects" });
+  }
+  
+  if (newLeadsCount > 0) {
+    aiAlerts.push({ id: 5, type: "opportunity", message: `${newLeadsCount} new lead(s) waiting to be contacted.`, action: "View Leads" });
+  }
 
-  const progressToTarget = (kpiData.totalRevenue.value / kpiData.totalRevenue.target) * 100;
+  // Annual target (can be made configurable later)
+  const annualTarget = 100000;
+  const progressToTarget = (totalRevenue / annualTarget) * 100;
 
   if (loading) {
     return (
@@ -122,16 +150,16 @@ export default function Dashboard() {
       >
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <p className="text-gray-400 text-sm mb-1">Progress to $100,000 Annual Target</p>
+            <p className="text-gray-400 text-sm mb-1">Progress to ${annualTarget.toLocaleString()} Annual Target</p>
             <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-bold text-white">${kpiData.totalRevenue.value.toLocaleString()}</span>
-              <span className="text-gray-500">/ $100,000</span>
+              <span className="text-3xl font-bold text-white">${totalRevenue.toLocaleString()}</span>
+              <span className="text-gray-500">/ ${annualTarget.toLocaleString()}</span>
             </div>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
               <p className="text-sm text-gray-400">Remaining</p>
-              <p className="text-xl font-semibold text-kuwex-cyan">${(100000 - kpiData.totalRevenue.value).toLocaleString()}</p>
+              <p className="text-xl font-semibold text-kuwex-cyan">${(annualTarget - totalRevenue).toLocaleString()}</p>
             </div>
             <div className="w-24 h-24 relative">
               <svg className="w-full h-full transform -rotate-90">
@@ -144,7 +172,7 @@ export default function Dashboard() {
                   strokeWidth="8"
                   fill="none"
                   strokeLinecap="round"
-                  strokeDasharray={`${progressToTarget * 2.51} 251`}
+                  strokeDasharray={`${Math.min(progressToTarget, 100) * 2.51} 251`}
                 />
                 <defs>
                   <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -154,7 +182,7 @@ export default function Dashboard() {
                 </defs>
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-lg font-bold text-white">{progressToTarget.toFixed(0)}%</span>
+                <span className="text-lg font-bold text-white">{Math.min(progressToTarget, 100).toFixed(0)}%</span>
               </div>
             </div>
           </div>
@@ -164,58 +192,58 @@ export default function Dashboard() {
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <KPICard
-          title="Monthly Revenue"
-          value={`$${kpiData.monthlyRevenue.value.toLocaleString()}`}
-          change={kpiData.monthlyRevenue.change}
+          title="Total Revenue"
+          value={`$${totalRevenue.toLocaleString()}`}
+          change={0}
           icon={DollarSign}
           color="cyan"
         />
         <KPICard
           title="Active Projects"
-          value={kpiData.activeProjects.value}
-          change={kpiData.activeProjects.change}
+          value={activeProjects}
+          change={0}
           icon={FolderKanban}
           color="blue"
         />
         <KPICard
           title="Pending Quotations"
-          value={kpiData.pendingQuotations.value}
-          change={kpiData.pendingQuotations.change}
+          value={pendingQuotations}
+          change={0}
           icon={FileText}
           color="yellow"
         />
         <KPICard
           title="New Leads"
-          value={kpiData.newLeads.value}
-          change={kpiData.newLeads.change}
+          value={newLeadsCount}
+          change={0}
           icon={Users}
           color="green"
         />
         <KPICard
-          title="Client Retention"
-          value={`${kpiData.clientRetention.value}%`}
-          change={kpiData.clientRetention.change}
+          title="Total Clients"
+          value={totalClients}
+          change={0}
           icon={Target}
           color="purple"
         />
         <KPICard
-          title="Website Traffic"
-          value={kpiData.websiteTraffic.value.toLocaleString()}
-          change={kpiData.websiteTraffic.change}
+          title="Active Clients"
+          value={activeClients}
+          change={0}
           icon={Globe}
           color="pink"
         />
         <KPICard
           title="Active Tenders"
-          value={kpiData.activeTenders.value}
-          change={kpiData.activeTenders.change}
+          value={activeTenders}
+          change={0}
           icon={Briefcase}
           color="orange"
         />
         <KPICard
-          title="YTD Revenue"
-          value={`$${kpiData.totalRevenue.value.toLocaleString()}`}
-          change={kpiData.totalRevenue.change}
+          title="Total Invoiced"
+          value={`$${totalInvoiced.toLocaleString()}`}
+          change={0}
           icon={TrendingUp}
           color="cyan"
         />
