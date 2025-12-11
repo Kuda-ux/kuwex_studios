@@ -10,14 +10,14 @@ const footerLinks = {
   ],
   company: [
     { name: "About", href: "/about" },
-    { name: "Careers", href: "#" },
+    { name: "Careers", href: "/careers" },
     { name: "Contact", href: "/contact" },
   ],
   resources: [
-    { name: "Blog", href: "#" },
-    { name: "Help Center", href: "#" },
-    { name: "Privacy", href: "#" },
-    { name: "Terms", href: "#" },
+    { name: "Blog", href: "/blog" },
+    { name: "Help Center", href: "/help" },
+    { name: "Privacy", href: "/privacy" },
+    { name: "Terms", href: "/terms" },
   ],
 };
 
@@ -86,9 +86,9 @@ export default function Footer() {
             © {new Date().getFullYear()} KuWeX Studios. All rights reserved.
           </p>
           <div className="flex items-center gap-6 text-xs text-gray-600">
-            <Link href="#" className="hover:text-white transition-colors">Privacy</Link>
-            <Link href="#" className="hover:text-white transition-colors">Terms</Link>
-            <Link href="#" className="hover:text-white transition-colors">Cookies</Link>
+            <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
+            <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
+            <Link href="/cookies" className="hover:text-white transition-colors">Cookies</Link>
           </div>
         </div>
       </div>
