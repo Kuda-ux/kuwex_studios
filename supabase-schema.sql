@@ -271,5 +271,5 @@ ON CONFLICT DO NOTHING;
 INSERT INTO team_members (name, email, role, status, hours_this_week, tasks_completed, productivity)
 VALUES 
   ('Kuda', 'kuda@kuwexstudios.com', 'Founder & Lead Developer', 'online', 42, 12, 95),
-  ('Weston', 'weston@kuwexstudios.com', 'Creative Director', 'online', 38, 8, 88)
+  ('Weston', 'weston@kuwexstudios.com', 'Co-Founder & Creative Director', 'online', 38, 8, 88)
 ON CONFLICT (email) DO NOTHING;

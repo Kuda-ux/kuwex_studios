@@ -38,7 +38,7 @@ interface Task {
 
 const teamMembers: TeamMember[] = [
   { id: 1, name: "Kuda", role: "Founder & Lead Developer", avatar: "K", status: "online", hoursThisWeek: 42, tasksCompleted: 12, productivity: 95 },
-  { id: 2, name: "Weston", role: "Creative Director", avatar: "W", status: "online", hoursThisWeek: 38, tasksCompleted: 8, productivity: 88 },
+  { id: 2, name: "Weston", role: "Co-Founder & Creative Director", avatar: "W", status: "online", hoursThisWeek: 38, tasksCompleted: 8, productivity: 88 },
 ];
 
 const tasks: Task[] = [

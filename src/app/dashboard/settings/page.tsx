@@ -313,7 +313,7 @@ export default function SettingsPage() {
                       <p className="text-sm text-gray-500">weston@kuwexstudios.com</p>
                     </div>
                   </div>
-                  <span className="px-3 py-1 bg-purple-500/20 text-purple-400 text-sm rounded-full">Admin</span>
+                  <span className="px-3 py-1 bg-kuwex-cyan/20 text-kuwex-cyan text-sm rounded-full">Co-Founder</span>
                 </div>
               </div>
             </motion.div>
