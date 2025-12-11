@@ -11,58 +11,21 @@ import {
   Mail,
   Phone,
   MessageCircle,
-  Star,
   MoreVertical,
-  TrendingUp,
   Calendar,
   Globe,
   ArrowUpRight,
+  Loader2,
+  AlertCircle,
+  X,
+  Trash2,
+  Edit,
+  UserCheck,
 } from "lucide-react";
+import { useLeads, useClients } from "@/hooks/useDatabase";
+import { Lead, Client } from "@/lib/supabase";
 
 type LeadStatus = "new" | "contacted" | "qualified" | "proposal" | "won" | "lost";
-type LeadSource = "website" | "whatsapp" | "facebook" | "referral" | "linkedin" | "other";
-
-interface Lead {
-  id: number;
-  name: string;
-  company: string;
-  email: string;
-  phone: string;
-  source: LeadSource;
-  status: LeadStatus;
-  value: number;
-  date: string;
-  notes: string;
-}
-
-interface Client {
-  id: number;
-  name: string;
-  company: string;
-  email: string;
-  phone: string;
-  totalSpent: number;
-  projects: number;
-  rating: number;
-  lastContact: string;
-  status: "active" | "inactive";
-}
-
-const leads: Lead[] = [
-  { id: 1, name: "John Moyo", company: "Sunrise Holdings", email: "john@sunrise.co.zw", phone: "+263 77 123 4567", source: "website", status: "new", value: 3000, date: "2024-12-10", notes: "Interested in website redesign" },
-  { id: 2, name: "Sarah Ndlovu", company: "Fresh Farms", email: "sarah@freshfarms.co.zw", phone: "+263 71 234 5678", source: "whatsapp", status: "contacted", value: 1500, date: "2024-12-09", notes: "Needs branding package" },
-  { id: 3, name: "Mike Chikwanha", company: "BuildRight Construction", email: "mike@buildright.co.zw", phone: "+263 78 345 6789", source: "referral", status: "qualified", value: 4500, date: "2024-12-08", notes: "Large project - website + marketing" },
-  { id: 4, name: "Grace Mutasa", company: "EcoTech Solutions", email: "grace@ecotech.co.zw", phone: "+263 77 456 7890", source: "linkedin", status: "proposal", value: 2800, date: "2024-12-07", notes: "Mobile app development" },
-  { id: 5, name: "Peter Nyathi", company: "Urban Styles", email: "peter@urbanstyles.co.zw", phone: "+263 71 567 8901", source: "facebook", status: "new", value: 1200, date: "2024-12-10", notes: "Social media management" },
-];
-
-const clients: Client[] = [
-  { id: 1, name: "TechStart Inc", company: "TechStart Inc", email: "info@techstart.co.zw", phone: "+263 77 111 2222", totalSpent: 8500, projects: 3, rating: 5, lastContact: "2024-12-08", status: "active" },
-  { id: 2, name: "GreenEnergy Ltd", company: "GreenEnergy Ltd", email: "contact@greenenergy.co.zw", phone: "+263 71 222 3333", totalSpent: 5200, projects: 2, rating: 4, lastContact: "2024-12-05", status: "active" },
-  { id: 3, name: "HealthPlus", company: "HealthPlus", email: "admin@healthplus.co.zw", phone: "+263 78 333 4444", totalSpent: 12000, projects: 4, rating: 5, lastContact: "2024-12-10", status: "active" },
-  { id: 4, name: "EduLearn", company: "EduLearn", email: "hello@edulearn.co.zw", phone: "+263 77 444 5555", totalSpent: 3800, projects: 2, rating: 4, lastContact: "2024-11-15", status: "inactive" },
-  { id: 5, name: "SafeBank", company: "SafeBank", email: "projects@safebank.co.zw", phone: "+263 71 555 6666", totalSpent: 15000, projects: 5, rating: 5, lastContact: "2024-12-01", status: "active" },
-];
 
 const statusConfig: Record<LeadStatus, { label: string; color: string }> = {
   new: { label: "New", color: "bg-blue-500/20 text-blue-400" },
@@ -73,7 +36,7 @@ const statusConfig: Record<LeadStatus, { label: string; color: string }> = {
   lost: { label: "Lost", color: "bg-red-500/20 text-red-400" },
 };
 
-const sourceConfig: Record<LeadSource, { label: string; color: string }> = {
+const sourceConfig: Record<string, { label: string; color: string }> = {
   website: { label: "Website", color: "text-cyan-400" },
   whatsapp: { label: "WhatsApp", color: "text-green-400" },
   facebook: { label: "Facebook", color: "text-blue-400" },
@@ -83,18 +46,174 @@ const sourceConfig: Record<LeadSource, { label: string; color: string }> = {
 };
 
 export default function CRMPage() {
+  const { leads, loading: leadsLoading, createLead, updateLead, deleteLead, convertToClient } = useLeads();
+  const { clients, loading: clientsLoading, createClient, updateClient, deleteClient } = useClients();
+  
   const [activeTab, setActiveTab] = useState<"leads" | "clients">("leads");
   const [searchQuery, setSearchQuery] = useState("");
   const [showNewLeadModal, setShowNewLeadModal] = useState(false);
+  const [showNewClientModal, setShowNewClientModal] = useState(false);
+  const [editingLead, setEditingLead] = useState<Lead | null>(null);
+  const [editingClient, setEditingClient] = useState<Client | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<{ type: "lead" | "client"; id: string } | null>(null);
+
+  // Lead form state
+  const [leadForm, setLeadForm] = useState({
+    name: "",
+    company: "",
+    email: "",
+    phone: "",
+    source: "website",
+    value: "",
+    notes: "",
+    service: "",
+  });
+
+  // Client form state
+  const [clientForm, setClientForm] = useState({
+    name: "",
+    company: "",
+    email: "",
+    phone: "",
+  });
+
+  const resetLeadForm = () => {
+    setLeadForm({ name: "", company: "", email: "", phone: "", source: "website", value: "", notes: "", service: "" });
+  };
+
+  const resetClientForm = () => {
+    setClientForm({ name: "", company: "", email: "", phone: "" });
+  };
+
+  const loading = leadsLoading || clientsLoading;
 
   const stats = {
     totalLeads: leads.length,
     newLeads: leads.filter((l) => l.status === "new").length,
     totalClients: clients.length,
     activeClients: clients.filter((c) => c.status === "active").length,
-    totalRevenue: clients.reduce((sum, c) => sum + c.totalSpent, 0),
-    avgRating: (clients.reduce((sum, c) => sum + c.rating, 0) / clients.length).toFixed(1),
+    totalRevenue: clients.reduce((sum, c) => sum + (c.total_spent || 0), 0),
+    avgRating: clients.length > 0 ? "5.0" : "0",
   };
+
+  const filteredLeads = leads.filter((lead) =>
+    lead.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    lead.company.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredClients = clients.filter((client) =>
+    client.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    client.company.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleLeadSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    try {
+      const leadData = {
+        name: leadForm.name,
+        company: leadForm.company,
+        email: leadForm.email,
+        phone: leadForm.phone,
+        source: leadForm.source,
+        value: parseFloat(leadForm.value) || 0,
+        notes: leadForm.notes,
+        service: leadForm.service,
+        status: "new" as const,
+      };
+      if (editingLead) {
+        await updateLead(editingLead.id, leadData);
+      } else {
+        await createLead(leadData);
+      }
+      setShowNewLeadModal(false);
+      setEditingLead(null);
+      resetLeadForm();
+    } catch (err) {
+      console.error("Error saving lead:", err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleClientSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    try {
+      const clientData = {
+        name: clientForm.name,
+        company: clientForm.company,
+        email: clientForm.email,
+        phone: clientForm.phone,
+        total_spent: 0,
+        projects_count: 0,
+        status: "active" as const,
+        joined_date: new Date().toISOString().split("T")[0],
+      };
+      if (editingClient) {
+        await updateClient(editingClient.id, clientData);
+      } else {
+        await createClient(clientData);
+      }
+      setShowNewClientModal(false);
+      setEditingClient(null);
+      resetClientForm();
+    } catch (err) {
+      console.error("Error saving client:", err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!showDeleteConfirm) return;
+    try {
+      if (showDeleteConfirm.type === "lead") {
+        await deleteLead(showDeleteConfirm.id);
+      } else {
+        await deleteClient(showDeleteConfirm.id);
+      }
+      setShowDeleteConfirm(null);
+    } catch (err) {
+      console.error("Error deleting:", err);
+    }
+  };
+
+  const handleConvertToClient = async (leadId: string) => {
+    try {
+      await convertToClient(leadId);
+    } catch (err) {
+      console.error("Error converting lead:", err);
+    }
+  };
+
+  const handleEditLead = (lead: Lead) => {
+    setEditingLead(lead);
+    setLeadForm({
+      name: lead.name,
+      company: lead.company,
+      email: lead.email,
+      phone: lead.phone,
+      source: lead.source,
+      value: lead.value?.toString() || "",
+      notes: lead.notes || "",
+      service: lead.service || "",
+    });
+    setShowNewLeadModal(true);
+  };
+
+  const handleStatusChange = async (leadId: string, newStatus: LeadStatus) => {
+    await updateLead(leadId, { status: newStatus });
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <Loader2 className="w-8 h-8 text-kuwex-cyan animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -104,13 +223,22 @@ export default function CRMPage() {
           <h1 className="text-2xl font-bold text-white">Clients & CRM</h1>
           <p className="text-gray-500">Manage leads and client relationships</p>
         </div>
-        <button
-          onClick={() => setShowNewLeadModal(true)}
-          className="flex items-center gap-2 bg-kuwex-cyan text-black px-4 py-2.5 rounded-xl font-semibold hover:bg-kuwex-cyan/90 transition-colors"
-        >
-          <UserPlus size={20} />
-          Add Lead
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={() => { resetLeadForm(); setEditingLead(null); setShowNewLeadModal(true); }}
+            className="flex items-center gap-2 bg-kuwex-cyan text-black px-4 py-2.5 rounded-xl font-semibold hover:bg-kuwex-cyan/90 transition-colors"
+          >
+            <UserPlus size={20} />
+            Add Lead
+          </button>
+          <button
+            onClick={() => { resetClientForm(); setEditingClient(null); setShowNewClientModal(true); }}
+            className="flex items-center gap-2 border border-kuwex-cyan text-kuwex-cyan px-4 py-2.5 rounded-xl font-semibold hover:bg-kuwex-cyan/10 transition-colors"
+          >
+            <Users size={20} />
+            Add Client
+          </button>
+        </div>
       </div>
 
       {/* Stats */}
@@ -176,135 +304,169 @@ export default function CRMPage() {
       {/* Leads Tab */}
       {activeTab === "leads" && (
         <div className="space-y-4">
-          {leads.map((lead, index) => (
-            <motion.div
-              key={lead.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05 }}
-              className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-6 hover:border-[#3F4346] transition-colors"
-            >
-              <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                <div className="flex items-center gap-4 flex-1">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-kuwex-cyan/20 to-kuwex-blue/20 flex items-center justify-center text-kuwex-cyan font-bold text-lg">
-                    {lead.name.charAt(0)}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-semibold text-white">{lead.name}</h3>
-                      <span className={`px-2 py-0.5 text-xs rounded-full ${statusConfig[lead.status].color}`}>
-                        {statusConfig[lead.status].label}
-                      </span>
+          {filteredLeads.length === 0 ? (
+            <div className="text-center py-12">
+              <UserPlus className="mx-auto text-gray-600 mb-4" size={48} />
+              <p className="text-gray-500">No leads found</p>
+              <button onClick={() => setShowNewLeadModal(true)} className="mt-4 text-kuwex-cyan hover:underline">
+                Add your first lead
+              </button>
+            </div>
+          ) : (
+            filteredLeads.map((lead, index) => {
+              const status = lead.status as LeadStatus;
+              return (
+                <motion.div
+                  key={lead.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                  className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-6 hover:border-[#3F4346] transition-colors"
+                >
+                  <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+                    <div className="flex items-center gap-4 flex-1">
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-kuwex-cyan/20 to-kuwex-blue/20 flex items-center justify-center text-kuwex-cyan font-bold text-lg">
+                        {lead.name.charAt(0)}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h3 className="font-semibold text-white">{lead.name}</h3>
+                          <span className={`px-2 py-0.5 text-xs rounded-full ${statusConfig[status]?.color || "bg-gray-500/20 text-gray-400"}`}>
+                            {statusConfig[status]?.label || status}
+                          </span>
+                        </div>
+                        <p className="text-gray-500 text-sm">{lead.company}</p>
+                      </div>
                     </div>
-                    <p className="text-gray-500 text-sm">{lead.company}</p>
-                  </div>
-                </div>
 
-                <div className="flex flex-wrap items-center gap-4 text-sm">
-                  <div className="flex items-center gap-2 text-gray-400">
-                    <Globe size={16} />
-                    <span className={sourceConfig[lead.source].color}>{sourceConfig[lead.source].label}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-gray-400">
-                    <DollarSign size={16} />
-                    <span className="text-white font-medium">${lead.value.toLocaleString()}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-gray-400">
-                    <Calendar size={16} />
-                    <span>{new Date(lead.date).toLocaleDateString()}</span>
-                  </div>
-                </div>
+                    <div className="flex flex-wrap items-center gap-4 text-sm">
+                      <div className="flex items-center gap-2 text-gray-400">
+                        <Globe size={16} />
+                        <span className={sourceConfig[lead.source]?.color || "text-gray-400"}>{sourceConfig[lead.source]?.label || lead.source}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-gray-400">
+                        <DollarSign size={16} />
+                        <span className="text-white font-medium">${(lead.value || 0).toLocaleString()}</span>
+                      </div>
+                      <select
+                        value={lead.status}
+                        onChange={(e) => handleStatusChange(lead.id, e.target.value as LeadStatus)}
+                        className="bg-[#0A0A0A] border border-[#2F3336] rounded-lg px-2 py-1 text-xs text-white focus:outline-none"
+                      >
+                        <option value="new">New</option>
+                        <option value="contacted">Contacted</option>
+                        <option value="qualified">Qualified</option>
+                        <option value="proposal">Proposal</option>
+                        <option value="won">Won</option>
+                        <option value="lost">Lost</option>
+                      </select>
+                    </div>
 
-                <div className="flex items-center gap-2">
-                  <button className="p-2 hover:bg-[#2F3336] rounded-lg transition-colors text-gray-400 hover:text-green-400">
-                    <MessageCircle size={18} />
-                  </button>
-                  <button className="p-2 hover:bg-[#2F3336] rounded-lg transition-colors text-gray-400 hover:text-blue-400">
-                    <Mail size={18} />
-                  </button>
-                  <button className="p-2 hover:bg-[#2F3336] rounded-lg transition-colors text-gray-400 hover:text-kuwex-cyan">
-                    <Phone size={18} />
-                  </button>
-                  <button className="p-2 hover:bg-[#2F3336] rounded-lg transition-colors text-gray-400 hover:text-white">
-                    <MoreVertical size={18} />
-                  </button>
-                </div>
-              </div>
-              {lead.notes && (
-                <p className="mt-4 text-sm text-gray-500 bg-[#0A0A0A] rounded-lg p-3">{lead.notes}</p>
-              )}
-            </motion.div>
-          ))}
+                    <div className="flex items-center gap-2">
+                      {lead.status === "qualified" || lead.status === "proposal" ? (
+                        <button
+                          onClick={() => handleConvertToClient(lead.id)}
+                          className="p-2 hover:bg-[#2F3336] rounded-lg transition-colors text-gray-400 hover:text-green-400"
+                          title="Convert to Client"
+                        >
+                          <UserCheck size={18} />
+                        </button>
+                      ) : null}
+                      <button
+                        onClick={() => handleEditLead(lead)}
+                        className="p-2 hover:bg-[#2F3336] rounded-lg transition-colors text-gray-400 hover:text-kuwex-cyan"
+                      >
+                        <Edit size={18} />
+                      </button>
+                      <button
+                        onClick={() => setShowDeleteConfirm({ type: "lead", id: lead.id })}
+                        className="p-2 hover:bg-[#2F3336] rounded-lg transition-colors text-gray-400 hover:text-red-400"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
+                  </div>
+                  {lead.notes && (
+                    <p className="mt-4 text-sm text-gray-500 bg-[#0A0A0A] rounded-lg p-3">{lead.notes}</p>
+                  )}
+                </motion.div>
+              );
+            })
+          )}
         </div>
       )}
 
       {/* Clients Tab */}
       {activeTab === "clients" && (
         <div className="space-y-4">
-          {clients.map((client, index) => (
-            <motion.div
-              key={client.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05 }}
-              className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-6 hover:border-[#3F4346] transition-colors"
-            >
-              <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                <div className="flex items-center gap-4 flex-1">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-kuwex-cyan to-kuwex-blue flex items-center justify-center text-black font-bold text-lg">
-                    {client.name.charAt(0)}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-semibold text-white">{client.company}</h3>
-                      <span className={`px-2 py-0.5 text-xs rounded-full ${
-                        client.status === "active" ? "bg-green-500/20 text-green-400" : "bg-gray-500/20 text-gray-400"
-                      }`}>
-                        {client.status === "active" ? "Active" : "Inactive"}
-                      </span>
+          {filteredClients.length === 0 ? (
+            <div className="text-center py-12">
+              <Users className="mx-auto text-gray-600 mb-4" size={48} />
+              <p className="text-gray-500">No clients found</p>
+              <button onClick={() => setShowNewClientModal(true)} className="mt-4 text-kuwex-cyan hover:underline">
+                Add your first client
+              </button>
+            </div>
+          ) : (
+            filteredClients.map((client, index) => (
+              <motion.div
+                key={client.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+                className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-6 hover:border-[#3F4346] transition-colors"
+              >
+                <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+                  <div className="flex items-center gap-4 flex-1">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-kuwex-cyan to-kuwex-blue flex items-center justify-center text-black font-bold text-lg">
+                      {client.name.charAt(0)}
                     </div>
-                    <p className="text-gray-500 text-sm">{client.email}</p>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h3 className="font-semibold text-white">{client.company}</h3>
+                        <span className={`px-2 py-0.5 text-xs rounded-full ${
+                          client.status === "active" ? "bg-green-500/20 text-green-400" : "bg-gray-500/20 text-gray-400"
+                        }`}>
+                          {client.status === "active" ? "Active" : "Inactive"}
+                        </span>
+                      </div>
+                      <p className="text-gray-500 text-sm">{client.email}</p>
+                    </div>
                   </div>
-                </div>
 
-                <div className="flex flex-wrap items-center gap-6 text-sm">
-                  <div className="text-center">
-                    <p className="text-gray-500 text-xs mb-1">Total Spent</p>
-                    <p className="font-semibold text-kuwex-cyan">${client.totalSpent.toLocaleString()}</p>
+                  <div className="flex flex-wrap items-center gap-6 text-sm">
+                    <div className="text-center">
+                      <p className="text-gray-500 text-xs mb-1">Total Spent</p>
+                      <p className="font-semibold text-kuwex-cyan">${(client.total_spent || 0).toLocaleString()}</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-gray-500 text-xs mb-1">Projects</p>
+                      <p className="font-semibold text-white">{client.projects_count || 0}</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-gray-500 text-xs mb-1">Joined</p>
+                      <p className="font-semibold text-white">{client.joined_date ? new Date(client.joined_date).toLocaleDateString() : "N/A"}</p>
+                    </div>
                   </div>
-                  <div className="text-center">
-                    <p className="text-gray-500 text-xs mb-1">Projects</p>
-                    <p className="font-semibold text-white">{client.projects}</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-gray-500 text-xs mb-1">Rating</p>
-                    <p className="font-semibold text-yellow-400">
-                      {Array.from({ length: client.rating }).map((_, i) => "⭐").join("")}
-                    </p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-gray-500 text-xs mb-1">Last Contact</p>
-                    <p className="font-semibold text-white">{new Date(client.lastContact).toLocaleDateString()}</p>
-                  </div>
-                </div>
 
-                <div className="flex items-center gap-2">
-                  <button className="p-2 hover:bg-[#2F3336] rounded-lg transition-colors text-gray-400 hover:text-green-400">
-                    <MessageCircle size={18} />
-                  </button>
-                  <button className="p-2 hover:bg-[#2F3336] rounded-lg transition-colors text-gray-400 hover:text-blue-400">
-                    <Mail size={18} />
-                  </button>
-                  <button className="p-2 hover:bg-[#2F3336] rounded-lg transition-colors text-gray-400 hover:text-kuwex-cyan">
-                    <ArrowUpRight size={18} />
-                  </button>
-                  <button className="p-2 hover:bg-[#2F3336] rounded-lg transition-colors text-gray-400 hover:text-white">
-                    <MoreVertical size={18} />
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button className="p-2 hover:bg-[#2F3336] rounded-lg transition-colors text-gray-400 hover:text-blue-400">
+                      <Mail size={18} />
+                    </button>
+                    <button className="p-2 hover:bg-[#2F3336] rounded-lg transition-colors text-gray-400 hover:text-kuwex-cyan">
+                      <Phone size={18} />
+                    </button>
+                    <button
+                      onClick={() => setShowDeleteConfirm({ type: "client", id: client.id })}
+                      className="p-2 hover:bg-[#2F3336] rounded-lg transition-colors text-gray-400 hover:text-red-400"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))
+          )}
         </div>
       )}
 
@@ -314,34 +476,39 @@ export default function CRMPage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-6 w-full max-w-lg"
+            className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto"
           >
-            <h2 className="text-xl font-bold text-white mb-6">Add New Lead</h2>
-            <form className="space-y-4">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-white">{editingLead ? "Edit Lead" : "Add New Lead"}</h2>
+              <button onClick={() => { setShowNewLeadModal(false); setEditingLead(null); resetLeadForm(); }} className="p-2 hover:bg-[#2F3336] rounded-lg text-gray-400">
+                <X size={20} />
+              </button>
+            </div>
+            <form onSubmit={handleLeadSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm text-gray-400 mb-2">Name</label>
-                  <input type="text" className="w-full bg-[#0A0A0A] border border-[#2F3336] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kuwex-cyan/50" placeholder="Full name" />
+                  <label className="block text-sm text-gray-400 mb-2">Name *</label>
+                  <input type="text" required value={leadForm.name} onChange={(e) => setLeadForm({ ...leadForm, name: e.target.value })} className="w-full bg-[#0A0A0A] border border-[#2F3336] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kuwex-cyan/50" placeholder="Full name" />
                 </div>
                 <div>
-                  <label className="block text-sm text-gray-400 mb-2">Company</label>
-                  <input type="text" className="w-full bg-[#0A0A0A] border border-[#2F3336] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kuwex-cyan/50" placeholder="Company name" />
+                  <label className="block text-sm text-gray-400 mb-2">Company *</label>
+                  <input type="text" required value={leadForm.company} onChange={(e) => setLeadForm({ ...leadForm, company: e.target.value })} className="w-full bg-[#0A0A0A] border border-[#2F3336] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kuwex-cyan/50" placeholder="Company name" />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm text-gray-400 mb-2">Email</label>
-                  <input type="email" className="w-full bg-[#0A0A0A] border border-[#2F3336] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kuwex-cyan/50" placeholder="email@example.com" />
+                  <label className="block text-sm text-gray-400 mb-2">Email *</label>
+                  <input type="email" required value={leadForm.email} onChange={(e) => setLeadForm({ ...leadForm, email: e.target.value })} className="w-full bg-[#0A0A0A] border border-[#2F3336] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kuwex-cyan/50" placeholder="email@example.com" />
                 </div>
                 <div>
                   <label className="block text-sm text-gray-400 mb-2">Phone</label>
-                  <input type="tel" className="w-full bg-[#0A0A0A] border border-[#2F3336] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kuwex-cyan/50" placeholder="+263 77 123 4567" />
+                  <input type="tel" value={leadForm.phone} onChange={(e) => setLeadForm({ ...leadForm, phone: e.target.value })} className="w-full bg-[#0A0A0A] border border-[#2F3336] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kuwex-cyan/50" placeholder="+263 77 123 4567" />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm text-gray-400 mb-2">Source</label>
-                  <select className="w-full bg-[#0A0A0A] border border-[#2F3336] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kuwex-cyan/50">
+                  <select value={leadForm.source} onChange={(e) => setLeadForm({ ...leadForm, source: e.target.value })} className="w-full bg-[#0A0A0A] border border-[#2F3336] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kuwex-cyan/50">
                     <option value="website">Website</option>
                     <option value="whatsapp">WhatsApp</option>
                     <option value="facebook">Facebook</option>
@@ -352,22 +519,98 @@ export default function CRMPage() {
                 </div>
                 <div>
                   <label className="block text-sm text-gray-400 mb-2">Estimated Value ($)</label>
-                  <input type="number" className="w-full bg-[#0A0A0A] border border-[#2F3336] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kuwex-cyan/50" placeholder="0" />
+                  <input type="number" value={leadForm.value} onChange={(e) => setLeadForm({ ...leadForm, value: e.target.value })} className="w-full bg-[#0A0A0A] border border-[#2F3336] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kuwex-cyan/50" placeholder="0" />
                 </div>
               </div>
               <div>
+                <label className="block text-sm text-gray-400 mb-2">Service Interest</label>
+                <input type="text" value={leadForm.service} onChange={(e) => setLeadForm({ ...leadForm, service: e.target.value })} className="w-full bg-[#0A0A0A] border border-[#2F3336] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kuwex-cyan/50" placeholder="e.g., Website Development" />
+              </div>
+              <div>
                 <label className="block text-sm text-gray-400 mb-2">Notes</label>
-                <textarea className="w-full bg-[#0A0A0A] border border-[#2F3336] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kuwex-cyan/50 h-24 resize-none" placeholder="Add notes about this lead..." />
+                <textarea value={leadForm.notes} onChange={(e) => setLeadForm({ ...leadForm, notes: e.target.value })} className="w-full bg-[#0A0A0A] border border-[#2F3336] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kuwex-cyan/50 h-24 resize-none" placeholder="Add notes about this lead..." />
               </div>
               <div className="flex gap-3 pt-4">
-                <button type="button" onClick={() => setShowNewLeadModal(false)} className="flex-1 px-4 py-3 border border-[#2F3336] rounded-xl text-white hover:bg-[#2F3336] transition-colors">
+                <button type="button" onClick={() => { setShowNewLeadModal(false); setEditingLead(null); resetLeadForm(); }} className="flex-1 px-4 py-3 border border-[#2F3336] rounded-xl text-white hover:bg-[#2F3336] transition-colors">
                   Cancel
                 </button>
-                <button type="submit" className="flex-1 px-4 py-3 bg-kuwex-cyan text-black rounded-xl font-semibold hover:bg-kuwex-cyan/90 transition-colors">
-                  Add Lead
+                <button type="submit" disabled={isSubmitting} className="flex-1 px-4 py-3 bg-kuwex-cyan text-black rounded-xl font-semibold hover:bg-kuwex-cyan/90 transition-colors disabled:opacity-50 flex items-center justify-center gap-2">
+                  {isSubmitting && <Loader2 size={18} className="animate-spin" />}
+                  {editingLead ? "Update Lead" : "Add Lead"}
                 </button>
               </div>
             </form>
+          </motion.div>
+        </div>
+      )}
+
+      {/* New Client Modal */}
+      {showNewClientModal && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-6 w-full max-w-lg"
+          >
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-white">Add New Client</h2>
+              <button onClick={() => { setShowNewClientModal(false); resetClientForm(); }} className="p-2 hover:bg-[#2F3336] rounded-lg text-gray-400">
+                <X size={20} />
+              </button>
+            </div>
+            <form onSubmit={handleClientSubmit} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm text-gray-400 mb-2">Contact Name *</label>
+                  <input type="text" required value={clientForm.name} onChange={(e) => setClientForm({ ...clientForm, name: e.target.value })} className="w-full bg-[#0A0A0A] border border-[#2F3336] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kuwex-cyan/50" placeholder="Full name" />
+                </div>
+                <div>
+                  <label className="block text-sm text-gray-400 mb-2">Company *</label>
+                  <input type="text" required value={clientForm.company} onChange={(e) => setClientForm({ ...clientForm, company: e.target.value })} className="w-full bg-[#0A0A0A] border border-[#2F3336] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kuwex-cyan/50" placeholder="Company name" />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm text-gray-400 mb-2">Email *</label>
+                  <input type="email" required value={clientForm.email} onChange={(e) => setClientForm({ ...clientForm, email: e.target.value })} className="w-full bg-[#0A0A0A] border border-[#2F3336] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kuwex-cyan/50" placeholder="email@example.com" />
+                </div>
+                <div>
+                  <label className="block text-sm text-gray-400 mb-2">Phone</label>
+                  <input type="tel" value={clientForm.phone} onChange={(e) => setClientForm({ ...clientForm, phone: e.target.value })} className="w-full bg-[#0A0A0A] border border-[#2F3336] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kuwex-cyan/50" placeholder="+263 77 123 4567" />
+                </div>
+              </div>
+              <div className="flex gap-3 pt-4">
+                <button type="button" onClick={() => { setShowNewClientModal(false); resetClientForm(); }} className="flex-1 px-4 py-3 border border-[#2F3336] rounded-xl text-white hover:bg-[#2F3336] transition-colors">
+                  Cancel
+                </button>
+                <button type="submit" disabled={isSubmitting} className="flex-1 px-4 py-3 bg-kuwex-cyan text-black rounded-xl font-semibold hover:bg-kuwex-cyan/90 transition-colors disabled:opacity-50 flex items-center justify-center gap-2">
+                  {isSubmitting && <Loader2 size={18} className="animate-spin" />}
+                  Add Client
+                </button>
+              </div>
+            </form>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-6 w-full max-w-sm"
+          >
+            <h3 className="text-lg font-bold text-white mb-2">Delete {showDeleteConfirm.type === "lead" ? "Lead" : "Client"}?</h3>
+            <p className="text-gray-400 mb-6">This action cannot be undone.</p>
+            <div className="flex gap-3">
+              <button onClick={() => setShowDeleteConfirm(null)} className="flex-1 px-4 py-2 border border-[#2F3336] rounded-xl text-white hover:bg-[#2F3336] transition-colors">
+                Cancel
+              </button>
+              <button onClick={handleDelete} className="flex-1 px-4 py-2 bg-red-500 text-white rounded-xl font-semibold hover:bg-red-600 transition-colors">
+                Delete
+              </button>
+            </div>
           </motion.div>
         </div>
       )}

@@ -18,26 +18,10 @@ import {
   CheckCircle2,
   XCircle,
   LucideIcon,
+  Loader2,
 } from "lucide-react";
-
-// Mock data - in production this would come from your database/API
-const kpiData = {
-  totalRevenue: { value: 45750, change: 12.5, target: 100000 },
-  monthlyRevenue: { value: 8200, change: 8.3, target: 8333 },
-  activeProjects: { value: 7, change: 2 },
-  pendingQuotations: { value: 4, change: -1 },
-  newLeads: { value: 12, change: 33 },
-  clientRetention: { value: 87, change: 5 },
-  websiteTraffic: { value: 2450, change: 18 },
-  activeTenders: { value: 3, change: 1 },
-};
-
-const recentProjects = [
-  { id: 1, name: "TechStart Website Redesign", client: "TechStart Inc", status: "in_progress", progress: 75, value: 2500 },
-  { id: 2, name: "GreenEnergy Brand Identity", client: "GreenEnergy Ltd", status: "in_progress", progress: 45, value: 1800 },
-  { id: 3, name: "HealthPlus Mobile App", client: "HealthPlus", status: "review", progress: 90, value: 5000 },
-  { id: 4, name: "EduLearn Marketing Campaign", client: "EduLearn", status: "in_progress", progress: 30, value: 1200 },
-];
+import { useProjects, useInvoices, useLeads, useClients } from "@/hooks/useDatabase";
+import { Project, Lead } from "@/lib/supabase";
 
 const aiAlerts = [
   { id: 1, type: "warning", message: "Your revenue this month is 2% below target — consider promoting Web Development services.", action: "View Marketing" },
@@ -54,20 +38,63 @@ const revenueByService = [
   { name: "Consultancy", value: 2450, percentage: 6 },
 ];
 
-const upcomingDeadlines = [
-  { id: 1, project: "TechStart Website", task: "Final Review", date: "Dec 15", daysLeft: 4 },
-  { id: 2, project: "GreenEnergy Brand", task: "Logo Delivery", date: "Dec 18", daysLeft: 7 },
-  { id: 3, project: "HealthPlus App", task: "Beta Launch", date: "Dec 20", daysLeft: 9 },
-];
-
-const recentLeads = [
-  { id: 1, name: "John Moyo", company: "Sunrise Holdings", source: "Website", value: 3000, date: "2 hours ago" },
-  { id: 2, name: "Sarah Ndlovu", company: "Fresh Farms", source: "WhatsApp", value: 1500, date: "5 hours ago" },
-  { id: 3, name: "Mike Chikwanha", company: "BuildRight Construction", source: "Referral", value: 4500, date: "1 day ago" },
-];
-
 export default function Dashboard() {
+  const { projects, loading: projectsLoading } = useProjects();
+  const { invoices, loading: invoicesLoading } = useInvoices();
+  const { leads, loading: leadsLoading } = useLeads();
+  const { clients, loading: clientsLoading } = useClients();
+
+  const loading = projectsLoading || invoicesLoading || leadsLoading || clientsLoading;
+
+  // Calculate KPIs from real data
+  const totalRevenue = invoices.reduce((sum, inv) => sum + (inv.paid_amount || 0), 0);
+  const activeProjects = projects.filter((p: Project) => p.status === "in_progress").length;
+  const newLeadsCount = leads.filter((l: Lead) => l.status === "new").length;
+  const totalClients = clients.length;
+
+  // Get recent projects (last 4)
+  const recentProjects = projects.slice(0, 4);
+
+  // Get recent leads (last 3)
+  const recentLeads = leads.slice(0, 3);
+
+  // Calculate upcoming deadlines from projects
+  const upcomingDeadlines = projects
+    .filter((p: Project) => p.deadline && new Date(p.deadline) > new Date())
+    .sort((a: Project, b: Project) => new Date(a.deadline!).getTime() - new Date(b.deadline!).getTime())
+    .slice(0, 3)
+    .map((p: Project) => {
+      const deadline = new Date(p.deadline!);
+      const daysLeft = Math.ceil((deadline.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+      return {
+        id: p.id,
+        project: p.name,
+        task: "Deadline",
+        date: deadline.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+        daysLeft,
+      };
+    });
+
+  const kpiData = {
+    totalRevenue: { value: totalRevenue, change: 12.5, target: 100000 },
+    monthlyRevenue: { value: totalRevenue, change: 8.3, target: 8333 },
+    activeProjects: { value: activeProjects, change: 2 },
+    pendingQuotations: { value: 4, change: -1 },
+    newLeads: { value: newLeadsCount, change: 33 },
+    clientRetention: { value: 87, change: 5 },
+    websiteTraffic: { value: 2450, change: 18 },
+    activeTenders: { value: 3, change: 1 },
+  };
+
   const progressToTarget = (kpiData.totalRevenue.value / kpiData.totalRevenue.target) * 100;
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <Loader2 className="w-8 h-8 text-kuwex-cyan animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -308,7 +335,7 @@ export default function Dashboard() {
             <button className="text-sm text-kuwex-cyan hover:underline">View All</button>
           </div>
           <div className="space-y-4">
-            {recentProjects.map((project) => (
+            {recentProjects.map((project: Project) => (
               <div key={project.id} className="p-4 bg-[#1a1a1a] rounded-xl">
                 <div className="flex items-start justify-between mb-3">
                   <div>
@@ -328,11 +355,11 @@ export default function Dashboard() {
                     <div className="h-2 bg-[#2F3336] rounded-full overflow-hidden">
                       <div
                         className="h-full bg-gradient-to-r from-kuwex-cyan to-kuwex-blue rounded-full"
-                        style={{ width: `${project.progress}%` }}
+                        style={{ width: `${project.progress || 0}%` }}
                       />
                     </div>
                   </div>
-                  <span className="text-sm text-gray-400">{project.progress}%</span>
+                  <span className="text-sm text-gray-400">{project.progress || 0}%</span>
                 </div>
               </div>
             ))}
@@ -351,17 +378,17 @@ export default function Dashboard() {
             <button className="text-sm text-kuwex-cyan hover:underline">View All</button>
           </div>
           <div className="space-y-4">
-            {recentLeads.map((lead) => (
+            {recentLeads.map((lead: Lead) => (
               <div key={lead.id} className="flex items-center gap-4 p-4 bg-[#1a1a1a] rounded-xl">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-kuwex-cyan/20 to-kuwex-blue/20 flex items-center justify-center text-kuwex-cyan font-semibold">
-                  {lead.name.charAt(0)}
+                  {lead.name?.charAt(0) || "?"}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-white truncate">{lead.name}</p>
                   <p className="text-sm text-gray-500 truncate">{lead.company}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-medium text-kuwex-cyan">${lead.value.toLocaleString()}</p>
+                  <p className="text-sm font-medium text-kuwex-cyan">${(lead.value || 0).toLocaleString()}</p>
                   <p className="text-xs text-gray-500">{lead.source}</p>
                 </div>
               </div>

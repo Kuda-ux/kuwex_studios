@@ -217,6 +217,19 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
+-- Drop existing triggers if they exist, then recreate
+DROP TRIGGER IF EXISTS update_projects_updated_at ON projects;
+DROP TRIGGER IF EXISTS update_leads_updated_at ON leads;
+DROP TRIGGER IF EXISTS update_clients_updated_at ON clients;
+DROP TRIGGER IF EXISTS update_quotations_updated_at ON quotations;
+DROP TRIGGER IF EXISTS update_invoices_updated_at ON invoices;
+DROP TRIGGER IF EXISTS update_tenders_updated_at ON tenders;
+DROP TRIGGER IF EXISTS update_team_members_updated_at ON team_members;
+DROP TRIGGER IF EXISTS update_tasks_updated_at ON tasks;
+DROP TRIGGER IF EXISTS update_documents_updated_at ON documents;
+DROP TRIGGER IF EXISTS update_social_posts_updated_at ON social_posts;
+DROP TRIGGER IF EXISTS update_company_settings_updated_at ON company_settings;
+
 -- Apply trigger to all tables
 CREATE TRIGGER update_projects_updated_at BEFORE UPDATE ON projects FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_leads_updated_at BEFORE UPDATE ON leads FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -245,6 +258,19 @@ ALTER TABLE tasks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE documents ENABLE ROW LEVEL SECURITY;
 ALTER TABLE social_posts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE company_settings ENABLE ROW LEVEL SECURITY;
+
+-- Drop existing policies if they exist, then recreate
+DROP POLICY IF EXISTS "Allow all for authenticated users" ON projects;
+DROP POLICY IF EXISTS "Allow all for authenticated users" ON leads;
+DROP POLICY IF EXISTS "Allow all for authenticated users" ON clients;
+DROP POLICY IF EXISTS "Allow all for authenticated users" ON quotations;
+DROP POLICY IF EXISTS "Allow all for authenticated users" ON invoices;
+DROP POLICY IF EXISTS "Allow all for authenticated users" ON tenders;
+DROP POLICY IF EXISTS "Allow all for authenticated users" ON team_members;
+DROP POLICY IF EXISTS "Allow all for authenticated users" ON tasks;
+DROP POLICY IF EXISTS "Allow all for authenticated users" ON documents;
+DROP POLICY IF EXISTS "Allow all for authenticated users" ON social_posts;
+DROP POLICY IF EXISTS "Allow all for authenticated users" ON company_settings;
 
 -- Create policies to allow authenticated users full access (adjust as needed)
 CREATE POLICY "Allow all for authenticated users" ON projects FOR ALL USING (true);
