@@ -301,8 +301,7 @@ export function useTasks() {
 // Documents Hook
 export function useDocuments(parentId?: string | null) {
   const { data: documents, loading, error, refresh, setData } = useDbCollection<Document>(
-    () => documentsDb.getAll(parentId),
-    [parentId]
+    () => documentsDb.getAll(parentId)
   );
 
   const createDocument = async (doc: Omit<Document, 'id' | 'created_at' | 'updated_at'>) => {
