@@ -111,7 +111,7 @@ export default function TendersPage() {
   const isTracked = (id: string) => trackedTenders.some(t => t.id === id);
 
   // Get unique categories
-  const categories = [...new Set(tenders.map(t => t.category))];
+  const categories = Array.from(new Set(tenders.map(t => t.category)));
 
   const filteredTenders = (activeTab === "discover" ? tenders : trackedTenders).filter((t) => {
     const matchesSearch = t.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
