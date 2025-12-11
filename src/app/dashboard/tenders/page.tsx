@@ -113,7 +113,7 @@ export default function TendersPage() {
   // Get unique categories
   const categories = Array.from(new Set(tenders.map(t => t.category)));
 
-  const filteredTenders = (activeTab === "discover" ? tenders : trackedTenders).filter((t) => {
+  const filteredTenders = (activeTab === "discover" ? tenders : activeTab === "tracked" ? trackedTenders : []).filter((t) => {
     const matchesSearch = t.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                          t.organization.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = categoryFilter === "all" || t.category === categoryFilter;
@@ -356,42 +356,43 @@ export default function TendersPage() {
 
       {/* Filters - Only show for discover/tracked tabs */}
       {activeTab !== "sources" && (
-      <div className="flex flex-col md:flex-row gap-4">
-        <div className="flex-1 relative max-w-md">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
-          <input 
-            type="text" 
-            placeholder="Search tenders, organizations..." 
-            value={searchQuery} 
-            onChange={(e) => setSearchQuery(e.target.value)} 
-            className="w-full bg-[#16181C] border border-[#2F3336] rounded-xl pl-12 pr-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-kuwex-cyan/50" 
-          />
-        </div>
-        <select 
-          value={categoryFilter} 
-          onChange={(e) => setCategoryFilter(e.target.value)} 
-          className="bg-[#16181C] border border-[#2F3336] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kuwex-cyan/50"
-        >
-          <option value="all">All Categories</option>
-          {categories.map(cat => (
-            <option key={cat} value={cat}>{cat}</option>
-          ))}
-        </select>
-        {activeTab === "tracked" && (
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex-1 relative max-w-md">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
+            <input 
+              type="text" 
+              placeholder="Search tenders, organizations..." 
+              value={searchQuery} 
+              onChange={(e) => setSearchQuery(e.target.value)} 
+              className="w-full bg-[#16181C] border border-[#2F3336] rounded-xl pl-12 pr-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-kuwex-cyan/50" 
+            />
+          </div>
           <select 
-            value={statusFilter} 
-            onChange={(e) => setStatusFilter(e.target.value as TenderStatus | "all")} 
+            value={categoryFilter} 
+            onChange={(e) => setCategoryFilter(e.target.value)} 
             className="bg-[#16181C] border border-[#2F3336] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kuwex-cyan/50"
           >
-            <option value="all">All Status</option>
-            <option value="identified">New</option>
-            <option value="planning">Planning</option>
-            <option value="submitted">Submitted</option>
-            <option value="won">Won</option>
-            <option value="lost">Lost</option>
+            <option value="all">All Categories</option>
+            {categories.map(cat => (
+              <option key={cat} value={cat}>{cat}</option>
+            ))}
           </select>
-        )}
-      </div>
+          {activeTab === "tracked" && (
+            <select 
+              value={statusFilter} 
+              onChange={(e) => setStatusFilter(e.target.value as TenderStatus | "all")} 
+              className="bg-[#16181C] border border-[#2F3336] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kuwex-cyan/50"
+            >
+              <option value="all">All Status</option>
+              <option value="identified">New</option>
+              <option value="planning">Planning</option>
+              <option value="submitted">Submitted</option>
+              <option value="won">Won</option>
+              <option value="lost">Lost</option>
+            </select>
+          )}
+        </div>
+      )}
 
       {/* Loading State */}
       {loading && activeTab !== "sources" && (
