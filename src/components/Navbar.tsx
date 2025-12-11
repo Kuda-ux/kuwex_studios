@@ -20,10 +20,13 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo - Text Based Design */}
           <Link href="/" className="flex items-center">
-            <span className="text-2xl font-bold tracking-tight">
-              <span className="text-white">KuWe</span>
-              <span className="text-kuwex-cyan">X</span>
-            </span>
+            <div className="flex flex-col leading-none">
+              <span className="text-2xl font-bold tracking-tight">
+                <span className="text-white">KuWe</span>
+                <span className="bg-gradient-to-br from-kuwex-cyan to-gray-400 bg-clip-text text-transparent">X</span>
+              </span>
+              <span className="text-[10px] font-medium tracking-[0.25em] text-gray-400 mt-0.5">STUDIOS</span>
+            </div>
           </Link>
 
           {/* Desktop Menu */}

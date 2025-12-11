@@ -28,10 +28,13 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <span className="text-xl font-bold mb-4 block">
-              <span className="text-white">KuWe</span>
-              <span className="text-kuwex-cyan">X</span>
-            </span>
+            <div className="flex flex-col leading-none mb-4">
+              <span className="text-xl font-bold tracking-tight">
+                <span className="text-white">KuWe</span>
+                <span className="bg-gradient-to-br from-kuwex-cyan to-gray-400 bg-clip-text text-transparent">X</span>
+              </span>
+              <span className="text-[8px] font-medium tracking-[0.25em] text-gray-400 mt-0.5">STUDIOS</span>
+            </div>
             <p className="text-gray-500 text-sm leading-relaxed">
               Building Africa&apos;s digital future with world-class products.
             </p>

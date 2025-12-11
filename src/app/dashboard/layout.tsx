@@ -78,11 +78,14 @@ export default function DashboardLayout({
         <div className="flex flex-col h-full">
           {/* Logo */}
           <div className="flex items-center justify-between h-16 px-6 border-b border-[#2F3336]">
-            <Link href="/dashboard" className="flex items-center gap-2">
-              <span className="text-xl font-bold">
-                <span className="text-white">KuWe</span>
-                <span className="text-kuwex-cyan">X</span>
-              </span>
+            <Link href="/dashboard" className="flex items-center gap-3">
+              <div className="flex flex-col leading-none">
+                <span className="text-xl font-bold tracking-tight">
+                  <span className="text-white">KuWe</span>
+                  <span className="bg-gradient-to-br from-kuwex-cyan to-gray-400 bg-clip-text text-transparent">X</span>
+                </span>
+                <span className="text-[8px] font-medium tracking-[0.25em] text-gray-400 mt-0.5">STUDIOS</span>
+              </div>
               <span className="text-xs text-gray-500 bg-[#1a1a1a] px-2 py-0.5 rounded">IMS</span>
             </Link>
             <button
