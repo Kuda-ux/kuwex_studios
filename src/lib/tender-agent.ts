@@ -79,14 +79,14 @@ export const KUWEX_PROFILE = {
       weight: 0.8
     }
   ],
-  // Negative keywords - tenders we should NOT match
+  // Negative keywords - tenders we should NOT match (be specific to avoid false positives)
   excludeKeywords: [
-    "construction", "building", "civil works", "road", "bridge",
-    "medical supplies", "pharmaceuticals", "drugs", "medicine",
-    "food supplies", "catering", "furniture", "vehicles", "transport",
-    "security guards", "cleaning services", "stationery", "office supplies",
-    "agricultural", "farming", "mining", "drilling", "plumbing",
-    "electrical installation", "HVAC", "air conditioning"
+    "construction works", "building construction", "civil works", "road construction", "bridge construction",
+    "medical supplies", "pharmaceuticals", "drug supply", "medicine supply",
+    "food supplies", "catering services", "furniture supply", "vehicle supply", "transport services",
+    "security guards", "cleaning services", "office supplies",
+    "agricultural equipment", "farming equipment", "mining equipment", "drilling equipment", "plumbing works",
+    "electrical installation", "HVAC installation", "air conditioning installation"
   ],
   // Preferred organizations/sectors
   preferredSectors: [

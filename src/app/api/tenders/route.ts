@@ -365,7 +365,7 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const useLive = searchParams.get('live') === 'true'; // Force live scraping
-    const minScore = parseInt(searchParams.get('minScore') || '30');
+    const minScore = parseInt(searchParams.get('minScore') || '0'); // Default to 0 to show all matched tenders
     const priority = searchParams.get('priority'); // high, medium, low
     
     let rawTenders: RawTender[];
