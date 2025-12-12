@@ -74,6 +74,31 @@ const statusConfig: Record<TenderStatus, { label: string; color: string; icon: t
   lost: { label: "Lost", color: "bg-red-500/20 text-red-400", icon: XCircle },
 };
 
+// Manual tender sources
+const MANUAL_SOURCES = [
+  { id: 'newspaper', name: 'Newspaper' },
+  { id: 'herald', name: 'The Herald' },
+  { id: 'chronicle', name: 'The Chronicle' },
+  { id: 'referral', name: 'Word of Mouth / Referral' },
+  { id: 'email', name: 'Email Notification' },
+  { id: 'social', name: 'Social Media' },
+  { id: 'website', name: 'Company Website' },
+  { id: 'other', name: 'Other' },
+];
+
+const TENDER_CATEGORIES = [
+  'Web Development',
+  'Mobile Apps',
+  'Digital Marketing',
+  'Branding',
+  'Software Development',
+  'UI/UX Design',
+  'Video Production',
+  'ICT Services',
+  'Consultancy',
+  'Other',
+];
+
 export default function TendersPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<TenderStatus | "all">("all");
@@ -85,6 +110,22 @@ export default function TendersPage() {
   const [selectedTender, setSelectedTender] = useState<MatchedTender | null>(null);
   const [apiStats, setApiStats] = useState<TenderStats | null>(null);
   const [activeTab, setActiveTab] = useState<"discover" | "tracked" | "sources">("discover");
+  
+  // Manual tender entry state
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [manualTenders, setManualTenders] = useState<MatchedTender[]>([]);
+  const [newTender, setNewTender] = useState({
+    title: '',
+    organization: '',
+    description: '',
+    value: '',
+    deadline: '',
+    category: 'Web Development',
+    sourceId: 'newspaper',
+    sourceUrl: '',
+    location: 'Zimbabwe',
+    requirements: '',
+  });
 
   // Fetch tenders from API
   const fetchTenders = async () => {
@@ -111,12 +152,74 @@ export default function TendersPage() {
     if (saved) {
       setTrackedTenders(JSON.parse(saved));
     }
+    // Load manual tenders from localStorage
+    const savedManual = localStorage.getItem('manualTenders');
+    if (savedManual) {
+      setManualTenders(JSON.parse(savedManual));
+    }
   }, []);
 
   // Save tracked tenders to localStorage
   useEffect(() => {
     localStorage.setItem('trackedTenders', JSON.stringify(trackedTenders));
   }, [trackedTenders]);
+
+  // Save manual tenders to localStorage
+  useEffect(() => {
+    localStorage.setItem('manualTenders', JSON.stringify(manualTenders));
+  }, [manualTenders]);
+
+  // Add manual tender
+  const addManualTender = () => {
+    if (!newTender.title || !newTender.organization || !newTender.deadline) {
+      alert('Please fill in Title, Organization, and Deadline');
+      return;
+    }
+
+    const sourceName = MANUAL_SOURCES.find(s => s.id === newTender.sourceId)?.name || 'Manual Entry';
+    
+    const tender: MatchedTender = {
+      id: `MANUAL-${Date.now()}`,
+      title: newTender.title,
+      organization: newTender.organization,
+      description: newTender.description || newTender.title,
+      value: newTender.value ? parseFloat(newTender.value) : null,
+      currency: 'USD',
+      deadline: newTender.deadline,
+      category: newTender.category,
+      sourceId: newTender.sourceId,
+      sourceUrl: newTender.sourceUrl || '',
+      location: newTender.location,
+      requirements: newTender.requirements ? newTender.requirements.split(',').map(r => r.trim()) : [],
+      matchScore: 85, // Default high score for manual entries
+      matchedServices: [newTender.category],
+      matchedKeywords: [],
+      relevanceReason: `Manually added from ${sourceName}`,
+      priority: 'high',
+      daysUntilDeadline: Math.ceil((new Date(newTender.deadline).getTime() - Date.now()) / (1000 * 60 * 60 * 24)),
+      isUrgent: Math.ceil((new Date(newTender.deadline).getTime() - Date.now()) / (1000 * 60 * 60 * 24)) <= 14,
+      formattedValue: newTender.value ? `$${parseFloat(newTender.value).toLocaleString()}` : 'Not specified',
+    };
+
+    setManualTenders(prev => [tender, ...prev]);
+    setShowAddModal(false);
+    // Reset form
+    setNewTender({
+      title: '',
+      organization: '',
+      description: '',
+      value: '',
+      deadline: '',
+      category: 'Web Development',
+      sourceId: 'newspaper',
+      sourceUrl: '',
+      location: 'Zimbabwe',
+      requirements: '',
+    });
+  };
+
+  // Combine API tenders with manual tenders
+  const allTenders = [...manualTenders, ...tenders];
 
   const trackTender = (tender: MatchedTender) => {
     const tracked: TrackedTender = { ...tender, status: 'identified' };
@@ -136,9 +239,9 @@ export default function TendersPage() {
   const isTracked = (id: string) => trackedTenders.some(t => t.id === id);
 
   // Get unique categories (filter out undefined)
-  const categories = Array.from(new Set(tenders.map(t => t.category).filter(Boolean))) as string[];
+  const categories = Array.from(new Set(allTenders.map(t => t.category).filter(Boolean))) as string[];
 
-  const filteredTenders = (activeTab === "discover" ? tenders : activeTab === "tracked" ? trackedTenders : []).filter((t) => {
+  const filteredTenders = (activeTab === "discover" ? allTenders : activeTab === "tracked" ? trackedTenders : []).filter((t) => {
     const matchesSearch = t.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                          t.organization.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = categoryFilter === "all" || (t.category || 'General') === categoryFilter;
@@ -148,7 +251,8 @@ export default function TendersPage() {
   });
 
   const stats = {
-    total: tenders.length,
+    total: allTenders.length,
+    manual: manualTenders.length,
     tracked: trackedTenders.length,
     active: trackedTenders.filter((t) => t.status === "planning" || t.status === "submitted").length,
     won: trackedTenders.filter((t) => t.status === "won").length,
@@ -179,18 +283,30 @@ export default function TendersPage() {
                 })}
               </span>
             )}
+            {manualTenders.length > 0 && (
+              <span className="ml-2 text-xs text-green-400">• {manualTenders.length} manual entries</span>
+            )}
           </p>
         </div>
-        <button 
-          onClick={() => {
-            fetchTenders();
-          }}
-          disabled={loading}
-          className="flex items-center gap-2 bg-kuwex-cyan text-black px-4 py-2.5 rounded-xl font-semibold hover:bg-kuwex-cyan/90 transition-colors disabled:opacity-50"
-        >
-          <RefreshCw size={20} className={loading ? "animate-spin" : ""} />
-          {loading ? "Fetching from sources..." : "Refresh Tenders"}
-        </button>
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={() => setShowAddModal(true)}
+            className="flex items-center gap-2 bg-green-500 text-white px-4 py-2.5 rounded-xl font-semibold hover:bg-green-600 transition-colors"
+          >
+            <Plus size={20} />
+            Add Tender
+          </button>
+          <button 
+            onClick={() => {
+              fetchTenders();
+            }}
+            disabled={loading}
+            className="flex items-center gap-2 bg-kuwex-cyan text-black px-4 py-2.5 rounded-xl font-semibold hover:bg-kuwex-cyan/90 transition-colors disabled:opacity-50"
+          >
+            <RefreshCw size={20} className={loading ? "animate-spin" : ""} />
+            {loading ? "Fetching..." : "Refresh"}
+          </button>
+        </div>
       </div>
 
       {/* AI Suggestion */}
@@ -708,6 +824,178 @@ export default function TendersPage() {
                   <ExternalLink size={18} />
                   View Source
                 </a>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Add Tender Modal */}
+      {showAddModal && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-[#1A1D21] rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+          >
+            <div className="p-6 border-b border-[#2F3336] flex items-center justify-between">
+              <div>
+                <h2 className="text-xl font-bold text-white">Add New Tender</h2>
+                <p className="text-gray-500 text-sm">Add a tender from newspaper, referral, or other sources</p>
+              </div>
+              <button 
+                onClick={() => setShowAddModal(false)}
+                className="text-gray-400 hover:text-white p-2"
+              >
+                <XCircle size={24} />
+              </button>
+            </div>
+            
+            <div className="p-6 space-y-4">
+              {/* Title */}
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">Tender Title *</label>
+                <input
+                  type="text"
+                  value={newTender.title}
+                  onChange={(e) => setNewTender(prev => ({ ...prev, title: e.target.value }))}
+                  placeholder="e.g., Website Development for Ministry of Health"
+                  className="w-full bg-[#2F3336] text-white px-4 py-3 rounded-xl border border-[#3F4346] focus:border-kuwex-cyan focus:outline-none"
+                />
+              </div>
+
+              {/* Organization */}
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">Organization *</label>
+                <input
+                  type="text"
+                  value={newTender.organization}
+                  onChange={(e) => setNewTender(prev => ({ ...prev, organization: e.target.value }))}
+                  placeholder="e.g., Ministry of Health and Child Care"
+                  className="w-full bg-[#2F3336] text-white px-4 py-3 rounded-xl border border-[#3F4346] focus:border-kuwex-cyan focus:outline-none"
+                />
+              </div>
+
+              {/* Two columns */}
+              <div className="grid grid-cols-2 gap-4">
+                {/* Deadline */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-400 mb-1">Deadline *</label>
+                  <input
+                    type="date"
+                    value={newTender.deadline}
+                    onChange={(e) => setNewTender(prev => ({ ...prev, deadline: e.target.value }))}
+                    className="w-full bg-[#2F3336] text-white px-4 py-3 rounded-xl border border-[#3F4346] focus:border-kuwex-cyan focus:outline-none"
+                  />
+                </div>
+
+                {/* Value */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-400 mb-1">Estimated Value (USD)</label>
+                  <input
+                    type="number"
+                    value={newTender.value}
+                    onChange={(e) => setNewTender(prev => ({ ...prev, value: e.target.value }))}
+                    placeholder="e.g., 50000"
+                    className="w-full bg-[#2F3336] text-white px-4 py-3 rounded-xl border border-[#3F4346] focus:border-kuwex-cyan focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Two columns */}
+              <div className="grid grid-cols-2 gap-4">
+                {/* Category */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-400 mb-1">Category</label>
+                  <select
+                    value={newTender.category}
+                    onChange={(e) => setNewTender(prev => ({ ...prev, category: e.target.value }))}
+                    className="w-full bg-[#2F3336] text-white px-4 py-3 rounded-xl border border-[#3F4346] focus:border-kuwex-cyan focus:outline-none"
+                  >
+                    {TENDER_CATEGORIES.map(cat => (
+                      <option key={cat} value={cat}>{cat}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Source */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-400 mb-1">Source</label>
+                  <select
+                    value={newTender.sourceId}
+                    onChange={(e) => setNewTender(prev => ({ ...prev, sourceId: e.target.value }))}
+                    className="w-full bg-[#2F3336] text-white px-4 py-3 rounded-xl border border-[#3F4346] focus:border-kuwex-cyan focus:outline-none"
+                  >
+                    {MANUAL_SOURCES.map(src => (
+                      <option key={src.id} value={src.id}>{src.name}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Location */}
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">Location</label>
+                <input
+                  type="text"
+                  value={newTender.location}
+                  onChange={(e) => setNewTender(prev => ({ ...prev, location: e.target.value }))}
+                  placeholder="e.g., Harare, Zimbabwe"
+                  className="w-full bg-[#2F3336] text-white px-4 py-3 rounded-xl border border-[#3F4346] focus:border-kuwex-cyan focus:outline-none"
+                />
+              </div>
+
+              {/* Description */}
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">Description</label>
+                <textarea
+                  value={newTender.description}
+                  onChange={(e) => setNewTender(prev => ({ ...prev, description: e.target.value }))}
+                  placeholder="Brief description of the tender requirements..."
+                  rows={3}
+                  className="w-full bg-[#2F3336] text-white px-4 py-3 rounded-xl border border-[#3F4346] focus:border-kuwex-cyan focus:outline-none resize-none"
+                />
+              </div>
+
+              {/* Requirements */}
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">Requirements (comma-separated)</label>
+                <input
+                  type="text"
+                  value={newTender.requirements}
+                  onChange={(e) => setNewTender(prev => ({ ...prev, requirements: e.target.value }))}
+                  placeholder="e.g., Tax Clearance, Company Registration, Portfolio"
+                  className="w-full bg-[#2F3336] text-white px-4 py-3 rounded-xl border border-[#3F4346] focus:border-kuwex-cyan focus:outline-none"
+                />
+              </div>
+
+              {/* Source URL */}
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">Source URL (optional)</label>
+                <input
+                  type="url"
+                  value={newTender.sourceUrl}
+                  onChange={(e) => setNewTender(prev => ({ ...prev, sourceUrl: e.target.value }))}
+                  placeholder="https://..."
+                  className="w-full bg-[#2F3336] text-white px-4 py-3 rounded-xl border border-[#3F4346] focus:border-kuwex-cyan focus:outline-none"
+                />
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-3 pt-4 border-t border-[#2F3336]">
+                <button 
+                  onClick={() => setShowAddModal(false)}
+                  className="flex-1 bg-[#2F3336] text-white px-4 py-3 rounded-xl font-semibold hover:bg-[#3F4346] transition-colors"
+                >
+                  Cancel
+                </button>
+                <button 
+                  onClick={addManualTender}
+                  className="flex-1 flex items-center justify-center gap-2 bg-green-500 text-white px-4 py-3 rounded-xl font-semibold hover:bg-green-600 transition-colors"
+                >
+                  <Plus size={18} />
+                  Add Tender
+                </button>
               </div>
             </div>
           </motion.div>
