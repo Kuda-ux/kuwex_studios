@@ -44,11 +44,41 @@ const platformNames: Record<string, string> = {
   linkedin: "LinkedIn",
 };
 
-// Social stats (can be fetched from APIs later)
-const socialStats = {
-  facebook: { followers: 1820, growth: 8, engagement: 2.8, url: "https://facebook.com/kuwexstudios" },
-  linkedin: { followers: 890, growth: 15, engagement: 5.1, url: "https://linkedin.com/company/kuwex-studios" },
-};
+// Facebook stats interface
+interface FacebookStats {
+  followers: number;
+  likes: number;
+  name: string;
+  id: string;
+}
+
+interface FacebookPost {
+  id: string;
+  message: string;
+  created_time: string;
+  likes: number;
+  comments: number;
+  shares: number;
+}
+
+interface SocialStatsData {
+  facebook: {
+    configured: boolean;
+    stats: FacebookStats | null;
+    error?: string;
+    recentPosts: FacebookPost[];
+    engagement: {
+      totalLikes: number;
+      totalComments: number;
+      totalShares: number;
+    };
+  };
+  linkedin: {
+    configured: boolean;
+    stats: null;
+    error?: string;
+  };
+}
 
 export default function MarketingPage() {
   const { posts, loading, error, refresh, createPost, updatePost, deletePost, publishPost } = useSocialPosts();
@@ -75,21 +105,33 @@ export default function MarketingPage() {
 
   // Platform config status
   const [platformConfig, setPlatformConfig] = useState<Record<string, { configured: boolean }>>({});
+  
+  // Real social stats from Facebook
+  const [socialStats, setSocialStats] = useState<SocialStatsData | null>(null);
+  const [statsLoading, setStatsLoading] = useState(true);
 
-  // Check platform configuration on mount
+  // Check platform configuration and fetch real stats on mount
   useEffect(() => {
-    const checkConfig = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch('/api/social/post');
-        const data = await res.json();
-        if (data.platforms) {
-          setPlatformConfig(data.platforms);
+        // Check config
+        const configRes = await fetch('/api/social/post');
+        const configData = await configRes.json();
+        if (configData.platforms) {
+          setPlatformConfig(configData.platforms);
         }
+        
+        // Fetch real stats from Facebook
+        const statsRes = await fetch('/api/social/stats');
+        const statsData = await statsRes.json();
+        setSocialStats(statsData);
       } catch (err) {
-        console.error('Failed to check platform config:', err);
+        console.error('Failed to fetch data:', err);
+      } finally {
+        setStatsLoading(false);
       }
     };
-    checkConfig();
+    fetchData();
   }, []);
 
   // Toggle platform selection
@@ -332,33 +374,42 @@ export default function MarketingPage() {
         </div>
       </div>
 
-      {/* Social Stats */}
+      {/* Social Stats - Real Data from Facebook */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {Object.entries(socialStats).map(([platform, stats], index) => {
-          const Icon = platformIcons[platform];
-          return (
-            <motion.div 
-              key={platform} 
-              initial={{ opacity: 0, y: 20 }} 
-              animate={{ opacity: 1, y: 0 }} 
-              transition={{ delay: index * 0.1 }} 
-              className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-5"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div className={`w-10 h-10 rounded-xl ${platformColors[platform]} flex items-center justify-center`}>
-                  <Icon size={20} className="text-white" />
-                </div>
-                <span className="text-green-400 text-sm font-medium">+{stats.growth}%</span>
-              </div>
-              <p className="text-2xl font-bold text-white">{stats.followers.toLocaleString()}</p>
-              <p className="text-sm text-gray-500 capitalize">{platformNames[platform]} Followers</p>
+        {/* Facebook Stats */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-5"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center">
+              <Facebook size={20} className="text-white" />
+            </div>
+            {statsLoading ? (
+              <Loader2 size={16} className="animate-spin text-gray-400" />
+            ) : socialStats?.facebook?.configured ? (
+              <CheckCircle2 size={16} className="text-green-400" />
+            ) : (
+              <AlertCircle size={16} className="text-red-400" />
+            )}
+          </div>
+          {statsLoading ? (
+            <div className="animate-pulse">
+              <div className="h-8 bg-gray-700 rounded w-24 mb-2"></div>
+              <div className="h-4 bg-gray-700 rounded w-32"></div>
+            </div>
+          ) : socialStats?.facebook?.stats ? (
+            <>
+              <p className="text-2xl font-bold text-white">{socialStats.facebook.stats.followers.toLocaleString()}</p>
+              <p className="text-sm text-gray-500">Facebook Followers</p>
               <div className="mt-3 flex items-center justify-between">
                 <div className="flex items-center gap-2 text-xs text-gray-400">
                   <Heart size={12} />
-                  <span>{stats.engagement}% engagement</span>
+                  <span>{socialStats.facebook.stats.likes.toLocaleString()} page likes</span>
                 </div>
                 <a 
-                  href={stats.url} 
+                  href={`https://facebook.com/${socialStats.facebook.stats.id}`}
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-xs text-kuwex-cyan hover:underline"
@@ -366,9 +417,45 @@ export default function MarketingPage() {
                   View Page →
                 </a>
               </div>
-            </motion.div>
-          );
-        })}
+            </>
+          ) : (
+            <>
+              <p className="text-xl font-bold text-gray-500">Not Connected</p>
+              <p className="text-sm text-gray-600">{socialStats?.facebook?.error || 'Configure Facebook API'}</p>
+            </>
+          )}
+        </motion.div>
+
+        {/* LinkedIn Stats */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ delay: 0.1 }}
+          className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-5"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-10 h-10 rounded-xl bg-blue-700 flex items-center justify-center">
+              <Linkedin size={20} className="text-white" />
+            </div>
+            {socialStats?.linkedin?.configured ? (
+              <CheckCircle2 size={16} className="text-green-400" />
+            ) : (
+              <AlertCircle size={16} className="text-yellow-400" />
+            )}
+          </div>
+          <p className="text-xl font-bold text-gray-500">Coming Soon</p>
+          <p className="text-sm text-gray-600">LinkedIn integration pending</p>
+          <div className="mt-3">
+            <a 
+              href="https://linkedin.com/company/kuwex-studios"
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-xs text-kuwex-cyan hover:underline"
+            >
+              View Page →
+            </a>
+          </div>
+        </motion.div>
       </div>
 
       {/* Tabs */}
