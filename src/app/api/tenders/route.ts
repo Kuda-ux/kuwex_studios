@@ -1,336 +1,415 @@
 import { NextResponse } from 'next/server';
+import { 
+  KUWEX_PROFILE, 
+  TENDER_SOURCES, 
+  filterAndRankTenders, 
+  isDeadlineValid,
+  getDaysUntilDeadline,
+  type RawTender,
+  type MatchedTender 
+} from '@/lib/tender-agent';
 
-// Zimbabwe Tender Sources - Official Portals
-const TENDER_SOURCES = {
-  primary: [
-    {
-      name: 'ZimbabweTenders',
-      url: 'https://www.zimbabwetenders.com/',
-      description: 'Major local tender aggregator with real-time government and private tenders',
-      requiresLogin: false,
-    },
-    {
-      name: 'PRAZ eGP System',
-      url: 'https://egp.praz.org.zw/',
-      loginUrl: 'https://egp.praz.org.zw/Indexes/login',
-      description: 'Official government e-procurement portal - register as supplier for full access',
-      requiresLogin: true,
-    },
-  ],
-  aggregators: [
-    {
-      name: 'TendersOnTime',
-      url: 'https://www.tendersontime.com/zimbabwe-tenders/',
-      description: 'Global tender aggregator with Zimbabwe RFPs, RFQs, and procurement notices',
-      requiresLogin: false,
-    },
-    {
-      name: 'GlobalTenders',
-      url: 'https://www.globaltenders.com/zw/zimbabwe-web-design-tenders',
-      description: 'Web design, intranet systems, and IT services tenders',
-      requiresLogin: false,
-    },
-    {
-      name: 'BidDetail',
-      url: 'https://www.biddetail.com/zimbabwe-tenders/social-media-tenders',
-      description: 'Social media and digital marketing tender notices',
-      requiresLogin: true,
-    },
-  ],
-  keywords: [
-    'digital marketing',
-    'website development',
-    'app developers',
-    'social media management',
-    'ICT services',
-    'web design',
-    'software development',
-  ],
-};
-
-interface ScrapedTender {
-  id: string;
-  title: string;
-  organization: string;
-  value: number | null;
-  deadline: string;
-  category: string;
-  description: string;
-  source: string;
-  sourceUrl: string;
-  publishedDate: string;
-  location: string;
-  requirements: string[];
+// Extended tender interface for API response
+interface TenderResponse extends MatchedTender {
+  daysUntilDeadline: number;
+  isUrgent: boolean;
+  formattedValue: string;
 }
 
-// Sample tender data - These represent the TYPE of tenders available on Zimbabwe portals
-// For REAL tenders, users should visit the actual portals listed in TENDER_SOURCES
-// Note: Real-time scraping would require authentication and may violate terms of service
-const getZimbabweTenders = async (): Promise<ScrapedTender[]> => {
-  // Sample tender data representing opportunities typically found on Zimbabwe tender boards
-  const tenders: ScrapedTender[] = [
+/**
+ * Simulated tender data from Zimbabwe sources
+ * In production, this would be replaced with actual web scraping or API calls
+ * to the tender portals. For now, we simulate realistic tender data.
+ */
+const fetchRawTendersFromSources = async (): Promise<RawTender[]> => {
+  // Simulated raw tenders from various Zimbabwe sources
+  // These include BOTH relevant and irrelevant tenders to demonstrate filtering
+  const allTenders: RawTender[] = [
+    // ===== RELEVANT TENDERS (Should match KuWeX) =====
     {
-      id: 'ZIM-2024-001',
-      title: 'Supply and Installation of ICT Equipment for Government Offices',
-      organization: 'Ministry of Information Communication Technology',
-      value: 150000,
-      deadline: '2025-01-15',
-      category: 'ICT & Technology',
-      description: 'Supply, delivery, and installation of computers, servers, networking equipment, and related ICT infrastructure for government offices across Zimbabwe.',
-      source: 'PRAZ eGP',
-      sourceUrl: 'https://egp.praz.org.zw/',
-      publishedDate: '2024-12-01',
-      location: 'Harare',
-      requirements: ['Valid Tax Clearance', 'Company Registration', 'ICT Certification', 'Previous Government Experience'],
-    },
-    {
-      id: 'ZIM-2024-002',
-      title: 'Development of E-Government Portal',
-      organization: 'Ministry of Local Government',
+      id: 'PRAZ-2024-ICT-001',
+      title: 'Development of E-Government Portal for Citizen Services',
+      description: 'Design, development, and deployment of a comprehensive e-government web portal for citizen services including online applications, payments, document verification, and service tracking. The portal should be mobile-responsive and integrate with existing government systems.',
+      organization: 'Ministry of ICT, Postal and Courier Services',
       value: 280000,
+      currency: 'USD',
       deadline: '2025-01-31',
-      category: 'Web Development',
-      description: 'Design, development, and deployment of a comprehensive e-government portal for citizen services including online applications, payments, and document verification.',
-      source: 'ZimbabweTenders',
-      sourceUrl: 'https://www.zimbabwetenders.com/',
       publishedDate: '2024-12-05',
-      location: 'Nationwide',
-      requirements: ['Web Development Portfolio', 'Security Certification', 'Government Project Experience'],
-    },
-    {
-      id: 'ZIM-2024-003',
-      title: 'Digital Marketing Campaign for Tourism Promotion',
-      organization: 'Zimbabwe Tourism Authority',
-      value: 45000,
-      deadline: '2025-01-20',
-      category: 'Digital Marketing',
-      description: 'Comprehensive digital marketing campaign to promote Zimbabwe as a tourist destination, including social media management, content creation, and online advertising.',
-      source: 'BidDetail',
-      sourceUrl: 'https://www.biddetail.com/zimbabwe-tenders/social-media-tenders',
-      publishedDate: '2024-12-08',
-      location: 'Harare',
-      requirements: ['Marketing Agency Registration', 'Tourism Portfolio', 'Social Media Expertise'],
-    },
-    {
-      id: 'ZIM-2024-004',
-      title: 'Hospital Management Information System',
-      organization: 'Ministry of Health and Child Care',
-      value: 320000,
-      deadline: '2025-02-28',
-      category: 'Software Development',
-      description: 'Development and implementation of an integrated hospital management information system for public hospitals including patient records, billing, pharmacy, and laboratory modules.',
-      source: 'PRAZ eGP',
+      category: 'Web Development',
+      sourceId: 'praz',
       sourceUrl: 'https://egp.praz.org.zw/',
-      publishedDate: '2024-12-10',
-      location: 'Nationwide',
-      requirements: ['Healthcare IT Experience', 'ISO Certification', 'Data Security Compliance'],
+      requirements: ['Web Development Portfolio', 'Security Certification', 'Government Project Experience', 'Valid Tax Clearance'],
+      location: 'Harare, Zimbabwe'
     },
     {
-      id: 'ZIM-2024-005',
+      id: 'ZT-2024-DM-002',
+      title: 'Digital Marketing Campaign for Tourism Promotion',
+      description: 'Comprehensive digital marketing campaign to promote Zimbabwe as a premier tourist destination. Services include social media management, content creation, SEO optimization, Google Ads management, influencer partnerships, and analytics reporting.',
+      organization: 'Zimbabwe Tourism Authority',
+      value: 65000,
+      currency: 'USD',
+      deadline: '2025-01-20',
+      publishedDate: '2024-12-08',
+      category: 'Digital Marketing',
+      sourceId: 'zimbabwetenders',
+      sourceUrl: 'https://www.zimbabwetenders.com/',
+      requirements: ['Marketing Agency Registration', 'Tourism Portfolio', 'Social Media Expertise'],
+      location: 'Harare, Zimbabwe'
+    },
+    {
+      id: 'PRAZ-2024-MOB-003',
       title: 'Mobile Banking Application Development',
+      description: 'Development of a secure mobile banking application for financial inclusion initiatives. The app should support USSD fallback, mobile money integration, biometric authentication, and work offline in low-connectivity areas.',
       organization: 'Reserve Bank of Zimbabwe',
       value: 200000,
+      currency: 'USD',
       deadline: '2025-02-15',
-      category: 'Mobile Apps',
-      description: 'Development of a secure mobile banking application for financial inclusion initiatives, supporting USSD, mobile money integration, and biometric authentication.',
-      source: 'PRAZ eGP',
-      sourceUrl: 'https://egp.praz.org.zw/',
       publishedDate: '2024-12-12',
-      location: 'Harare',
-      requirements: ['Financial Sector Experience', 'PCI-DSS Compliance', 'Mobile Development Portfolio'],
-    },
-    {
-      id: 'ZIM-2024-006',
-      title: 'Corporate Branding and Identity Design',
-      organization: 'Zimbabwe Investment and Development Agency',
-      value: 35000,
-      deadline: '2025-01-10',
-      category: 'Branding & Design',
-      description: 'Complete corporate rebranding including logo design, brand guidelines, stationery, and marketing collateral for the newly formed investment agency.',
-      source: 'ZimbabweTenders',
-      sourceUrl: 'https://www.zimbabwetenders.com/',
-      publishedDate: '2024-12-03',
-      location: 'Harare',
-      requirements: ['Design Portfolio', 'Branding Experience', 'Print Production Capability'],
-    },
-    {
-      id: 'ZIM-2024-007',
-      title: 'School Management System for Primary Schools',
-      organization: 'Ministry of Primary and Secondary Education',
-      value: 180000,
-      deadline: '2025-03-15',
-      category: 'Software Development',
-      description: 'Development of a cloud-based school management system for primary schools including student enrollment, attendance tracking, grade management, and parent communication.',
-      source: 'PRAZ eGP',
+      category: 'Mobile Apps',
+      sourceId: 'praz',
       sourceUrl: 'https://egp.praz.org.zw/',
-      publishedDate: '2024-12-15',
-      location: 'Nationwide',
-      requirements: ['Education Sector Experience', 'Cloud Infrastructure', 'Training Capability'],
+      requirements: ['Financial Sector Experience', 'PCI-DSS Compliance', 'Mobile Development Portfolio', 'Android & iOS Experience'],
+      location: 'Harare, Zimbabwe'
     },
     {
-      id: 'ZIM-2024-008',
-      title: 'Agricultural E-Commerce Platform',
-      organization: 'Agricultural Marketing Authority',
-      value: 95000,
-      deadline: '2025-02-01',
-      category: 'Web Development',
-      description: 'Development of an e-commerce platform connecting farmers directly with buyers, including mobile app, payment integration, and logistics management.',
-      source: 'GlobalTenders',
-      sourceUrl: 'https://www.globaltenders.com/zw/zimbabwe-web-design-tenders',
-      publishedDate: '2024-12-11',
-      location: 'Harare',
-      requirements: ['E-commerce Experience', 'Payment Gateway Integration', 'Agricultural Sector Knowledge'],
-    },
-    {
-      id: 'ZIM-2024-009',
-      title: 'Video Production for Public Awareness Campaign',
-      organization: 'Ministry of Health and Child Care',
-      value: 25000,
+      id: 'ZT-2024-BR-004',
+      title: 'Corporate Rebranding and Visual Identity Design',
+      description: 'Complete corporate rebranding project including logo redesign, brand guidelines development, stationery design, marketing collateral, and brand strategy documentation for the newly restructured agency.',
+      organization: 'Zimbabwe Investment and Development Agency',
+      value: 45000,
+      currency: 'USD',
       deadline: '2025-01-25',
-      category: 'Media Production',
-      description: 'Production of educational videos for public health awareness campaigns including scripting, filming, editing, and distribution across multiple platforms.',
-      source: 'ZimbabweTenders',
+      publishedDate: '2024-12-03',
+      category: 'Branding',
+      sourceId: 'zimbabwetenders',
       sourceUrl: 'https://www.zimbabwetenders.com/',
-      publishedDate: '2024-12-09',
-      location: 'Harare',
-      requirements: ['Video Production Portfolio', 'Broadcasting Equipment', 'Health Communication Experience'],
+      requirements: ['Design Portfolio', 'Branding Experience', 'Print Production Capability'],
+      location: 'Harare, Zimbabwe'
     },
     {
-      id: 'ZIM-2024-010',
-      title: 'Cybersecurity Assessment and Implementation',
-      organization: 'Postal and Telecommunications Regulatory Authority',
-      value: 120000,
-      deadline: '2025-02-20',
-      category: 'ICT & Technology',
-      description: 'Comprehensive cybersecurity assessment of critical infrastructure and implementation of security measures including penetration testing, security audits, and staff training.',
-      source: 'PRAZ eGP',
-      sourceUrl: 'https://egp.praz.org.zw/',
-      publishedDate: '2024-12-14',
-      location: 'Harare',
-      requirements: ['Cybersecurity Certification', 'Government Clearance', 'Incident Response Capability'],
-    },
-    {
-      id: 'ZIM-2024-011',
-      title: 'University Learning Management System',
-      organization: 'Zimbabwe Open University',
-      value: 85000,
-      deadline: '2025-01-30',
+      id: 'PRAZ-2024-SW-005',
+      title: 'Hospital Management Information System Development',
+      description: 'Development and implementation of an integrated hospital management information system for public hospitals. Modules include patient records, billing, pharmacy management, laboratory information system, and reporting dashboard.',
+      organization: 'Ministry of Health and Child Care',
+      value: 350000,
+      currency: 'USD',
+      deadline: '2025-03-15',
+      publishedDate: '2024-12-10',
       category: 'Software Development',
-      description: 'Implementation of a comprehensive learning management system for distance education including video conferencing, assignment submission, and automated grading.',
-      source: 'TendersOnTime',
-      sourceUrl: 'https://www.tendersontime.com/zimbabwe-tenders/',
-      publishedDate: '2024-12-07',
-      location: 'Harare',
-      requirements: ['LMS Implementation Experience', 'Higher Education Portfolio', 'Technical Support Capability'],
-    },
-    {
-      id: 'ZIM-2024-012',
-      title: 'Smart City Infrastructure Consulting',
-      organization: 'City of Harare',
-      value: 75000,
-      deadline: '2025-03-01',
-      category: 'Consultancy',
-      description: 'Consulting services for smart city infrastructure planning including IoT implementation, traffic management systems, and digital citizen services.',
-      source: 'PRAZ eGP',
+      sourceId: 'praz',
       sourceUrl: 'https://egp.praz.org.zw/',
-      publishedDate: '2024-12-13',
-      location: 'Harare',
-      requirements: ['Smart City Experience', 'Urban Planning Knowledge', 'IoT Expertise'],
+      requirements: ['Healthcare IT Experience', 'ISO Certification', 'Data Security Compliance', 'HL7/FHIR Knowledge'],
+      location: 'Nationwide'
     },
     {
-      id: 'ZIM-2024-013',
-      title: 'Social Media Management for Government Ministry',
+      id: 'BD-2024-SM-006',
+      title: 'Social Media Management and Content Creation',
+      description: 'Comprehensive social media management services including daily content creation, community management, paid advertising campaigns, influencer coordination, and monthly analytics reporting across Facebook, Twitter, Instagram, and LinkedIn.',
       organization: 'Ministry of Youth, Sport, Arts and Recreation',
-      value: 28000,
+      value: 36000,
+      currency: 'USD',
       deadline: '2025-01-18',
-      category: 'Digital Marketing',
-      description: 'Comprehensive social media management including content creation, community management, and analytics reporting for ministry communication channels.',
-      source: 'BidDetail',
-      sourceUrl: 'https://www.biddetail.com/zimbabwe-tenders/social-media-tenders',
       publishedDate: '2024-12-16',
-      location: 'Harare',
+      category: 'Digital Marketing',
+      sourceId: 'biddetail',
+      sourceUrl: 'https://www.biddetail.com/zimbabwe-tenders/social-media-tenders',
       requirements: ['Social Media Portfolio', 'Government Communication Experience', 'Content Creation Capability'],
+      location: 'Harare, Zimbabwe'
     },
     {
-      id: 'ZIM-2024-014',
-      title: 'Website Development Consultancy',
-      organization: 'Zimbabwe Investment and Development Agency',
-      value: 42000,
-      deadline: '2025-02-10',
+      id: 'GT-2024-WEB-007',
+      title: 'E-Commerce Platform for Agricultural Products',
+      description: 'Development of an e-commerce web platform connecting farmers directly with buyers. Features include product listings, payment gateway integration, logistics tracking, mobile app companion, and farmer dashboard.',
+      organization: 'Agricultural Marketing Authority',
+      value: 120000,
+      currency: 'USD',
+      deadline: '2025-02-01',
+      publishedDate: '2024-12-11',
       category: 'Web Development',
-      description: 'Design and development of a modern, responsive website with investor portal, project database, and multilingual support.',
-      source: 'ZimbabweTenders',
-      sourceUrl: 'https://www.zimbabwetenders.com/',
-      publishedDate: '2024-12-17',
-      location: 'Harare',
-      requirements: ['Web Development Portfolio', 'CMS Experience', 'Multilingual Website Experience'],
+      sourceId: 'globaltenders',
+      sourceUrl: 'https://www.globaltenders.com/zw/zimbabwe-web-design-tenders',
+      requirements: ['E-commerce Experience', 'Payment Gateway Integration', 'Mobile App Development'],
+      location: 'Harare, Zimbabwe'
     },
-  ];
-
-  return tenders;
-};
-
-// Calculate match score based on company capabilities
-const calculateMatchScore = (tender: ScrapedTender): number => {
-  const companyCapabilities = [
-    'Web Development',
-    'Mobile Apps',
-    'Branding & Design',
-    'Digital Marketing',
-    'Software Development',
-    'ICT & Technology',
-  ];
-
-  let score = 50; // Base score
-
-  // Category match
-  if (companyCapabilities.includes(tender.category)) {
-    score += 30;
-  }
-
-  // Value range preference (mid-range projects)
-  if (tender.value && tender.value >= 30000 && tender.value <= 200000) {
-    score += 10;
-  }
-
-  // Deadline feasibility (more than 30 days)
-  const daysUntilDeadline = Math.ceil(
-    (new Date(tender.deadline).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
-  );
-  if (daysUntilDeadline > 30) {
-    score += 10;
-  }
-
-  // Add some randomness for variety
-  score += Math.floor(Math.random() * 10) - 5;
-
-  return Math.min(100, Math.max(0, score));
-};
-
-export async function GET() {
-  try {
-    const tenders = await getZimbabweTenders();
+    {
+      id: 'TOT-2024-LMS-008',
+      title: 'Learning Management System Implementation',
+      description: 'Implementation of a comprehensive learning management system for distance education. Features include video conferencing integration, assignment submission, automated grading, student progress tracking, and mobile access.',
+      organization: 'Zimbabwe Open University',
+      value: 95000,
+      currency: 'USD',
+      deadline: '2025-01-30',
+      publishedDate: '2024-12-07',
+      category: 'Software Development',
+      sourceId: 'tendersontime',
+      sourceUrl: 'https://www.tendersontime.com/zimbabwe-tenders/',
+      requirements: ['LMS Implementation Experience', 'Higher Education Portfolio', 'Technical Support Capability'],
+      location: 'Harare, Zimbabwe'
+    },
+    {
+      id: 'PRAZ-2024-VID-009',
+      title: 'Video Production for Public Health Campaign',
+      description: 'Production of educational videos for public health awareness campaigns. Services include scripting, filming, editing, motion graphics, voiceover, and distribution strategy across TV, social media, and community screenings.',
+      organization: 'Ministry of Health and Child Care',
+      value: 28000,
+      currency: 'USD',
+      deadline: '2025-01-22',
+      publishedDate: '2024-12-09',
+      category: 'Video Production',
+      sourceId: 'praz',
+      sourceUrl: 'https://egp.praz.org.zw/',
+      requirements: ['Video Production Portfolio', 'Broadcasting Equipment', 'Health Communication Experience'],
+      location: 'Harare, Zimbabwe'
+    },
+    {
+      id: 'ZT-2024-UX-010',
+      title: 'UI/UX Design for Banking Mobile App',
+      description: 'User interface and user experience design services for a new retail banking mobile application. Deliverables include user research, wireframes, high-fidelity prototypes in Figma, usability testing, and design system documentation.',
+      organization: 'CBZ Bank',
+      value: 55000,
+      currency: 'USD',
+      deadline: '2025-02-10',
+      publishedDate: '2024-12-14',
+      category: 'UI/UX Design',
+      sourceId: 'zimbabwetenders',
+      sourceUrl: 'https://www.zimbabwetenders.com/',
+      requirements: ['UI/UX Portfolio', 'Banking App Experience', 'Figma Expertise', 'User Research Skills'],
+      location: 'Harare, Zimbabwe'
+    },
+    {
+      id: 'PRAZ-2024-CRM-011',
+      title: 'Customer Relationship Management System',
+      description: 'Development of a custom CRM system for managing citizen interactions. Features include case management, automated workflows, reporting dashboard, integration with existing systems, and mobile access for field officers.',
+      organization: 'City of Harare',
+      value: 85000,
+      currency: 'USD',
+      deadline: '2025-02-28',
+      publishedDate: '2024-12-13',
+      category: 'Software Development',
+      sourceId: 'praz',
+      sourceUrl: 'https://egp.praz.org.zw/',
+      requirements: ['CRM Development Experience', 'Government Project Portfolio', 'API Integration Skills'],
+      location: 'Harare, Zimbabwe'
+    },
+    {
+      id: 'ZT-2024-SEO-012',
+      title: 'SEO and Content Marketing Services',
+      description: 'Search engine optimization and content marketing services for corporate website. Services include technical SEO audit, keyword research, content strategy, blog writing, link building, and monthly performance reporting.',
+      organization: 'NetOne Cellular',
+      value: 42000,
+      currency: 'USD',
+      deadline: '2025-01-28',
+      publishedDate: '2024-12-17',
+      category: 'Digital Marketing',
+      sourceId: 'zimbabwetenders',
+      sourceUrl: 'https://www.zimbabwetenders.com/',
+      requirements: ['SEO Portfolio', 'Content Marketing Experience', 'Analytics Certification'],
+      location: 'Harare, Zimbabwe'
+    },
     
-    // Add match scores
-    const tendersWithScores = tenders.map(tender => ({
-      ...tender,
-      matchScore: calculateMatchScore(tender),
-    }));
+    // ===== IRRELEVANT TENDERS (Should be filtered out) =====
+    {
+      id: 'PRAZ-2024-CON-101',
+      title: 'Construction of Rural Health Clinics',
+      description: 'Construction of 15 rural health clinics across Mashonaland provinces. Works include site preparation, building construction, electrical installation, plumbing, and finishing works.',
+      organization: 'Ministry of Health and Child Care',
+      value: 2500000,
+      currency: 'USD',
+      deadline: '2025-04-30',
+      publishedDate: '2024-12-01',
+      category: 'Construction',
+      sourceId: 'praz',
+      sourceUrl: 'https://egp.praz.org.zw/',
+      requirements: ['Construction License', 'CIFOZ Registration', 'Previous Building Experience'],
+      location: 'Mashonaland'
+    },
+    {
+      id: 'PRAZ-2024-MED-102',
+      title: 'Supply of Medical Equipment and Pharmaceuticals',
+      description: 'Supply and delivery of medical equipment, drugs, and pharmaceutical supplies to district hospitals. Items include diagnostic equipment, surgical instruments, and essential medicines.',
+      organization: 'NatPharm',
+      value: 1800000,
+      currency: 'USD',
+      deadline: '2025-02-15',
+      publishedDate: '2024-12-05',
+      category: 'Medical Supplies',
+      sourceId: 'praz',
+      sourceUrl: 'https://egp.praz.org.zw/',
+      requirements: ['Pharmaceutical License', 'MCAZ Registration', 'Cold Chain Capability'],
+      location: 'Nationwide'
+    },
+    {
+      id: 'ZT-2024-VEH-103',
+      title: 'Supply of Motor Vehicles for Government Fleet',
+      description: 'Supply and delivery of 50 4x4 vehicles for government departments. Vehicles must be new, with full warranty and after-sales service support.',
+      organization: 'Ministry of Transport',
+      value: 3000000,
+      currency: 'USD',
+      deadline: '2025-03-01',
+      publishedDate: '2024-12-10',
+      category: 'Vehicles',
+      sourceId: 'zimbabwetenders',
+      sourceUrl: 'https://www.zimbabwetenders.com/',
+      requirements: ['Vehicle Dealership License', 'Import Permit', 'Service Center'],
+      location: 'Harare, Zimbabwe'
+    },
+    {
+      id: 'PRAZ-2024-AGR-104',
+      title: 'Supply of Agricultural Inputs and Fertilizers',
+      description: 'Supply and distribution of agricultural inputs including seeds, fertilizers, and farming chemicals for the upcoming farming season.',
+      organization: 'Ministry of Agriculture',
+      value: 5000000,
+      currency: 'USD',
+      deadline: '2025-01-15',
+      publishedDate: '2024-12-08',
+      category: 'Agricultural Supplies',
+      sourceId: 'praz',
+      sourceUrl: 'https://egp.praz.org.zw/',
+      requirements: ['Agricultural Supplier License', 'Warehouse Facilities', 'Distribution Network'],
+      location: 'Nationwide'
+    },
+    {
+      id: 'ZT-2024-SEC-105',
+      title: 'Provision of Security Guard Services',
+      description: 'Provision of 24-hour security guard services for government buildings. Services include access control, patrol, and incident response.',
+      organization: 'Ministry of Finance',
+      value: 450000,
+      currency: 'USD',
+      deadline: '2025-02-20',
+      publishedDate: '2024-12-12',
+      category: 'Security Services',
+      sourceId: 'zimbabwetenders',
+      sourceUrl: 'https://www.zimbabwetenders.com/',
+      requirements: ['Security Company License', 'PSC Registration', 'Trained Personnel'],
+      location: 'Harare, Zimbabwe'
+    },
+    {
+      id: 'PRAZ-2024-FUR-106',
+      title: 'Supply of Office Furniture and Equipment',
+      description: 'Supply and delivery of office furniture including desks, chairs, filing cabinets, and conference room furniture for new government offices.',
+      organization: 'Public Service Commission',
+      value: 320000,
+      currency: 'USD',
+      deadline: '2025-01-25',
+      publishedDate: '2024-12-15',
+      category: 'Furniture',
+      sourceId: 'praz',
+      sourceUrl: 'https://egp.praz.org.zw/',
+      requirements: ['Furniture Supplier License', 'Showroom', 'Delivery Capability'],
+      location: 'Harare, Zimbabwe'
+    },
+    {
+      id: 'ZT-2024-CAT-107',
+      title: 'Catering Services for Government Events',
+      description: 'Provision of catering services for government conferences, workshops, and official events throughout the year.',
+      organization: 'Office of the President and Cabinet',
+      value: 180000,
+      currency: 'USD',
+      deadline: '2025-01-20',
+      publishedDate: '2024-12-11',
+      category: 'Catering',
+      sourceId: 'zimbabwetenders',
+      sourceUrl: 'https://www.zimbabwetenders.com/',
+      requirements: ['Catering License', 'Health Certificate', 'Event Experience'],
+      location: 'Harare, Zimbabwe'
+    },
+    {
+      id: 'PRAZ-2024-CLN-108',
+      title: 'Cleaning Services for Government Buildings',
+      description: 'Provision of daily cleaning services for government office buildings including floor cleaning, window washing, and waste management.',
+      organization: 'Ministry of Local Government',
+      value: 95000,
+      currency: 'USD',
+      deadline: '2025-02-05',
+      publishedDate: '2024-12-14',
+      category: 'Cleaning Services',
+      sourceId: 'praz',
+      sourceUrl: 'https://egp.praz.org.zw/',
+      requirements: ['Cleaning Company Registration', 'Equipment', 'Trained Staff'],
+      location: 'Harare, Zimbabwe'
+    }
+  ];
 
-    // Sort by match score
-    tendersWithScores.sort((a, b) => b.matchScore - a.matchScore);
+  return allTenders;
+};
+
+/**
+ * Format currency value
+ */
+const formatValue = (value?: number, currency: string = 'USD'): string => {
+  if (!value) return 'Not specified';
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  }).format(value);
+};
+
+/**
+ * GET /api/tenders
+ * Fetches tenders from Zimbabwe sources and filters them for KuWeX relevance
+ */
+export async function GET(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const showAll = searchParams.get('showAll') === 'true';
+    const minScore = parseInt(searchParams.get('minScore') || '30');
+    const priority = searchParams.get('priority'); // high, medium, low
+    
+    // Fetch raw tenders from all sources
+    const rawTenders = await fetchRawTendersFromSources();
+    
+    // Filter only valid (non-expired) tenders
+    const validTenders = rawTenders.filter(t => isDeadlineValid(t.deadline));
+    
+    // Apply KuWeX matching algorithm
+    const matchedTenders = filterAndRankTenders(validTenders);
+    
+    // Apply additional filters
+    let filteredTenders = matchedTenders.filter(t => t.matchScore >= minScore);
+    
+    if (priority) {
+      filteredTenders = filteredTenders.filter(t => t.priority === priority);
+    }
+    
+    // Enhance with additional computed fields
+    const enhancedTenders: TenderResponse[] = filteredTenders.map(tender => ({
+      ...tender,
+      daysUntilDeadline: getDaysUntilDeadline(tender.deadline),
+      isUrgent: getDaysUntilDeadline(tender.deadline) <= 14,
+      formattedValue: formatValue(tender.value, tender.currency)
+    }));
+    
+    // Calculate statistics
+    const stats = {
+      totalFetched: rawTenders.length,
+      validTenders: validTenders.length,
+      matchedForKuwex: matchedTenders.length,
+      filteredOut: validTenders.length - matchedTenders.length,
+      highPriority: matchedTenders.filter(t => t.priority === 'high').length,
+      mediumPriority: matchedTenders.filter(t => t.priority === 'medium').length,
+      lowPriority: matchedTenders.filter(t => t.priority === 'low').length,
+      urgentDeadlines: enhancedTenders.filter(t => t.isUrgent).length,
+      totalValue: matchedTenders.reduce((sum, t) => sum + (t.value || 0), 0)
+    };
 
     return NextResponse.json({
       success: true,
-      data: tendersWithScores,
+      data: enhancedTenders,
+      stats,
       sources: TENDER_SOURCES,
+      profile: {
+        company: KUWEX_PROFILE.company,
+        services: KUWEX_PROFILE.services.map(s => s.name)
+      },
       lastUpdated: new Date().toISOString(),
-      totalCount: tendersWithScores.length,
+      message: `Found ${enhancedTenders.length} tenders matching KuWeX services (filtered from ${rawTenders.length} total)`
     });
   } catch (error) {
     console.error('Error fetching tenders:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to fetch tenders' },
+      { success: false, error: 'Failed to fetch and filter tenders' },
       { status: 500 }
     );
   }

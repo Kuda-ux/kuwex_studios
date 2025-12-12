@@ -21,26 +21,49 @@ import {
 } from "lucide-react";
 
 type TenderStatus = "identified" | "planning" | "submitted" | "won" | "lost";
+type TenderPriority = "high" | "medium" | "low";
 
-interface ScrapedTender {
+interface MatchedTender {
   id: string;
   title: string;
   organization: string;
   value: number | null;
+  currency?: string;
   deadline: string;
   category: string;
   description: string;
-  source: string;
+  sourceId: string;
   sourceUrl: string;
-  publishedDate: string;
-  location: string;
-  requirements: string[];
+  publishedDate?: string;
+  location?: string;
+  requirements?: string[];
+  // Matching fields from tender agent
   matchScore: number;
+  matchedServices: string[];
+  matchedKeywords: string[];
+  relevanceReason: string;
+  priority: TenderPriority;
+  // Computed fields
+  daysUntilDeadline: number;
+  isUrgent: boolean;
+  formattedValue: string;
 }
 
-interface TrackedTender extends ScrapedTender {
+interface TrackedTender extends MatchedTender {
   status: TenderStatus;
   notes?: string;
+}
+
+interface TenderStats {
+  totalFetched: number;
+  validTenders: number;
+  matchedForKuwex: number;
+  filteredOut: number;
+  highPriority: number;
+  mediumPriority: number;
+  lowPriority: number;
+  urgentDeadlines: number;
+  totalValue: number;
 }
 
 const statusConfig: Record<TenderStatus, { label: string; color: string; icon: typeof CheckCircle2 }> = {
@@ -55,11 +78,12 @@ export default function TendersPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<TenderStatus | "all">("all");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
-  const [tenders, setTenders] = useState<ScrapedTender[]>([]);
+  const [tenders, setTenders] = useState<MatchedTender[]>([]);
   const [trackedTenders, setTrackedTenders] = useState<TrackedTender[]>([]);
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
-  const [selectedTender, setSelectedTender] = useState<ScrapedTender | null>(null);
+  const [selectedTender, setSelectedTender] = useState<MatchedTender | null>(null);
+  const [apiStats, setApiStats] = useState<TenderStats | null>(null);
   const [activeTab, setActiveTab] = useState<"discover" | "tracked" | "sources">("discover");
 
   // Fetch tenders from API
@@ -71,6 +95,7 @@ export default function TendersPage() {
       if (data.success) {
         setTenders(data.data);
         setLastUpdated(data.lastUpdated);
+        setApiStats(data.stats);
       }
     } catch (error) {
       console.error('Error fetching tenders:', error);
@@ -93,7 +118,7 @@ export default function TendersPage() {
     localStorage.setItem('trackedTenders', JSON.stringify(trackedTenders));
   }, [trackedTenders]);
 
-  const trackTender = (tender: ScrapedTender) => {
+  const trackTender = (tender: MatchedTender) => {
     const tracked: TrackedTender = { ...tender, status: 'identified' };
     setTrackedTenders(prev => [...prev, tracked]);
   };
@@ -179,31 +204,39 @@ export default function TendersPage() {
         </motion.div>
       )}
 
-      {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
+      {/* Stats - AI Matching Overview */}
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-4">
-          <p className="text-2xl font-bold text-white">{stats.total}</p>
-          <p className="text-xs text-gray-500">Available</p>
+          <p className="text-2xl font-bold text-white">{apiStats?.matchedForKuwex || tenders.length}</p>
+          <p className="text-xs text-gray-500">Matched for KuWeX</p>
         </motion.div>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-4">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.03 }} className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-4">
+          <p className="text-2xl font-bold text-red-400">{apiStats?.highPriority || tenders.filter(t => t.priority === 'high').length}</p>
+          <p className="text-xs text-gray-500">High Priority</p>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 }} className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-4">
+          <p className="text-2xl font-bold text-orange-400">{apiStats?.urgentDeadlines || tenders.filter(t => t.isUrgent).length}</p>
+          <p className="text-xs text-gray-500">Urgent (≤14 days)</p>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.09 }} className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-4">
+          <p className="text-2xl font-bold text-gray-400">{apiStats?.filteredOut || 0}</p>
+          <p className="text-xs text-gray-500">Filtered Out</p>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }} className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-4">
           <p className="text-2xl font-bold text-blue-400">{stats.tracked}</p>
           <p className="text-xs text-gray-500">Tracked</p>
         </motion.div>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-4">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-4">
           <p className="text-2xl font-bold text-yellow-400">{stats.active}</p>
           <p className="text-xs text-gray-500">In Progress</p>
         </motion.div>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-4">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18 }} className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-4">
           <p className="text-2xl font-bold text-green-400">{stats.won}</p>
           <p className="text-xs text-gray-500">Won</p>
         </motion.div>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-4">
-          <p className="text-2xl font-bold text-kuwex-cyan">${stats.wonValue.toLocaleString()}</p>
-          <p className="text-xs text-gray-500">Won Value</p>
-        </motion.div>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-4">
-          <p className="text-2xl font-bold text-purple-400">${stats.pipeline.toLocaleString()}</p>
-          <p className="text-xs text-gray-500">Pipeline</p>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.21 }} className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-4">
+          <p className="text-2xl font-bold text-kuwex-cyan">${(apiStats?.totalValue || 0).toLocaleString()}</p>
+          <p className="text-xs text-gray-500">Total Value</p>
         </motion.div>
       </div>
 
@@ -430,10 +463,20 @@ export default function TendersPage() {
                       <div className="flex-1 min-w-0">
                         <div className="flex flex-wrap items-center gap-2 mb-2">
                           <span className="bg-[#2F3336] text-gray-300 text-xs px-2.5 py-1 rounded-full">{tender.category}</span>
-                          <span className="bg-blue-500/20 text-blue-400 text-xs px-2.5 py-1 rounded-full flex items-center gap-1">
-                            <Building2 size={10} />
-                            {tender.source}
+                          {/* Priority Badge */}
+                          <span className={`px-2.5 py-1 text-xs rounded-full font-medium ${
+                            tender.priority === "high" ? "bg-red-500/20 text-red-400" : 
+                            tender.priority === "medium" ? "bg-yellow-500/20 text-yellow-400" : 
+                            "bg-gray-500/20 text-gray-400"
+                          }`}>
+                            {tender.priority.toUpperCase()}
                           </span>
+                          {/* Urgent Badge */}
+                          {tender.isUrgent && (
+                            <span className="bg-orange-500/20 text-orange-400 text-xs px-2.5 py-1 rounded-full animate-pulse">
+                              ⚡ {tender.daysUntilDeadline} days left
+                            </span>
+                          )}
                           {tracked && (
                             <span className={`inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-full ${statusConfig[status].color}`}>
                               <StatusIcon size={12} />
@@ -441,8 +484,8 @@ export default function TendersPage() {
                             </span>
                           )}
                           <span className={`px-2.5 py-1 text-xs rounded-full font-medium ${
-                            tender.matchScore >= 85 ? "bg-green-500/20 text-green-400" : 
-                            tender.matchScore >= 70 ? "bg-yellow-500/20 text-yellow-400" : 
+                            tender.matchScore >= 80 ? "bg-green-500/20 text-green-400" : 
+                            tender.matchScore >= 50 ? "bg-yellow-500/20 text-yellow-400" : 
                             "bg-gray-500/20 text-gray-400"
                           }`}>
                             {tender.matchScore}% Match
@@ -476,11 +519,26 @@ export default function TendersPage() {
                       </div>
                     </div>
 
+                    {/* Matched Services - Why this tender matches KuWeX */}
+                    {tender.matchedServices && tender.matchedServices.length > 0 && (
+                      <div className="bg-green-500/5 border border-green-500/20 rounded-lg p-3">
+                        <p className="text-xs text-green-400 mb-2 font-medium">✓ Matches KuWeX Services:</p>
+                        <div className="flex flex-wrap gap-2">
+                          {tender.matchedServices.map((service: string, i: number) => (
+                            <span key={i} className="text-xs bg-green-500/20 text-green-300 px-2 py-1 rounded">{service}</span>
+                          ))}
+                        </div>
+                        {tender.relevanceReason && (
+                          <p className="text-xs text-gray-500 mt-2 italic">{tender.relevanceReason}</p>
+                        )}
+                      </div>
+                    )}
+
                     {/* Requirements */}
                     {tender.requirements && tender.requirements.length > 0 && (
                       <div className="flex flex-wrap gap-2">
                         <span className="text-xs text-gray-500">Requirements:</span>
-                        {tender.requirements.slice(0, 3).map((req, i) => (
+                        {tender.requirements.slice(0, 3).map((req: string, i: number) => (
                           <span key={i} className="text-xs bg-[#0A0A0A] text-gray-400 px-2 py-1 rounded">{req}</span>
                         ))}
                         {tender.requirements.length > 3 && (
