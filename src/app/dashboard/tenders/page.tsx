@@ -167,16 +167,29 @@ export default function TendersPage() {
           <h1 className="text-2xl font-bold text-white">Zimbabwe Tender Board</h1>
           <p className="text-gray-500">
             Discover and track tender opportunities from PRAZ, ZimTenders & more
-            {lastUpdated && <span className="ml-2 text-xs">• Updated {new Date(lastUpdated).toLocaleTimeString()}</span>}
+            {lastUpdated && (
+              <span className="ml-2 text-xs text-kuwex-cyan">
+                • Updated {new Date(lastUpdated).toLocaleString('en-US', { 
+                  hour: 'numeric', 
+                  minute: '2-digit', 
+                  second: '2-digit',
+                  hour12: true,
+                  month: 'short',
+                  day: 'numeric'
+                })}
+              </span>
+            )}
           </p>
         </div>
         <button 
-          onClick={fetchTenders}
+          onClick={() => {
+            fetchTenders();
+          }}
           disabled={loading}
           className="flex items-center gap-2 bg-kuwex-cyan text-black px-4 py-2.5 rounded-xl font-semibold hover:bg-kuwex-cyan/90 transition-colors disabled:opacity-50"
         >
           <RefreshCw size={20} className={loading ? "animate-spin" : ""} />
-          {loading ? "Fetching..." : "Refresh Tenders"}
+          {loading ? "Fetching from sources..." : "Refresh Tenders"}
         </button>
       </div>
 
