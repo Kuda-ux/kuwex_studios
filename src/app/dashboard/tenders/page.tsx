@@ -618,7 +618,7 @@ export default function TendersPage() {
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <span className="bg-[#2F3336] text-gray-300 text-xs px-2.5 py-1 rounded-full">{selectedTender.category}</span>
-                  <span className="bg-blue-500/20 text-blue-400 text-xs px-2.5 py-1 rounded-full">{selectedTender.source}</span>
+                  <span className="bg-blue-500/20 text-blue-400 text-xs px-2.5 py-1 rounded-full">{selectedTender.sourceId}</span>
                 </div>
                 <h2 className="text-xl font-bold text-white">{selectedTender.title}</h2>
               </div>
