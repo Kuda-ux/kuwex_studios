@@ -135,13 +135,13 @@ export default function TendersPage() {
 
   const isTracked = (id: string) => trackedTenders.some(t => t.id === id);
 
-  // Get unique categories
-  const categories = Array.from(new Set(tenders.map(t => t.category)));
+  // Get unique categories (filter out undefined)
+  const categories = Array.from(new Set(tenders.map(t => t.category).filter(Boolean))) as string[];
 
   const filteredTenders = (activeTab === "discover" ? tenders : activeTab === "tracked" ? trackedTenders : []).filter((t) => {
     const matchesSearch = t.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                          t.organization.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = categoryFilter === "all" || t.category === categoryFilter;
+    const matchesCategory = categoryFilter === "all" || (t.category || 'General') === categoryFilter;
     const matchesStatus = activeTab === "discover" || statusFilter === "all" || 
                          (t as TrackedTender).status === statusFilter;
     return matchesSearch && matchesCategory && matchesStatus;

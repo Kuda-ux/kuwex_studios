@@ -207,8 +207,8 @@ export function calculateMatchScore(tender: RawTender): MatchedTender | null {
   // Normalize score to 0-100
   const normalizedScore = Math.min(100, Math.round(totalScore / KUWEX_PROFILE.services.length));
   
-  // Only return tenders with score >= 30
-  if (normalizedScore < 30 || matchedServices.length === 0) {
+  // Only return tenders with score >= 20 (lowered threshold for more results)
+  if (normalizedScore < 20 || matchedServices.length === 0) {
     return null;
   }
   
