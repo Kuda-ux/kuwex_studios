@@ -131,7 +131,7 @@ export default function TendersPage() {
   const fetchTenders = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/tenders');
+      const response = await fetch('/api/tenders?live=true');
       const data = await response.json();
       if (data.success) {
         setTenders(data.data);
