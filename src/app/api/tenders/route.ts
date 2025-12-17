@@ -372,8 +372,8 @@ export async function GET(request: Request) {
     const minScore = parseInt(searchParams.get('minScore') || '0'); // Default to 0 to show all matched tenders
     const priority = searchParams.get('priority'); // high, medium, low
 
-    let rawTenders: RawTender[];
-    let matchedTenders: MatchedTender[];
+    let rawTenders: RawTender[] = [];
+    let matchedTenders: MatchedTender[] = [];
     let scrapeInfo: {
       mode: 'live' | 'sample';
       successfulSources?: number;
