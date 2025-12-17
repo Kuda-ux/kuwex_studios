@@ -156,7 +156,7 @@ async function scrapeSourceWithAI(source: typeof TENDER_SOURCES[0]): Promise<Raw
         });
 
         // Wait a bit for dynamic content
-        await page.waitForTimeout(3000);
+        await new Promise(resolve => setTimeout(resolve, 3000));
 
         // Take screenshot
         const screenshot = await page.screenshot({
