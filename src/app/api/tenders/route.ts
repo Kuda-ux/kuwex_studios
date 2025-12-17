@@ -1,20 +1,24 @@
 import { NextResponse } from 'next/server';
-import { 
-  KUWEX_PROFILE, 
-  TENDER_SOURCES, 
-  filterAndRankTenders, 
+import {
+  KUWEX_PROFILE,
+  TENDER_SOURCES,
+  filterAndRankTenders,
   isDeadlineValid,
   getDaysUntilDeadline,
   type RawTender,
-  type MatchedTender 
+  type MatchedTender
 } from '@/lib/tender-agent';
 
 // Try to import scraper - will fail gracefully if dependencies not installed
 let scrapeAndFilterForKuwex: typeof import('@/lib/tender-scraper').scrapeAndFilterForKuwex | null = null;
+let scrapeAndFilterWithAI: typeof import('@/lib/ai-tender-scraper').scrapeAndFilterWithAI | null = null;
+
 try {
   // Dynamic import to handle missing dependencies gracefully
   const scraperModule = require('@/lib/tender-scraper');
+  const aiScraperModule = require('@/lib/ai-tender-scraper');
   scrapeAndFilterForKuwex = scraperModule.scrapeAndFilterForKuwex;
+  scrapeAndFilterWithAI = aiScraperModule.scrapeAndFilterWithAI;
 } catch (e) {
   console.log('Scraper dependencies not installed, using sample data');
 }
@@ -216,7 +220,7 @@ const fetchRawTendersFromSources = async (): Promise<RawTender[]> => {
       requirements: ['SEO Portfolio', 'Content Marketing Experience', 'Analytics Certification'],
       location: 'Harare, Zimbabwe'
     },
-    
+
     // ===== IRRELEVANT TENDERS (Should be filtered out) =====
     {
       id: 'PRAZ-2024-CON-101',
@@ -367,30 +371,66 @@ export async function GET(request: Request) {
     const useLive = searchParams.get('live') === 'true'; // Force live scraping
     const minScore = parseInt(searchParams.get('minScore') || '0'); // Default to 0 to show all matched tenders
     const priority = searchParams.get('priority'); // high, medium, low
-    
+
     let rawTenders: RawTender[];
     let matchedTenders: MatchedTender[];
-    let scrapeInfo: { 
-      mode: 'live' | 'sample'; 
-      successfulSources?: number; 
+    let scrapeInfo: {
+      mode: 'live' | 'sample';
+      successfulSources?: number;
       failedSources?: string[];
     } = { mode: 'sample' };
-    
+
     // Try to use live scraper if available and requested
-    if (scrapeAndFilterForKuwex && useLive) {
+    if (useLive) {
       try {
         console.log('Attempting live scrape from Zimbabwe tender sources...');
-        const scrapeResult = await scrapeAndFilterForKuwex();
-        
-        if (scrapeResult.matchedTenders.length > 0) {
-          matchedTenders = scrapeResult.matchedTenders;
+        let scrapeResult;
+
+        // Try AI scraper first if available
+        if (scrapeAndFilterWithAI) {
+          console.log('Using AI-powered scraper...');
+          try {
+            scrapeResult = await scrapeAndFilterWithAI();
+          } catch (err) {
+            console.error('AI scraper failed, falling back to legacy scraper', err);
+          }
+        }
+
+        // Fallback to legacy scraper if AI failed or not available, but legacy is
+        if (!scrapeResult && scrapeAndFilterForKuwex) {
+          console.log('Using legacy scraper...');
+          scrapeResult = await scrapeAndFilterForKuwex();
+        }
+
+        // Check if we got results from either scraper
+        let foundTenders = false;
+
+        // Cast to any to handle different return types safely
+        const result = scrapeResult as any;
+
+        if (result) {
+          if (result.tenders && result.tenders.length > 0) {
+            matchedTenders = result.tenders;
+            foundTenders = true;
+          } else if (result.matchedTenders && result.matchedTenders.length > 0) {
+            matchedTenders = result.matchedTenders;
+            foundTenders = true;
+          }
+        }
+
+        if (foundTenders && result) {
           rawTenders = []; // Not needed when using scraper directly
+
+          // normalize stats
+          const successfulSources = result.stats?.successfulSources || result.stats?.sources || 0;
+          const failedSources = result.stats?.failedSources || [];
+
           scrapeInfo = {
             mode: 'live',
-            successfulSources: scrapeResult.stats.successfulSources,
-            failedSources: scrapeResult.stats.failedSources
+            successfulSources,
+            failedSources
           };
-          console.log(`Live scrape successful: ${matchedTenders.length} tenders matched`);
+          console.log(`Live scrape successful: ${matchedTenders!.length} tenders matched`);
         } else {
           // Fall back to sample data if scraping returned no results
           console.log('Live scrape returned no results, falling back to sample data');
@@ -410,14 +450,14 @@ export async function GET(request: Request) {
       const validTenders = rawTenders.filter(t => isDeadlineValid(t.deadline));
       matchedTenders = filterAndRankTenders(validTenders);
     }
-    
+
     // Apply additional filters
     let filteredTenders = matchedTenders.filter(t => t.matchScore >= minScore);
-    
+
     if (priority) {
       filteredTenders = filteredTenders.filter(t => t.priority === priority);
     }
-    
+
     // Enhance with additional computed fields
     const enhancedTenders: TenderResponse[] = filteredTenders.map(tender => ({
       ...tender,
@@ -425,7 +465,7 @@ export async function GET(request: Request) {
       isUrgent: getDaysUntilDeadline(tender.deadline) <= 14,
       formattedValue: formatValue(tender.value, tender.currency)
     }));
-    
+
     // Calculate statistics
     const totalFetched = scrapeInfo.mode === 'live' ? matchedTenders.length : rawTenders.length;
     const stats = {
@@ -451,7 +491,7 @@ export async function GET(request: Request) {
         services: KUWEX_PROFILE.services.map(s => s.name)
       },
       lastUpdated: new Date().toISOString(),
-      message: scrapeInfo.mode === 'live' 
+      message: scrapeInfo.mode === 'live'
         ? `Live scraped ${enhancedTenders.length} tenders matching KuWeX services from ${scrapeInfo.successfulSources} sources`
         : `Found ${enhancedTenders.length} tenders matching KuWeX services (sample data - add ?live=true for real scraping)`
     });
