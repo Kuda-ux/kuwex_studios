@@ -204,11 +204,11 @@ export function calculateMatchScore(tender: RawTender): MatchedTender | null {
     }
   }
 
-  // Normalize score to 0-100
-  const normalizedScore = Math.min(100, Math.round(totalScore / KUWEX_PROFILE.services.length));
+  // Cap score at 100 (don't divide by service count - we want additive scoring)
+  const normalizedScore = Math.min(100, Math.round(totalScore));
 
-  // Only return tenders with score >= 10 (lowered threshold for more results)
-  if (normalizedScore < 10 || matchedServices.length === 0) {
+  // Only return tenders with score >= 15 (must have meaningful keyword matches)
+  if (normalizedScore < 15 || matchedServices.length === 0) {
     return null;
   }
 
