@@ -131,7 +131,7 @@ export default function TendersPage() {
   const fetchTenders = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/tenders?live=true');
+      const response = await fetch('/api/tenders');
       const data = await response.json();
       if (data.success) {
         setTenders(data.data);
@@ -591,8 +591,8 @@ export default function TendersPage() {
                           <span className="bg-[#2F3336] text-gray-300 text-xs px-2.5 py-1 rounded-full">{tender.category}</span>
                           {/* Priority Badge */}
                           <span className={`px-2.5 py-1 text-xs rounded-full font-medium ${tender.priority === "high" ? "bg-red-500/20 text-red-400" :
-                              tender.priority === "medium" ? "bg-yellow-500/20 text-yellow-400" :
-                                "bg-gray-500/20 text-gray-400"
+                            tender.priority === "medium" ? "bg-yellow-500/20 text-yellow-400" :
+                              "bg-gray-500/20 text-gray-400"
                             }`}>
                             {tender.priority.toUpperCase()}
                           </span>
@@ -609,8 +609,8 @@ export default function TendersPage() {
                             </span>
                           )}
                           <span className={`px-2.5 py-1 text-xs rounded-full font-medium ${tender.matchScore >= 80 ? "bg-green-500/20 text-green-400" :
-                              tender.matchScore >= 50 ? "bg-yellow-500/20 text-yellow-400" :
-                                "bg-gray-500/20 text-gray-400"
+                            tender.matchScore >= 50 ? "bg-yellow-500/20 text-yellow-400" :
+                              "bg-gray-500/20 text-gray-400"
                             }`}>
                             {tender.matchScore}% Match
                           </span>

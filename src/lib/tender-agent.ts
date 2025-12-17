@@ -12,7 +12,7 @@ export const KUWEX_PROFILE = {
     {
       name: "Web Development",
       keywords: [
-        "website", "web development", "web design", "web application", 
+        "website", "web development", "web design", "web application",
         "portal", "e-commerce", "online platform", "web portal",
         "content management", "CMS", "wordpress", "react", "nextjs",
         "frontend", "backend", "full stack", "web-based system",
@@ -21,7 +21,7 @@ export const KUWEX_PROFILE = {
       weight: 1.0
     },
     {
-      name: "Mobile App Development", 
+      name: "Mobile App Development",
       keywords: [
         "mobile app", "mobile application", "android", "ios", "app development",
         "smartphone", "tablet", "mobile platform", "native app", "hybrid app",
@@ -164,30 +164,30 @@ export interface MatchedTender extends RawTender {
  */
 export function calculateMatchScore(tender: RawTender): MatchedTender | null {
   const text = `${tender.title} ${tender.description} ${tender.category || ""} ${tender.requirements?.join(" ") || ""}`.toLowerCase();
-  
+
   // Check for exclude keywords first
   for (const excludeWord of KUWEX_PROFILE.excludeKeywords) {
     if (text.includes(excludeWord.toLowerCase())) {
       return null; // Skip this tender
     }
   }
-  
+
   let totalScore = 0;
   const matchedServices: string[] = [];
   const matchedKeywords: string[] = [];
-  
+
   // Check each service category
   for (const service of KUWEX_PROFILE.services) {
     let serviceMatches = 0;
     const serviceMatchedKeywords: string[] = [];
-    
+
     for (const keyword of service.keywords) {
       if (text.includes(keyword.toLowerCase())) {
         serviceMatches++;
         serviceMatchedKeywords.push(keyword);
       }
     }
-    
+
     if (serviceMatches > 0) {
       // Score based on number of keyword matches and service weight
       const serviceScore = (serviceMatches / service.keywords.length) * 100 * service.weight;
@@ -196,30 +196,30 @@ export function calculateMatchScore(tender: RawTender): MatchedTender | null {
       matchedKeywords.push(...serviceMatchedKeywords);
     }
   }
-  
+
   // Bonus for preferred sectors
   for (const sector of KUWEX_PROFILE.preferredSectors) {
     if (text.includes(sector.toLowerCase()) || tender.organization.toLowerCase().includes(sector.toLowerCase())) {
       totalScore += 10;
     }
   }
-  
+
   // Normalize score to 0-100
   const normalizedScore = Math.min(100, Math.round(totalScore / KUWEX_PROFILE.services.length));
-  
-  // Only return tenders with score >= 20 (lowered threshold for more results)
-  if (normalizedScore < 20 || matchedServices.length === 0) {
+
+  // Only return tenders with score >= 10 (lowered threshold for more results)
+  if (normalizedScore < 10 || matchedServices.length === 0) {
     return null;
   }
-  
+
   // Determine priority
   let priority: "high" | "medium" | "low" = "low";
   if (normalizedScore >= 80) priority = "high";
   else if (normalizedScore >= 50) priority = "medium";
-  
+
   // Generate relevance reason
   const relevanceReason = `Matches ${matchedServices.join(", ")} services with keywords: ${matchedKeywords.slice(0, 5).join(", ")}${matchedKeywords.length > 5 ? "..." : ""}`;
-  
+
   return {
     ...tender,
     matchScore: normalizedScore,
@@ -235,14 +235,14 @@ export function calculateMatchScore(tender: RawTender): MatchedTender | null {
  */
 export function filterAndRankTenders(tenders: RawTender[]): MatchedTender[] {
   const matchedTenders: MatchedTender[] = [];
-  
+
   for (const tender of tenders) {
     const matched = calculateMatchScore(tender);
     if (matched) {
       matchedTenders.push(matched);
     }
   }
-  
+
   // Sort by match score (highest first), then by deadline (soonest first)
   return matchedTenders.sort((a, b) => {
     if (b.matchScore !== a.matchScore) {
@@ -257,7 +257,7 @@ export function filterAndRankTenders(tenders: RawTender[]): MatchedTender[] {
  */
 export function generateSearchQueries(): string[] {
   const queries: string[] = [];
-  
+
   // Primary search terms
   queries.push(
     "website development",
@@ -273,7 +273,7 @@ export function generateSearchQueries(): string[] {
     "online platform",
     "system development"
   );
-  
+
   return queries;
 }
 
