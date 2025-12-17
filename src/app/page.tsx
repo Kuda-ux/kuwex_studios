@@ -385,7 +385,6 @@ export default function Home() {
                 <div className="relative h-80">
                   <Image
                     src={item.image}
-                    src={item.image}
                     alt={`${item.title} - KuWeX Studios Digital Services`}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
