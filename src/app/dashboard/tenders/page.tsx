@@ -110,7 +110,7 @@ export default function TendersPage() {
   const [selectedTender, setSelectedTender] = useState<MatchedTender | null>(null);
   const [apiStats, setApiStats] = useState<TenderStats | null>(null);
   const [activeTab, setActiveTab] = useState<"discover" | "tracked" | "sources">("discover");
-  
+
   // Manual tender entry state
   const [showAddModal, setShowAddModal] = useState(false);
   const [manualTenders, setManualTenders] = useState<MatchedTender[]>([]);
@@ -131,7 +131,7 @@ export default function TendersPage() {
   const fetchTenders = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/tenders');
+      const response = await fetch('/api/tenders?live=true');
       const data = await response.json();
       if (data.success) {
         setTenders(data.data);
@@ -177,7 +177,7 @@ export default function TendersPage() {
     }
 
     const sourceName = MANUAL_SOURCES.find(s => s.id === newTender.sourceId)?.name || 'Manual Entry';
-    
+
     const tender: MatchedTender = {
       id: `MANUAL-${Date.now()}`,
       title: newTender.title,
@@ -227,7 +227,7 @@ export default function TendersPage() {
   };
 
   const updateTenderStatus = (id: string, status: TenderStatus) => {
-    setTrackedTenders(prev => 
+    setTrackedTenders(prev =>
       prev.map(t => t.id === id ? { ...t, status } : t)
     );
   };
@@ -242,11 +242,11 @@ export default function TendersPage() {
   const categories = Array.from(new Set(allTenders.map(t => t.category).filter(Boolean))) as string[];
 
   const filteredTenders = (activeTab === "discover" ? allTenders : activeTab === "tracked" ? trackedTenders : []).filter((t) => {
-    const matchesSearch = t.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                         t.organization.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      t.organization.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = categoryFilter === "all" || (t.category || 'General') === categoryFilter;
-    const matchesStatus = activeTab === "discover" || statusFilter === "all" || 
-                         (t as TrackedTender).status === statusFilter;
+    const matchesStatus = activeTab === "discover" || statusFilter === "all" ||
+      (t as TrackedTender).status === statusFilter;
     return matchesSearch && matchesCategory && matchesStatus;
   });
 
@@ -273,9 +273,9 @@ export default function TendersPage() {
             Discover and track tender opportunities from PRAZ, ZimTenders & more
             {lastUpdated && (
               <span className="ml-2 text-xs text-kuwex-cyan">
-                • Updated {new Date(lastUpdated).toLocaleString('en-US', { 
-                  hour: 'numeric', 
-                  minute: '2-digit', 
+                • Updated {new Date(lastUpdated).toLocaleString('en-US', {
+                  hour: 'numeric',
+                  minute: '2-digit',
                   second: '2-digit',
                   hour12: true,
                   month: 'short',
@@ -289,14 +289,14 @@ export default function TendersPage() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <button 
+          <button
             onClick={() => setShowAddModal(true)}
             className="flex items-center gap-2 bg-green-500 text-white px-4 py-2.5 rounded-xl font-semibold hover:bg-green-600 transition-colors"
           >
             <Plus size={20} />
             Add Tender
           </button>
-          <button 
+          <button
             onClick={() => {
               fetchTenders();
             }}
@@ -319,10 +319,10 @@ export default function TendersPage() {
             <div className="flex-1">
               <h3 className="font-semibold text-white mb-1">🎯 AI Recommended Tender</h3>
               <p className="text-gray-400 text-sm">
-                <strong className="text-white">{bestMatch.title}</strong> from {bestMatch.organization} has a {bestMatch.matchScore}% match score. 
+                <strong className="text-white">{bestMatch.title}</strong> from {bestMatch.organization} has a {bestMatch.matchScore}% match score.
                 {bestMatch.value && ` Estimated value: $${bestMatch.value.toLocaleString()}.`} Deadline: {new Date(bestMatch.deadline).toLocaleDateString()}.
               </p>
-              <button 
+              <button
                 onClick={() => setSelectedTender(bestMatch)}
                 className="mt-3 text-sm text-purple-400 hover:text-purple-300 font-medium"
               >
@@ -373,25 +373,22 @@ export default function TendersPage() {
       <div className="flex gap-2 border-b border-[#2F3336] pb-2">
         <button
           onClick={() => setActiveTab("discover")}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-            activeTab === "discover" ? "bg-kuwex-cyan text-black" : "text-gray-400 hover:text-white"
-          }`}
+          className={`px-4 py-2 rounded-lg font-medium transition-colors ${activeTab === "discover" ? "bg-kuwex-cyan text-black" : "text-gray-400 hover:text-white"
+            }`}
         >
           Discover ({tenders.length})
         </button>
         <button
           onClick={() => setActiveTab("tracked")}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-            activeTab === "tracked" ? "bg-kuwex-cyan text-black" : "text-gray-400 hover:text-white"
-          }`}
+          className={`px-4 py-2 rounded-lg font-medium transition-colors ${activeTab === "tracked" ? "bg-kuwex-cyan text-black" : "text-gray-400 hover:text-white"
+            }`}
         >
           My Tracked ({trackedTenders.length})
         </button>
         <button
           onClick={() => setActiveTab("sources")}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-            activeTab === "sources" ? "bg-kuwex-cyan text-black" : "text-gray-400 hover:text-white"
-          }`}
+          className={`px-4 py-2 rounded-lg font-medium transition-colors ${activeTab === "sources" ? "bg-kuwex-cyan text-black" : "text-gray-400 hover:text-white"
+            }`}
         >
           🔗 Live Tender Sources
         </button>
@@ -409,7 +406,7 @@ export default function TendersPage() {
               <div>
                 <h3 className="font-semibold text-white mb-1">📌 Access Real-Time Tenders</h3>
                 <p className="text-gray-400 text-sm">
-                  The tenders shown in the Discover tab are <strong className="text-white">sample opportunities</strong> representing typical listings. 
+                  The tenders shown in the Discover tab are <strong className="text-white">sample opportunities</strong> representing typical listings.
                   For <strong className="text-yellow-400">live, real-time tenders</strong>, visit the official portals below and register as a supplier.
                 </p>
               </div>
@@ -433,7 +430,7 @@ export default function TendersPage() {
                 </div>
                 <p className="text-sm text-gray-400">Major local tender aggregator with real-time government and private tenders. Shows new notices daily with category filtering.</p>
               </a>
-              
+
               <a href="https://egp.praz.org.zw/" target="_blank" rel="noopener noreferrer" className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-5 hover:border-kuwex-cyan/50 transition-colors group">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center">
@@ -461,7 +458,7 @@ export default function TendersPage() {
                 </div>
                 <p className="text-xs text-gray-400">Global aggregator with Zimbabwe RFPs, RFQs, and procurement notices.</p>
               </a>
-              
+
               <a href="https://www.globaltenders.com/zw/zimbabwe-web-design-tenders" target="_blank" rel="noopener noreferrer" className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-5 hover:border-kuwex-cyan/50 transition-colors group">
                 <div className="flex items-center gap-3 mb-3">
                   <h4 className="font-semibold text-white group-hover:text-kuwex-cyan transition-colors">GlobalTenders</h4>
@@ -469,7 +466,7 @@ export default function TendersPage() {
                 </div>
                 <p className="text-xs text-gray-400">Web design, intranet systems, and IT services tenders in Zimbabwe.</p>
               </a>
-              
+
               <a href="https://www.biddetail.com/zimbabwe-tenders/social-media-tenders" target="_blank" rel="noopener noreferrer" className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-5 hover:border-kuwex-cyan/50 transition-colors group">
                 <div className="flex items-center gap-3 mb-3">
                   <h4 className="font-semibold text-white group-hover:text-kuwex-cyan transition-colors">BidDetail</h4>
@@ -521,17 +518,17 @@ export default function TendersPage() {
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1 relative max-w-md">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
-            <input 
-              type="text" 
-              placeholder="Search tenders, organizations..." 
-              value={searchQuery} 
-              onChange={(e) => setSearchQuery(e.target.value)} 
-              className="w-full bg-[#16181C] border border-[#2F3336] rounded-xl pl-12 pr-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-kuwex-cyan/50" 
+            <input
+              type="text"
+              placeholder="Search tenders, organizations..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-[#16181C] border border-[#2F3336] rounded-xl pl-12 pr-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-kuwex-cyan/50"
             />
           </div>
-          <select 
-            value={categoryFilter} 
-            onChange={(e) => setCategoryFilter(e.target.value)} 
+          <select
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
             className="bg-[#16181C] border border-[#2F3336] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kuwex-cyan/50"
           >
             <option value="all">All Categories</option>
@@ -540,9 +537,9 @@ export default function TendersPage() {
             ))}
           </select>
           {activeTab === "tracked" && (
-            <select 
-              value={statusFilter} 
-              onChange={(e) => setStatusFilter(e.target.value as TenderStatus | "all")} 
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value as TenderStatus | "all")}
               className="bg-[#16181C] border border-[#2F3336] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-kuwex-cyan/50"
             >
               <option value="all">All Status</option>
@@ -577,13 +574,13 @@ export default function TendersPage() {
               const trackedTender = trackedTenders.find(t => t.id === tender.id);
               const status = trackedTender?.status || "identified";
               const StatusIcon = statusConfig[status].icon;
-              
+
               return (
-                <motion.div 
-                  key={tender.id} 
-                  initial={{ opacity: 0, y: 20 }} 
-                  animate={{ opacity: 1, y: 0 }} 
-                  transition={{ delay: index * 0.03 }} 
+                <motion.div
+                  key={tender.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.03 }}
                   className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-6 hover:border-[#3F4346] transition-colors"
                 >
                   <div className="flex flex-col gap-4">
@@ -593,11 +590,10 @@ export default function TendersPage() {
                         <div className="flex flex-wrap items-center gap-2 mb-2">
                           <span className="bg-[#2F3336] text-gray-300 text-xs px-2.5 py-1 rounded-full">{tender.category}</span>
                           {/* Priority Badge */}
-                          <span className={`px-2.5 py-1 text-xs rounded-full font-medium ${
-                            tender.priority === "high" ? "bg-red-500/20 text-red-400" : 
-                            tender.priority === "medium" ? "bg-yellow-500/20 text-yellow-400" : 
-                            "bg-gray-500/20 text-gray-400"
-                          }`}>
+                          <span className={`px-2.5 py-1 text-xs rounded-full font-medium ${tender.priority === "high" ? "bg-red-500/20 text-red-400" :
+                              tender.priority === "medium" ? "bg-yellow-500/20 text-yellow-400" :
+                                "bg-gray-500/20 text-gray-400"
+                            }`}>
                             {tender.priority.toUpperCase()}
                           </span>
                           {/* Urgent Badge */}
@@ -612,11 +608,10 @@ export default function TendersPage() {
                               {statusConfig[status].label}
                             </span>
                           )}
-                          <span className={`px-2.5 py-1 text-xs rounded-full font-medium ${
-                            tender.matchScore >= 80 ? "bg-green-500/20 text-green-400" : 
-                            tender.matchScore >= 50 ? "bg-yellow-500/20 text-yellow-400" : 
-                            "bg-gray-500/20 text-gray-400"
-                          }`}>
+                          <span className={`px-2.5 py-1 text-xs rounded-full font-medium ${tender.matchScore >= 80 ? "bg-green-500/20 text-green-400" :
+                              tender.matchScore >= 50 ? "bg-yellow-500/20 text-yellow-400" :
+                                "bg-gray-500/20 text-gray-400"
+                            }`}>
                             {tender.matchScore}% Match
                           </span>
                         </div>
@@ -680,7 +675,7 @@ export default function TendersPage() {
                     <div className="flex items-center justify-between pt-2 border-t border-[#2F3336]">
                       <div className="flex items-center gap-2">
                         {!tracked ? (
-                          <button 
+                          <button
                             onClick={() => trackTender(tender)}
                             className="flex items-center gap-2 bg-kuwex-cyan text-black px-4 py-2 rounded-lg font-medium hover:bg-kuwex-cyan/90 transition-colors"
                           >
@@ -700,7 +695,7 @@ export default function TendersPage() {
                               <option value="won">Won</option>
                               <option value="lost">Lost</option>
                             </select>
-                            <button 
+                            <button
                               onClick={() => untrackTender(tender.id)}
                               className="text-red-400 hover:text-red-300 text-sm"
                             >
@@ -710,15 +705,15 @@ export default function TendersPage() {
                         )}
                       </div>
                       <div className="flex items-center gap-2">
-                        <button 
+                        <button
                           onClick={() => setSelectedTender(tender)}
                           className="p-2 hover:bg-[#2F3336] rounded-lg transition-colors text-gray-400 hover:text-white"
                         >
                           <Eye size={18} />
                         </button>
-                        <a 
-                          href={tender.sourceUrl} 
-                          target="_blank" 
+                        <a
+                          href={tender.sourceUrl}
+                          target="_blank"
                           rel="noopener noreferrer"
                           className="p-2 hover:bg-[#2F3336] rounded-lg transition-colors text-gray-400 hover:text-white"
                         >
@@ -737,7 +732,7 @@ export default function TendersPage() {
       {/* Tender Detail Modal */}
       {selectedTender && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4" onClick={() => setSelectedTender(null)}>
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto"
@@ -755,7 +750,7 @@ export default function TendersPage() {
                 <XCircle size={24} />
               </button>
             </div>
-            
+
             <div className="space-y-4">
               <div>
                 <h3 className="text-sm font-medium text-gray-400 mb-1">Organization</h3>
@@ -800,7 +795,7 @@ export default function TendersPage() {
               )}
               <div className="flex gap-3 pt-4 border-t border-[#2F3336]">
                 {!isTracked(selectedTender.id) ? (
-                  <button 
+                  <button
                     onClick={() => { trackTender(selectedTender); setSelectedTender(null); }}
                     className="flex-1 flex items-center justify-center gap-2 bg-kuwex-cyan text-black px-4 py-3 rounded-xl font-semibold hover:bg-kuwex-cyan/90 transition-colors"
                   >
@@ -808,14 +803,14 @@ export default function TendersPage() {
                     Track This Tender
                   </button>
                 ) : (
-                  <button 
+                  <button
                     onClick={() => setSelectedTender(null)}
                     className="flex-1 bg-green-500/20 text-green-400 px-4 py-3 rounded-xl font-semibold"
                   >
                     ✓ Already Tracking
                   </button>
                 )}
-                <a 
+                <a
                   href={selectedTender.sourceUrl}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -833,7 +828,7 @@ export default function TendersPage() {
       {/* Add Tender Modal */}
       {showAddModal && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             className="bg-[#1A1D21] rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
@@ -843,14 +838,14 @@ export default function TendersPage() {
                 <h2 className="text-xl font-bold text-white">Add New Tender</h2>
                 <p className="text-gray-500 text-sm">Add a tender from newspaper, referral, or other sources</p>
               </div>
-              <button 
+              <button
                 onClick={() => setShowAddModal(false)}
                 className="text-gray-400 hover:text-white p-2"
               >
                 <XCircle size={24} />
               </button>
             </div>
-            
+
             <div className="p-6 space-y-4">
               {/* Title */}
               <div>
@@ -983,13 +978,13 @@ export default function TendersPage() {
 
               {/* Actions */}
               <div className="flex gap-3 pt-4 border-t border-[#2F3336]">
-                <button 
+                <button
                   onClick={() => setShowAddModal(false)}
                   className="flex-1 bg-[#2F3336] text-white px-4 py-3 rounded-xl font-semibold hover:bg-[#3F4346] transition-colors"
                 >
                   Cancel
                 </button>
-                <button 
+                <button
                   onClick={addManualTender}
                   className="flex-1 flex items-center justify-center gap-2 bg-green-500 text-white px-4 py-3 rounded-xl font-semibold hover:bg-green-600 transition-colors"
                 >
