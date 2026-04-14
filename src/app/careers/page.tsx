@@ -62,14 +62,15 @@ export default function Careers() {
       
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-kuwex-cyan/5 via-transparent to-kuwex-blue/5" />
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-kuwex-cyan/10 rounded-full blur-[150px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(0,229,255,0.06),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_80%,rgba(0,133,255,0.04),transparent_50%)]" />
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-kuwex-cyan/[0.03] rounded-full blur-[150px]" />
         
         <div className="container mx-auto text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 bg-[#16181C] border border-[#2F3336] rounded-full px-4 py-2 mb-8"
+            className="vibrant-badge mx-auto mb-8"
           >
             <span className="w-2 h-2 bg-kuwex-cyan rounded-full animate-pulse" />
             <span className="text-sm text-gray-400">Join Our Team</span>
@@ -80,7 +81,7 @@ export default function Careers() {
             animate={{ opacity: 1, y: 0 }}
             className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight"
           >
-            Build the <span className="text-kuwex-cyan">Future</span> with Us
+            Build the <span className="vibrant-gradient-text">Future</span> with Us
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -94,16 +95,21 @@ export default function Careers() {
       </section>
 
       {/* Why Join Us */}
-      <section className="py-24 px-4 bg-[#0A0A0A]">
-        <div className="container mx-auto">
+      <section className="py-28 px-4 bg-[#0A0A0A] relative">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(0,229,255,0.03),transparent_50%)]" />
+        <div className="container mx-auto relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white tracking-tight">Why Join <span className="text-kuwex-cyan">KuWeX</span>?</h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">We offer more than just a job — we offer a chance to make a real impact</p>
+            <div className="vibrant-badge mx-auto mb-6">
+              <span className="w-2 h-2 bg-kuwex-cyan rounded-full" />
+              <span className="text-sm text-gray-400">Benefits</span>
+            </div>
+            <h2 className="section-heading mb-4">Why Join <span className="vibrant-gradient-text">KuWeX</span>?</h2>
+            <p className="section-subheading mx-auto">We offer more than just a job — we offer a chance to make a real impact</p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -114,12 +120,12 @@ export default function Careers() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-[#16181C] border border-[#2F3336] rounded-3xl p-8 hover:border-kuwex-cyan/50 transition-all duration-300 group"
+                className="x-card-vibrant rounded-3xl p-8 group"
               >
-                <div className="w-14 h-14 bg-kuwex-cyan/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-kuwex-cyan/20 transition-colors">
+                <div className="w-14 h-14 bg-gradient-to-br from-kuwex-cyan/10 to-kuwex-blue/10 border border-kuwex-cyan/20 rounded-2xl flex items-center justify-center mb-6 group-hover:shadow-[0_0_25px_rgba(0,229,255,0.2)] transition-all duration-300">
                   <benefit.icon size={28} className="text-kuwex-cyan" />
                 </div>
-                <h3 className="text-xl font-bold mb-3 text-white">{benefit.title}</h3>
+                <h3 className="text-xl font-bold mb-3 text-white group-hover:text-kuwex-cyan transition-colors duration-300">{benefit.title}</h3>
                 <p className="text-gray-500 leading-relaxed">{benefit.desc}</p>
               </motion.div>
             ))}
@@ -128,16 +134,21 @@ export default function Careers() {
       </section>
 
       {/* Our Values */}
-      <section className="py-24 px-4 bg-black">
-        <div className="container mx-auto">
+      <section className="py-28 px-4 bg-black relative">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_50%,rgba(0,133,255,0.04),transparent_50%)]" />
+        <div className="container mx-auto relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white tracking-tight">Our <span className="text-kuwex-cyan">Values</span></h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">The principles that guide how we work</p>
+            <div className="vibrant-badge mx-auto mb-6">
+              <span className="w-2 h-2 bg-kuwex-blue rounded-full" />
+              <span className="text-sm text-gray-400">Culture</span>
+            </div>
+            <h2 className="section-heading mb-4">Our <span className="vibrant-gradient-text">Values</span></h2>
+            <p className="section-subheading mx-auto">The principles that guide how we work</p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
@@ -148,12 +159,12 @@ export default function Careers() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="text-center"
+                className="text-center group"
               >
-                <div className="w-20 h-20 bg-[#16181C] border border-[#2F3336] rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <div className="w-20 h-20 bg-gradient-to-br from-kuwex-cyan/10 to-kuwex-blue/10 border border-kuwex-cyan/20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:shadow-[0_0_30px_rgba(0,229,255,0.2)] transition-all duration-300">
                   <value.icon size={36} className="text-kuwex-cyan" />
                 </div>
-                <h3 className="text-xl font-bold mb-3 text-white">{value.title}</h3>
+                <h3 className="text-xl font-bold mb-3 text-white group-hover:text-kuwex-cyan transition-colors duration-300">{value.title}</h3>
                 <p className="text-gray-500">{value.desc}</p>
               </motion.div>
             ))}
@@ -162,16 +173,21 @@ export default function Careers() {
       </section>
 
       {/* Open Positions */}
-      <section className="py-24 px-4 bg-[#0A0A0A]">
-        <div className="container mx-auto">
+      <section className="py-28 px-4 bg-[#0A0A0A] relative">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(0,229,255,0.03),transparent_50%)]" />
+        <div className="container mx-auto relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white tracking-tight">Open <span className="text-kuwex-cyan">Positions</span></h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">Find your next opportunity with us</p>
+            <div className="vibrant-badge mx-auto mb-6">
+              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+              <span className="text-sm text-gray-400">Hiring</span>
+            </div>
+            <h2 className="section-heading mb-4">Open <span className="vibrant-gradient-text">Positions</span></h2>
+            <p className="section-subheading mx-auto">Find your next opportunity with us</p>
           </motion.div>
 
           <div className="space-y-6 max-w-4xl mx-auto">
@@ -182,12 +198,12 @@ export default function Careers() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-[#16181C] border border-[#2F3336] rounded-3xl p-8 hover:border-kuwex-cyan/50 transition-all duration-300 group"
+                className="x-card-vibrant rounded-3xl p-8 group"
               >
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                   <div className="flex-1">
                     <div className="flex flex-wrap items-center gap-3 mb-3">
-                      <span className="bg-kuwex-cyan/10 text-kuwex-cyan text-xs font-medium px-3 py-1 rounded-full">
+                      <span className="bg-gradient-to-r from-kuwex-cyan/10 to-kuwex-blue/10 border border-kuwex-cyan/20 text-kuwex-cyan text-xs font-medium px-3 py-1.5 rounded-full">
                         {position.department}
                       </span>
                       <span className="flex items-center gap-1 text-gray-500 text-sm">
@@ -199,16 +215,16 @@ export default function Careers() {
                         {position.type}
                       </span>
                     </div>
-                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-kuwex-cyan transition-colors">
+                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-kuwex-cyan transition-colors duration-300">
                       {position.title}
                     </h3>
                     <p className="text-gray-500">{position.description}</p>
                   </div>
                   <Link 
                     href="/contact"
-                    className="flex items-center gap-2 bg-[#2F3336] hover:bg-kuwex-cyan hover:text-black text-white px-6 py-3 rounded-full font-semibold transition-all whitespace-nowrap"
+                    className="group/btn flex items-center gap-2 bg-gradient-to-r from-kuwex-cyan/10 to-kuwex-blue/10 border border-kuwex-cyan/20 text-kuwex-cyan hover:from-kuwex-cyan hover:to-kuwex-blue hover:text-black px-6 py-3 rounded-full font-semibold transition-all duration-300 whitespace-nowrap hover:shadow-[0_0_25px_rgba(0,229,255,0.3)]"
                   >
-                    Apply Now <ArrowRight size={18} />
+                    Apply Now <ArrowRight size={18} className="group-hover/btn:translate-x-1 transition-transform duration-300" />
                   </Link>
                 </div>
               </motion.div>
@@ -218,8 +234,10 @@ export default function Careers() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-32 px-4 bg-black border-t border-[#2F3336] relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-kuwex-cyan/5 rounded-full blur-3xl" />
+      <section className="py-32 px-4 bg-black relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(0,229,255,0.06),transparent_50%)]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-kuwex-cyan/[0.03] rounded-full blur-[150px]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[1px] bg-gradient-to-r from-transparent via-kuwex-cyan/30 to-transparent" />
         
         <div className="container mx-auto text-center relative z-10">
           <motion.div
@@ -227,18 +245,22 @@ export default function Careers() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl md:text-6xl font-bold mb-6 text-white tracking-tight">
-              Don&apos;t see your <span className="text-kuwex-cyan">role?</span>
+            <div className="vibrant-badge mx-auto mb-8">
+              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+              <span className="text-sm text-gray-400">Open to talent</span>
+            </div>
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white tracking-tight">
+              Don&apos;t see your <span className="vibrant-gradient-text">role?</span>
             </h2>
-            <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
               We&apos;re always looking for talented people. Send us your CV and we&apos;ll keep you in mind for future opportunities.
             </p>
             <Link 
               href="/contact"
-              className="inline-flex items-center gap-2 bg-kuwex-cyan text-black px-10 py-5 rounded-full font-bold text-xl hover:bg-white transition-all group"
+              className="group inline-flex items-center gap-2 bg-gradient-to-r from-[#00E5FF] to-[#0085FF] text-black px-10 py-5 rounded-full font-bold text-xl transition-all duration-300 hover:shadow-[0_0_50px_rgba(0,229,255,0.4)] hover:scale-[1.02]"
             >
               Get in Touch
-              <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform" />
+              <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform duration-300" />
             </Link>
           </motion.div>
         </div>

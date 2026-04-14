@@ -56,14 +56,15 @@ export default function Help() {
       
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-kuwex-cyan/5 via-transparent to-kuwex-blue/5" />
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-kuwex-cyan/10 rounded-full blur-[150px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(0,229,255,0.06),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_80%,rgba(0,133,255,0.04),transparent_50%)]" />
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-kuwex-cyan/[0.03] rounded-full blur-[150px]" />
         
         <div className="container mx-auto text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 bg-[#16181C] border border-[#2F3336] rounded-full px-4 py-2 mb-8"
+            className="vibrant-badge mx-auto mb-8"
           >
             <span className="w-2 h-2 bg-kuwex-cyan rounded-full animate-pulse" />
             <span className="text-sm text-gray-400">We&apos;re Here to Help</span>
@@ -74,7 +75,7 @@ export default function Help() {
             animate={{ opacity: 1, y: 0 }}
             className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight"
           >
-            Help <span className="text-kuwex-cyan">Center</span>
+            Help <span className="vibrant-gradient-text">Center</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -99,7 +100,7 @@ export default function Help() {
                 placeholder="Search for help articles..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-[#16181C] border border-[#2F3336] rounded-full pl-14 pr-6 py-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-kuwex-cyan/50 transition-all"
+                className="w-full bg-[#16181C]/80 backdrop-blur-sm border border-[#2F3336]/60 rounded-full pl-14 pr-6 py-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-kuwex-cyan/50 focus:ring-1 focus:ring-kuwex-cyan/30 transition-all duration-300"
               />
             </div>
           </motion.div>
@@ -115,7 +116,7 @@ export default function Help() {
             viewport={{ once: true }}
             className="text-3xl font-bold mb-10 text-center"
           >
-            Browse by <span className="text-kuwex-cyan">Category</span>
+            Browse by <span className="vibrant-gradient-text">Category</span>
           </motion.h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -126,14 +127,14 @@ export default function Help() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-[#16181C] border border-[#2F3336] rounded-3xl p-8 hover:border-kuwex-cyan/50 transition-all duration-300 cursor-pointer group"
+                className="x-card-vibrant rounded-3xl p-8 cursor-pointer group"
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-14 h-14 bg-kuwex-cyan/10 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:bg-kuwex-cyan/20 transition-colors">
+                  <div className="w-14 h-14 bg-gradient-to-br from-kuwex-cyan/10 to-kuwex-blue/10 border border-kuwex-cyan/20 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:shadow-[0_0_25px_rgba(0,229,255,0.2)] transition-all duration-300">
                     <category.icon size={28} className="text-kuwex-cyan" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-white mb-1 group-hover:text-kuwex-cyan transition-colors">
+                    <h3 className="text-lg font-bold text-white mb-1 group-hover:text-kuwex-cyan transition-colors duration-300">
                       {category.title}
                     </h3>
                     <p className="text-gray-500 text-sm mb-2">{category.desc}</p>
@@ -156,7 +157,7 @@ export default function Help() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white tracking-tight">
-              Frequently Asked <span className="text-kuwex-cyan">Questions</span>
+              Frequently Asked <span className="vibrant-gradient-text">Questions</span>
             </h2>
             <p className="text-xl text-gray-400">Quick answers to common questions</p>
           </motion.div>
@@ -169,7 +170,7 @@ export default function Help() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05 }}
-                className="bg-[#16181C] border border-[#2F3336] rounded-2xl overflow-hidden"
+                className="bg-[#16181C]/80 backdrop-blur-sm border border-[#2F3336]/60 rounded-2xl overflow-hidden hover:border-kuwex-cyan/20 transition-all duration-300"
               >
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
@@ -202,7 +203,7 @@ export default function Help() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white tracking-tight">
-              Still Need <span className="text-kuwex-cyan">Help?</span>
+              Still Need <span className="vibrant-gradient-text">Help?</span>
             </h2>
             <p className="text-xl text-gray-400">Our support team is ready to assist you</p>
           </motion.div>
@@ -215,12 +216,12 @@ export default function Help() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="bg-[#16181C] border border-[#2F3336] rounded-3xl p-8 text-center hover:border-kuwex-cyan/50 transition-all duration-300 group"
+              className="x-card-vibrant rounded-3xl p-8 text-center group"
             >
-              <div className="w-16 h-16 bg-[#25D366]/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <div className="w-16 h-16 bg-[#25D366]/10 border border-[#25D366]/20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:shadow-[0_0_25px_rgba(37,211,102,0.2)] transition-all duration-300">
                 <MessageCircle size={32} className="text-[#25D366]" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">WhatsApp</h3>
+              <h3 className="text-xl font-bold text-white mb-2 group-hover:text-[#25D366] transition-colors duration-300">WhatsApp</h3>
               <p className="text-gray-500 text-sm">Quick response guaranteed</p>
             </motion.a>
 
@@ -230,12 +231,12 @@ export default function Help() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="bg-[#16181C] border border-[#2F3336] rounded-3xl p-8 text-center hover:border-kuwex-cyan/50 transition-all duration-300 group"
+              className="x-card-vibrant rounded-3xl p-8 text-center group"
             >
-              <div className="w-16 h-16 bg-kuwex-cyan/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <div className="w-16 h-16 bg-gradient-to-br from-kuwex-cyan/10 to-kuwex-blue/10 border border-kuwex-cyan/20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:shadow-[0_0_25px_rgba(0,229,255,0.2)] transition-all duration-300">
                 <Mail size={32} className="text-kuwex-cyan" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">Email Us</h3>
+              <h3 className="text-xl font-bold text-white mb-2 group-hover:text-kuwex-cyan transition-colors duration-300">Email Us</h3>
               <p className="text-gray-500 text-sm">projects@kuwex.co</p>
             </motion.a>
 
@@ -245,12 +246,12 @@ export default function Help() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="bg-[#16181C] border border-[#2F3336] rounded-3xl p-8 text-center hover:border-kuwex-cyan/50 transition-all duration-300 group"
+              className="x-card-vibrant rounded-3xl p-8 text-center group"
             >
-              <div className="w-16 h-16 bg-kuwex-blue/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <div className="w-16 h-16 bg-gradient-to-br from-kuwex-blue/10 to-kuwex-cyan/10 border border-kuwex-blue/20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:shadow-[0_0_25px_rgba(0,133,255,0.2)] transition-all duration-300">
                 <Phone size={32} className="text-kuwex-blue" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">Call Us</h3>
+              <h3 className="text-xl font-bold text-white mb-2 group-hover:text-kuwex-blue transition-colors duration-300">Call Us</h3>
               <p className="text-gray-500 text-sm">+263 719 066 891</p>
             </motion.a>
           </div>

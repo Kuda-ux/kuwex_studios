@@ -75,11 +75,16 @@ const config: Config = {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
         "hero-gradient": "linear-gradient(to bottom right, rgba(0, 229, 255, 0.1), rgba(0, 133, 255, 0.05), transparent)",
+        "vibrant-gradient": "linear-gradient(135deg, rgba(0, 229, 255, 0.15), rgba(0, 133, 255, 0.1), transparent)",
+        "mesh-gradient": "radial-gradient(at 40% 20%, rgba(0, 229, 255, 0.08) 0px, transparent 50%), radial-gradient(at 80% 0%, rgba(0, 133, 255, 0.06) 0px, transparent 50%), radial-gradient(at 0% 50%, rgba(0, 229, 255, 0.05) 0px, transparent 50%)",
       },
       animation: {
         "fade-up": "fadeUp 0.5s ease-out forwards",
         "fade-in": "fadeIn 0.5s ease-out forwards",
         "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "float": "float 6s ease-in-out infinite",
+        "glow": "pulseGlow 3s ease-in-out infinite",
+        "shimmer": "shimmer 3s linear infinite",
       },
       keyframes: {
         fadeUp: {
@@ -89,6 +94,18 @@ const config: Config = {
         fadeIn: {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+        pulseGlow: {
+          "0%, 100%": { boxShadow: "0 0 20px rgba(0, 229, 255, 0.2)" },
+          "50%": { boxShadow: "0 0 40px rgba(0, 229, 255, 0.4)" },
+        },
+        shimmer: {
+          "0%": { backgroundPosition: "-200% center" },
+          "100%": { backgroundPosition: "200% center" },
         },
       },
     },

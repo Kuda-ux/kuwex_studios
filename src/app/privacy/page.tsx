@@ -12,14 +12,15 @@ export default function Privacy() {
       
       {/* Hero Section */}
       <section className="pt-32 pb-16 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-kuwex-cyan/5 via-transparent to-kuwex-blue/5" />
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-kuwex-cyan/10 rounded-full blur-[150px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(0,229,255,0.06),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_80%,rgba(0,133,255,0.04),transparent_50%)]" />
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-kuwex-cyan/[0.03] rounded-full blur-[150px]" />
         
         <div className="container mx-auto text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 bg-[#16181C] border border-[#2F3336] rounded-full px-4 py-2 mb-8"
+            className="vibrant-badge mx-auto mb-8"
           >
             <Shield size={16} className="text-kuwex-cyan" />
             <span className="text-sm text-gray-400">Your Privacy Matters</span>
@@ -30,7 +31,7 @@ export default function Privacy() {
             animate={{ opacity: 1, y: 0 }}
             className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight"
           >
-            Privacy <span className="text-kuwex-cyan">Policy</span>
+            Privacy <span className="vibrant-gradient-text">Policy</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -50,7 +51,7 @@ export default function Privacy() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-[#16181C] border border-[#2F3336] rounded-3xl p-8 md:p-12"
+            className="x-card-vibrant rounded-3xl p-8 md:p-12"
           >
             <div className="prose prose-invert max-w-none">
               <h2 className="text-2xl font-bold text-white mb-4">1. Introduction</h2>

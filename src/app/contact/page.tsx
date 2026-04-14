@@ -22,14 +22,15 @@ export default function Contact() {
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 relative overflow-hidden">
         {/* Background Effects */}
-        <div className="absolute inset-0 bg-gradient-to-br from-kuwex-cyan/5 via-transparent to-kuwex-blue/5" />
-        <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-kuwex-cyan/10 rounded-full blur-[150px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(0,229,255,0.06),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_80%,rgba(0,133,255,0.04),transparent_50%)]" />
+        <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-kuwex-cyan/[0.03] rounded-full blur-[150px]" />
         
         <div className="container mx-auto text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 bg-[#16181C] border border-[#2F3336] rounded-full px-4 py-2 mb-8"
+            className="vibrant-badge mx-auto mb-8"
           >
             <span className="w-2 h-2 bg-kuwex-cyan rounded-full animate-pulse" />
             <span className="text-sm text-gray-400">Let&apos;s Connect</span>
@@ -40,7 +41,7 @@ export default function Contact() {
             animate={{ opacity: 1, y: 0 }}
             className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight"
           >
-            Talk to <span className="text-kuwex-cyan">Us</span>
+            Talk to <span className="vibrant-gradient-text">Us</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -59,7 +60,7 @@ export default function Contact() {
             className="flex flex-wrap justify-center gap-4 mt-10"
           >
             {clientTypes.map((type, i) => (
-              <div key={i} className="flex items-center gap-2 bg-[#16181C] border border-[#2F3336] rounded-full px-5 py-3">
+              <div key={i} className="flex items-center gap-2 bg-[#16181C]/80 backdrop-blur-sm border border-[#2F3336]/60 rounded-full px-5 py-3 hover:border-kuwex-cyan/30 transition-all duration-300">
                 <type.icon size={18} className="text-kuwex-cyan" />
                 <span className="text-sm font-medium text-gray-300">{type.label}</span>
               </div>
@@ -78,31 +79,31 @@ export default function Contact() {
              className="space-y-6"
           >
             {/* Contact Details Card */}
-            <div className="bg-[#16181C] border border-[#2F3336] rounded-3xl p-8">
-              <h3 className="text-2xl font-bold mb-8 text-white">Contact <span className="text-kuwex-cyan">Information</span></h3>
+            <div className="x-card-vibrant rounded-3xl p-8">
+              <h3 className="text-2xl font-bold mb-8 text-white">Contact <span className="vibrant-gradient-text">Information</span></h3>
               <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-kuwex-cyan/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                <div className="flex items-start gap-4 group">
+                  <div className="w-12 h-12 bg-gradient-to-br from-kuwex-cyan/10 to-kuwex-blue/10 border border-kuwex-cyan/20 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:shadow-[0_0_20px_rgba(0,229,255,0.15)] transition-all duration-300">
                     <Phone size={22} className="text-kuwex-cyan" />
                   </div>
                   <div>
                     <p className="text-sm text-gray-500 mb-1">Phone</p>
-                    <a href="tel:+263719066891" className="text-lg font-medium text-white hover:text-kuwex-cyan transition-colors">+263 719 066 891</a>
+                    <a href="tel:+263719066891" className="text-lg font-medium text-white hover:text-kuwex-cyan transition-colors duration-300">+263 719 066 891</a>
                   </div>
                 </div>
                 
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-kuwex-cyan/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                <div className="flex items-start gap-4 group">
+                  <div className="w-12 h-12 bg-gradient-to-br from-kuwex-cyan/10 to-kuwex-blue/10 border border-kuwex-cyan/20 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:shadow-[0_0_20px_rgba(0,229,255,0.15)] transition-all duration-300">
                     <Mail size={22} className="text-kuwex-cyan" />
                   </div>
                   <div>
                     <p className="text-sm text-gray-500 mb-1">Email</p>
-                    <a href="mailto:projects@kuwex.co" className="text-lg font-medium text-white hover:text-kuwex-cyan transition-colors">projects@kuwex.co</a>
+                    <a href="mailto:projects@kuwex.co" className="text-lg font-medium text-white hover:text-kuwex-cyan transition-colors duration-300">projects@kuwex.co</a>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-kuwex-cyan/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                <div className="flex items-start gap-4 group">
+                  <div className="w-12 h-12 bg-gradient-to-br from-kuwex-cyan/10 to-kuwex-blue/10 border border-kuwex-cyan/20 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:shadow-[0_0_20px_rgba(0,229,255,0.15)] transition-all duration-300">
                     <MapPin size={22} className="text-kuwex-cyan" />
                   </div>
                   <div>
@@ -118,7 +119,7 @@ export default function Contact() {
               href="https://wa.me/263719066891" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center gap-4 bg-[#25D366] hover:bg-[#20bd5a] rounded-3xl p-6 transition-all group"
+              className="flex items-center gap-4 bg-[#25D366] hover:bg-[#20bd5a] rounded-3xl p-6 transition-all duration-300 group hover:shadow-[0_0_40px_rgba(37,211,102,0.3)] hover:scale-[1.01]"
             >
               <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center">
                 <MessageCircle size={28} className="text-white" />
@@ -133,7 +134,7 @@ export default function Contact() {
             </a>
 
             {/* Map Placeholder */}
-            <div className="relative h-64 bg-[#16181C] border border-[#2F3336] rounded-3xl overflow-hidden">
+            <div className="relative h-64 x-card-vibrant rounded-3xl overflow-hidden">
               <Image
                 src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&h=400&fit=crop"
                 alt="Map location"
@@ -153,9 +154,9 @@ export default function Contact() {
              initial={{ opacity: 0, x: 20 }}
              animate={{ opacity: 1, x: 0 }}
              transition={{ delay: 0.3 }}
-             className="bg-[#16181C] border border-[#2F3336] rounded-3xl p-8 md:p-10"
+             className="x-card-vibrant rounded-3xl p-8 md:p-10"
           >
-            <h3 className="text-2xl font-bold mb-2 text-white">Send us a <span className="text-kuwex-cyan">message</span></h3>
+            <h3 className="text-2xl font-bold mb-2 text-white">Send us a <span className="vibrant-gradient-text">message</span></h3>
             <p className="text-gray-500 mb-8">Fill out the form below and we&apos;ll get back to you within 24 hours.</p>
             
             <form className="space-y-6">
@@ -221,7 +222,7 @@ export default function Contact() {
 
               <button 
                 type="submit"
-                className="w-full bg-kuwex-cyan text-black font-bold py-4 rounded-xl hover:bg-white transition-all flex items-center justify-center gap-2"
+                className="w-full bg-gradient-to-r from-[#00E5FF] to-[#0085FF] text-black font-bold py-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-[0_0_40px_rgba(0,229,255,0.4)] hover:scale-[1.01]"
               >
                 Send Message <Send size={18} />
               </button>
@@ -231,9 +232,10 @@ export default function Contact() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-32 px-4 bg-black border-t border-[#2F3336] relative overflow-hidden">
-        {/* Background glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-kuwex-cyan/5 rounded-full blur-3xl" />
+      <section className="py-32 px-4 bg-black relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(0,229,255,0.06),transparent_50%)]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-kuwex-cyan/[0.03] rounded-full blur-[150px]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[1px] bg-gradient-to-r from-transparent via-kuwex-cyan/30 to-transparent" />
         
         <div className="container mx-auto text-center relative z-10">
           <motion.div
@@ -241,16 +243,20 @@ export default function Contact() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl md:text-6xl font-bold mb-6 text-white tracking-tight">
-              Prefer a <span className="text-kuwex-cyan">quick call?</span>
+            <div className="vibrant-badge mx-auto mb-8">
+              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+              <span className="text-sm text-gray-400">Quick response</span>
+            </div>
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white tracking-tight">
+              Prefer a <span className="vibrant-gradient-text">quick call?</span>
             </h2>
-            <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
               Schedule a free consultation with our team to discuss your project requirements.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a 
                 href="tel:+263719066891"
-                className="inline-flex items-center gap-2 bg-kuwex-cyan text-black px-8 py-4 rounded-full font-bold text-lg hover:bg-white transition-all"
+                className="group inline-flex items-center gap-2 bg-gradient-to-r from-[#00E5FF] to-[#0085FF] text-black px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:shadow-[0_0_40px_rgba(0,229,255,0.4)] hover:scale-[1.02]"
               >
                 <Phone size={20} />
                 Call Now
@@ -259,7 +265,7 @@ export default function Contact() {
                 href="https://wa.me/263719066891"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-[#25D366] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#20bd5a] transition-all"
+                className="inline-flex items-center gap-2 bg-[#25D366] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#20bd5a] transition-all duration-300 hover:shadow-[0_0_40px_rgba(37,211,102,0.3)]"
               >
                 <MessageCircle size={20} />
                 WhatsApp Us

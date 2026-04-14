@@ -545,14 +545,15 @@ export default function Services() {
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 relative overflow-hidden">
         {/* Background Effects */}
-        <div className="absolute inset-0 bg-gradient-to-br from-kuwex-cyan/5 via-transparent to-kuwex-blue/5" />
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-kuwex-blue/10 rounded-full blur-[150px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(0,229,255,0.06),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_80%,rgba(0,133,255,0.04),transparent_50%)]" />
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-kuwex-blue/[0.03] rounded-full blur-[150px]" />
         
         <div className="container mx-auto text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 bg-[#16181C] border border-[#2F3336] rounded-full px-4 py-2 mb-8"
+            className="vibrant-badge mx-auto mb-8"
           >
             <span className="w-2 h-2 bg-kuwex-cyan rounded-full animate-pulse" />
             <span className="text-sm text-gray-400">What We Offer</span>
@@ -563,7 +564,7 @@ export default function Services() {
             animate={{ opacity: 1, y: 0 }}
             className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight"
           >
-            Our <span className="text-kuwex-cyan">Services</span>
+            Our <span className="vibrant-gradient-text">Services</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -586,7 +587,7 @@ export default function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group relative bg-[#16181C] border border-[#2F3336] rounded-3xl overflow-hidden hover:border-kuwex-cyan/50 transition-all duration-500"
+              className="group relative x-card-vibrant rounded-3xl overflow-hidden"
             >
               <div className="grid grid-cols-1 lg:grid-cols-2">
                 {/* Visual Side */}
@@ -601,7 +602,7 @@ export default function Services() {
 
                 {/* Content Side */}
                 <div className="p-8 lg:p-12 flex flex-col justify-center">
-                  <h3 className="text-2xl md:text-3xl font-bold mb-4 text-white group-hover:text-kuwex-cyan transition-colors tracking-tight">
+                  <h3 className="text-2xl md:text-3xl font-bold mb-4 text-white group-hover:text-kuwex-cyan transition-colors duration-300 tracking-tight">
                     {service.title}
                   </h3>
                   <p className="text-gray-400 text-lg mb-8 leading-relaxed">
@@ -610,8 +611,8 @@ export default function Services() {
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
                     {service.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-center gap-3 text-gray-400 group-hover:text-gray-300 transition-colors">
-                        <div className="w-5 h-5 rounded-full bg-kuwex-cyan/20 flex items-center justify-center flex-shrink-0">
+                      <div key={idx} className="flex items-center gap-3 text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
+                        <div className="w-5 h-5 rounded-full bg-gradient-to-br from-kuwex-cyan/20 to-kuwex-blue/20 border border-kuwex-cyan/20 flex items-center justify-center flex-shrink-0">
                           <Check size={12} className="text-kuwex-cyan" strokeWidth={3} />
                         </div>
                         <span className="text-sm font-medium">{feature}</span>
@@ -621,9 +622,9 @@ export default function Services() {
 
                   <Link 
                     href="/contact" 
-                    className="inline-flex items-center gap-2 text-kuwex-cyan hover:text-white transition-colors font-semibold w-fit"
+                    className="group/link inline-flex items-center gap-2 bg-gradient-to-r from-kuwex-cyan/10 to-kuwex-blue/10 border border-kuwex-cyan/20 text-kuwex-cyan hover:from-kuwex-cyan hover:to-kuwex-blue hover:text-black px-6 py-2.5 rounded-full font-semibold text-sm transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,229,255,0.3)]"
                   >
-                    Get Started <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                    Get Started <ArrowRight size={16} className="group-hover/link:translate-x-1 transition-transform duration-300" />
                   </Link>
                 </div>
               </div>
@@ -633,16 +634,21 @@ export default function Services() {
       </section>
 
       {/* Process Section */}
-      <section className="py-24 px-4 bg-[#0A0A0A]">
-        <div className="container mx-auto">
+      <section className="py-28 px-4 bg-[#0A0A0A] relative">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(0,229,255,0.03),transparent_50%)]" />
+        <div className="container mx-auto relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white tracking-tight">Our <span className="text-kuwex-cyan">Process</span></h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">A proven methodology that delivers results every time</p>
+            <div className="vibrant-badge mx-auto mb-6">
+              <span className="w-2 h-2 bg-kuwex-cyan rounded-full" />
+              <span className="text-sm text-gray-400">How We Work</span>
+            </div>
+            <h2 className="section-heading mb-4">Our <span className="vibrant-gradient-text">Process</span></h2>
+            <p className="section-subheading mx-auto">A proven methodology that delivers results every time</p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -653,12 +659,12 @@ export default function Services() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-[#16181C] border border-[#2F3336] rounded-3xl p-8 hover:border-kuwex-cyan/50 transition-all duration-300 group"
+                className="x-card-vibrant rounded-3xl p-8 group"
               >
-                <div className="text-5xl font-bold text-kuwex-cyan/20 mb-4 group-hover:text-kuwex-cyan/40 transition-colors">
+                <div className="text-5xl font-bold vibrant-gradient-text mb-4 opacity-30 group-hover:opacity-60 transition-opacity duration-300">
                   {item.step}
                 </div>
-                <h3 className="text-xl font-bold mb-3 text-white">{item.title}</h3>
+                <h3 className="text-xl font-bold mb-3 text-white group-hover:text-kuwex-cyan transition-colors duration-300">{item.title}</h3>
                 <p className="text-gray-500 leading-relaxed">{item.desc}</p>
               </motion.div>
             ))}
@@ -667,9 +673,10 @@ export default function Services() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-32 px-4 bg-black border-t border-[#2F3336] relative overflow-hidden">
-        {/* Background glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-kuwex-cyan/5 rounded-full blur-3xl" />
+      <section className="py-32 px-4 bg-black relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(0,229,255,0.06),transparent_50%)]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-kuwex-cyan/[0.03] rounded-full blur-[150px]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[1px] bg-gradient-to-r from-transparent via-kuwex-cyan/30 to-transparent" />
         
         <div className="container mx-auto text-center relative z-10">
           <motion.div
@@ -677,23 +684,27 @@ export default function Services() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl md:text-6xl font-bold mb-6 text-white tracking-tight">
-              Ready to <span className="text-kuwex-cyan">transform</span> your business?
+            <div className="vibrant-badge mx-auto mb-8">
+              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+              <span className="text-sm text-gray-400">Start today</span>
+            </div>
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white tracking-tight">
+              Ready to <span className="vibrant-gradient-text">transform</span> your business?
             </h2>
-            <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
-              Let <span className="text-kuwex-cyan">KuWeX</span> Studios help you achieve your digital goals.
+            <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+              Let KuWeX Studios help you achieve your digital goals.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link 
                 href="/contact"
-                className="inline-flex items-center gap-2 bg-kuwex-cyan text-black px-10 py-5 rounded-full font-bold text-xl hover:bg-white transition-all group"
+                className="group inline-flex items-center gap-2 bg-gradient-to-r from-[#00E5FF] to-[#0085FF] text-black px-10 py-5 rounded-full font-bold text-xl transition-all duration-300 hover:shadow-[0_0_50px_rgba(0,229,255,0.4)] hover:scale-[1.02]"
               >
                 Start Your Project
-                <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform" />
+                <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform duration-300" />
               </Link>
               <Link 
                 href="/about"
-                className="inline-flex items-center gap-2 border border-kuwex-cyan/50 text-white px-10 py-5 rounded-full font-bold text-xl hover:bg-kuwex-cyan/10 transition-all"
+                className="inline-flex items-center gap-2 border border-[#2F3336] text-white px-10 py-5 rounded-full font-bold text-xl hover:bg-white/5 hover:border-kuwex-cyan/30 transition-all duration-300"
               >
                 Learn About Us
               </Link>

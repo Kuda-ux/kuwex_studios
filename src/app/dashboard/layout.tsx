@@ -71,13 +71,13 @@ export default function DashboardLayout({
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-50 h-full w-64 bg-[#111111] border-r border-[#2F3336] transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+        className={`fixed top-0 left-0 z-50 h-full w-64 bg-[#111111]/95 backdrop-blur-xl border-r border-[#2F3336]/60 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="flex items-center justify-between h-16 px-6 border-b border-[#2F3336]">
+          <div className="flex items-center justify-between h-16 px-6 border-b border-[#2F3336]/60">
             <Link href="/dashboard" className="flex items-center gap-3">
               <div className="flex flex-col leading-none">
                 <span className="text-xl font-bold tracking-tight">
@@ -105,10 +105,10 @@ export default function DashboardLayout({
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ${
                     isActive
-                      ? "bg-kuwex-cyan/10 text-kuwex-cyan"
-                      : "text-gray-400 hover:bg-[#1a1a1a] hover:text-white"
+                      ? "bg-gradient-to-r from-kuwex-cyan/10 to-kuwex-blue/5 text-kuwex-cyan border border-kuwex-cyan/20 shadow-[0_0_15px_rgba(0,229,255,0.08)]"
+                      : "text-gray-400 hover:bg-white/[0.03] hover:text-white"
                   }`}
                 >
                   <item.icon size={20} />
@@ -119,8 +119,8 @@ export default function DashboardLayout({
           </nav>
 
           {/* User section */}
-          <div className="p-4 border-t border-[#2F3336]">
-            <div className="flex items-center gap-3 px-3 py-2 rounded-xl bg-[#1a1a1a]">
+          <div className="p-4 border-t border-[#2F3336]/60">
+            <div className="flex items-center gap-3 px-3 py-2 rounded-xl bg-white/[0.03] border border-[#2F3336]/40">
               <div className="w-9 h-9 rounded-full bg-gradient-to-br from-kuwex-cyan to-kuwex-blue flex items-center justify-center text-black font-bold text-sm">
                 K
               </div>
@@ -136,7 +136,7 @@ export default function DashboardLayout({
       {/* Main content */}
       <div className="lg:pl-64">
         {/* Top header */}
-        <header className="sticky top-0 z-30 h-16 bg-[#0A0A0A]/80 backdrop-blur-xl border-b border-[#2F3336]">
+        <header className="sticky top-0 z-30 h-16 bg-[#0A0A0A]/80 backdrop-blur-xl border-b border-[#2F3336]/60">
           <div className="flex items-center justify-between h-full px-4 lg:px-6">
             {/* Left side */}
             <div className="flex items-center gap-4">
@@ -148,7 +148,7 @@ export default function DashboardLayout({
               </button>
               
               {/* Search */}
-              <div className="hidden md:flex items-center gap-2 bg-[#16181C] border border-[#2F3336] rounded-xl px-4 py-2 w-80">
+              <div className="hidden md:flex items-center gap-2 bg-[#16181C]/80 border border-[#2F3336]/60 rounded-xl px-4 py-2 w-80 focus-within:border-kuwex-cyan/30 focus-within:ring-1 focus-within:ring-kuwex-cyan/20 transition-all duration-300">
                 <Search size={18} className="text-gray-500" />
                 <input
                   type="text"
@@ -167,10 +167,10 @@ export default function DashboardLayout({
               <div className="relative">
                 <button
                   onClick={() => setNotificationsOpen(!notificationsOpen)}
-                  className="relative p-2 text-gray-400 hover:text-white hover:bg-[#16181C] rounded-xl transition-colors"
+                  className="relative p-2 text-gray-400 hover:text-white hover:bg-white/[0.03] rounded-xl transition-all duration-300"
                 >
                   <Bell size={20} />
-                  <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-kuwex-cyan rounded-full" />
+                  <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-kuwex-cyan rounded-full animate-pulse" />
                 </button>
 
                 <AnimatePresence>
@@ -179,9 +179,9 @@ export default function DashboardLayout({
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute right-0 mt-2 w-80 bg-[#16181C] border border-[#2F3336] rounded-2xl shadow-xl overflow-hidden"
+                      className="absolute right-0 mt-2 w-80 bg-[#16181C]/95 backdrop-blur-xl border border-[#2F3336]/60 rounded-2xl shadow-2xl overflow-hidden"
                     >
-                      <div className="px-4 py-3 border-b border-[#2F3336]">
+                      <div className="px-4 py-3 border-b border-[#2F3336]/60">
                         <h3 className="font-semibold text-white">Notifications</h3>
                       </div>
                       <div className="max-h-80 overflow-y-auto">
@@ -197,7 +197,7 @@ export default function DashboardLayout({
                           </div>
                         ))}
                       </div>
-                      <div className="px-4 py-3 border-t border-[#2F3336]">
+                      <div className="px-4 py-3 border-t border-[#2F3336]/60">
                         <button className="text-sm text-kuwex-cyan hover:underline">
                           View all notifications
                         </button>
@@ -211,7 +211,7 @@ export default function DashboardLayout({
               <div className="relative">
                 <button
                   onClick={() => setProfileOpen(!profileOpen)}
-                  className="flex items-center gap-2 p-1.5 hover:bg-[#16181C] rounded-xl transition-colors"
+                  className="flex items-center gap-2 p-1.5 hover:bg-white/[0.03] rounded-xl transition-all duration-300"
                 >
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-kuwex-cyan to-kuwex-blue flex items-center justify-center text-black font-bold text-sm">
                     K
@@ -225,9 +225,9 @@ export default function DashboardLayout({
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute right-0 mt-2 w-56 bg-[#16181C] border border-[#2F3336] rounded-2xl shadow-xl overflow-hidden"
+                      className="absolute right-0 mt-2 w-56 bg-[#16181C]/95 backdrop-blur-xl border border-[#2F3336]/60 rounded-2xl shadow-2xl overflow-hidden"
                     >
-                      <div className="px-4 py-3 border-b border-[#2F3336]">
+                      <div className="px-4 py-3 border-b border-[#2F3336]/60">
                         <p className="font-semibold text-white">Kuda</p>
                         <p className="text-xs text-gray-500">projects@kuwex.co</p>
                       </div>

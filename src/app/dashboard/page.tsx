@@ -133,7 +133,7 @@ export default function Dashboard() {
           <p className="text-gray-500">Welcome back, Kuda. Here&apos;s your business overview.</p>
         </div>
         <div className="flex items-center gap-3">
-          <select className="bg-[#16181C] border border-[#2F3336] rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-kuwex-cyan/50">
+          <select className="bg-[#16181C]/80 border border-[#2F3336]/60 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-kuwex-cyan/50 focus:ring-1 focus:ring-kuwex-cyan/20 transition-all duration-300">
             <option>This Month</option>
             <option>Last Month</option>
             <option>This Quarter</option>
@@ -146,7 +146,7 @@ export default function Dashboard() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-gradient-to-r from-kuwex-cyan/10 to-kuwex-blue/10 border border-kuwex-cyan/20 rounded-2xl p-6"
+        className="bg-gradient-to-r from-kuwex-cyan/10 to-kuwex-blue/10 border border-kuwex-cyan/20 rounded-2xl p-6 shadow-[0_0_30px_rgba(0,229,255,0.05)]"
       >
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
@@ -254,7 +254,7 @@ export default function Dashboard() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-6"
+        className="bg-[#16181C]/80 backdrop-blur-sm border border-[#2F3336]/60 rounded-2xl p-6"
       >
         <div className="flex items-center gap-2 mb-4">
           <Lightbulb className="text-kuwex-cyan" size={20} />
@@ -294,7 +294,7 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="lg:col-span-2 bg-[#16181C] border border-[#2F3336] rounded-2xl p-6"
+          className="lg:col-span-2 bg-[#16181C]/80 backdrop-blur-sm border border-[#2F3336]/60 rounded-2xl p-6"
         >
           <h2 className="text-lg font-semibold text-white mb-6">Revenue by Service</h2>
           <div className="space-y-4">
@@ -322,7 +322,7 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-6"
+          className="bg-[#16181C]/80 backdrop-blur-sm border border-[#2F3336]/60 rounded-2xl p-6"
         >
           <h2 className="text-lg font-semibold text-white mb-4">Upcoming Deadlines</h2>
           <div className="space-y-4">
@@ -356,7 +356,7 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-6"
+          className="bg-[#16181C]/80 backdrop-blur-sm border border-[#2F3336]/60 rounded-2xl p-6"
         >
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-white">Active Projects</h2>
@@ -399,7 +399,7 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-6"
+          className="bg-[#16181C]/80 backdrop-blur-sm border border-[#2F3336]/60 rounded-2xl p-6"
         >
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-white">Recent Leads</h2>
@@ -456,7 +456,7 @@ function KPICard({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-5 hover:border-[#3F4346] transition-colors"
+      className="bg-[#16181C]/80 backdrop-blur-sm border border-[#2F3336]/60 rounded-2xl p-5 hover:border-kuwex-cyan/20 transition-all duration-300 group"
     >
       <div className="flex items-start justify-between mb-3">
         <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${colorClasses[color]}`}>
