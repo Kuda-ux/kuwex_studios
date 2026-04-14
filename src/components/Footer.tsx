@@ -4,11 +4,11 @@ import { Mail, Phone, MapPin } from "lucide-react";
 
 const footerLinks = {
   services: [
-    { name: "Branding & Design", href: "/services" },
-    { name: "Web Development", href: "/services" },
-    { name: "Mobile Apps", href: "/services" },
-    { name: "Digital Marketing", href: "/services" },
-    { name: "Consultancy", href: "/services" },
+    { name: "Web Design", href: "/services/web-design" },
+    { name: "SEO Services", href: "/services/seo-services" },
+    { name: "Social Media Marketing", href: "/services/social-media-marketing" },
+    { name: "Google Ads", href: "/services/google-ads" },
+    { name: "Branding & Design", href: "/services/branding" },
   ],
   company: [
     { name: "About", href: "/about" },
@@ -37,10 +37,10 @@ export default function Footer() {
             <Link href="/" className="inline-block mb-5">
               <Image
                 src="/logo.jpg"
-                alt="KuWeX Studios"
-                width={130}
-                height={38}
-                className="h-8 w-auto object-contain"
+                alt="KuWeX Studios - Digital Marketing Agency Zimbabwe"
+                width={180}
+                height={50}
+                className="h-11 w-auto object-contain"
               />
             </Link>
             <p className="text-gray-500 text-sm leading-relaxed mb-6 max-w-xs">

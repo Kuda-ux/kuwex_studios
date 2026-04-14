@@ -8,73 +8,80 @@ import Link from "next/link";
 import Image from "next/image";
 
 const featuredPost = {
-  title: "The Future of Digital Innovation in Africa",
-  excerpt: "Exploring how African businesses are leveraging technology to compete on the global stage and drive unprecedented growth across the continent.",
-  image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&h=600&fit=crop",
+  slug: "how-much-does-website-cost-zimbabwe-2026",
+  title: "How Much Does a Website Cost in Zimbabwe? (2026 Complete Guide)",
+  excerpt: "A detailed pricing breakdown for website design in Zimbabwe — from simple business sites to full e-commerce platforms. Learn what affects cost and how to budget for your next web project.",
+  image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=600&fit=crop",
   author: "Kuda",
-  date: "December 10, 2024",
-  readTime: "8 min read",
-  category: "Innovation"
+  date: "April 8, 2026",
+  readTime: "12 min read",
+  category: "Web Design"
 };
 
 const blogPosts = [
   {
-    title: "10 Web Design Trends to Watch in 2025",
-    excerpt: "Stay ahead of the curve with these emerging design trends that will shape the digital landscape.",
+    slug: "seo-guide-zimbabwe-small-businesses",
+    title: "SEO Guide for Zimbabwe Small Businesses: Rank #1 on Google in 2026",
+    excerpt: "A step-by-step local SEO guide for SMEs in Harare and beyond. Learn keyword research, on-page optimization, and Google Business Profile setup.",
+    image: "https://images.unsplash.com/photo-1562577309-4932fdd64cd1?w=600&h=400&fit=crop",
+    author: "Kuda",
+    date: "April 2, 2026",
+    readTime: "15 min read",
+    category: "SEO"
+  },
+  {
+    slug: "google-ads-zimbabwe-beginners-guide",
+    title: "Google Ads Zimbabwe: The Complete Beginner's Guide for 2026",
+    excerpt: "How to set up, manage, and optimize Google Ads campaigns for Zimbabwe businesses. Budgets, targeting, ad policies, and ROI tracking explained.",
+    image: "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&h=400&fit=crop",
+    author: "Kuda",
+    date: "March 25, 2026",
+    readTime: "14 min read",
+    category: "Google Ads"
+  },
+  {
+    slug: "best-social-media-platforms-zimbabwe-businesses",
+    title: "Best Social Media Platforms for Zimbabwe Businesses in 2026",
+    excerpt: "Facebook, Instagram, LinkedIn, TikTok, or WhatsApp? We compare each platform's reach, demographics, and ROI for the Zimbabwe market.",
+    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&h=400&fit=crop",
+    author: "Weston",
+    date: "March 18, 2026",
+    readTime: "10 min read",
+    category: "Social Media"
+  },
+  {
+    slug: "web-design-trends-zimbabwe-2026",
+    title: "10 Web Design Trends Zimbabwe Businesses Must Adopt in 2026",
+    excerpt: "From AI-powered design to dark mode UIs — the design trends shaping Zimbabwe's digital landscape this year and how to implement them.",
     image: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=600&h=400&fit=crop",
     author: "Weston",
-    date: "December 8, 2024",
-    readTime: "5 min read",
-    category: "Design"
+    date: "March 10, 2026",
+    readTime: "8 min read",
+    category: "Web Design"
   },
   {
-    title: "Building Scalable Mobile Apps with React Native",
-    excerpt: "A comprehensive guide to creating performant cross-platform mobile applications.",
-    image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=400&fit=crop",
-    author: "Kuda",
-    date: "December 5, 2024",
-    readTime: "10 min read",
-    category: "Development"
-  },
-  {
-    title: "Digital Marketing Strategies for African Startups",
-    excerpt: "Proven tactics to grow your startup's online presence and reach your target audience effectively.",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
-    author: "Weston",
-    date: "December 1, 2024",
-    readTime: "7 min read",
-    category: "Marketing"
-  },
-  {
-    title: "The Importance of Brand Identity in the Digital Age",
-    excerpt: "Why a strong brand identity is crucial for standing out in today's crowded digital marketplace.",
-    image: "https://images.unsplash.com/photo-1493421419110-74f4e85ba126?w=600&h=400&fit=crop",
-    author: "Weston",
-    date: "November 28, 2024",
-    readTime: "6 min read",
-    category: "Branding"
-  },
-  {
-    title: "Optimizing Website Performance for African Markets",
-    excerpt: "Technical strategies to ensure your website loads fast even on slower connections.",
+    slug: "google-ads-vs-seo-zimbabwe",
+    title: "Google Ads vs SEO: Which is Better for Zimbabwe SMEs?",
+    excerpt: "A data-driven comparison of paid search vs organic SEO for Zimbabwean businesses. When to use each, expected costs, timelines, and real ROI.",
     image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&h=400&fit=crop",
     author: "Kuda",
-    date: "November 25, 2024",
-    readTime: "8 min read",
-    category: "Development"
+    date: "March 3, 2026",
+    readTime: "11 min read",
+    category: "SEO"
   },
   {
-    title: "Creating Engaging Video Content for Social Media",
-    excerpt: "Tips and tricks for producing video content that captures attention and drives engagement.",
-    image: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=600&h=400&fit=crop",
+    slug: "branding-mistakes-zimbabwe-businesses",
+    title: "7 Branding Mistakes Zimbabwe Businesses Make (And How to Fix Them)",
+    excerpt: "Common branding pitfalls that cost Zimbabwean businesses customers and credibility. Expert advice on logo design, brand consistency, and positioning.",
+    image: "https://images.unsplash.com/photo-1493421419110-74f4e85ba126?w=600&h=400&fit=crop",
     author: "Weston",
-    date: "November 20, 2024",
-    readTime: "5 min read",
-    category: "Multimedia"
+    date: "February 24, 2026",
+    readTime: "9 min read",
+    category: "Branding"
   },
 ];
 
-const categories = ["All", "Innovation", "Design", "Development", "Marketing", "Branding", "Multimedia"];
+const categories = ["All", "Web Design", "SEO", "Google Ads", "Social Media", "Branding"];
 
 export default function Blog() {
   return (
@@ -184,7 +191,7 @@ export default function Blog() {
                   </span>
                 </div>
                 <Link 
-                  href="#"
+                  href={`/blog/${featuredPost.slug}`}
                   className="group/link inline-flex items-center gap-2 bg-gradient-to-r from-kuwex-cyan/10 to-kuwex-blue/10 border border-kuwex-cyan/20 text-kuwex-cyan hover:from-kuwex-cyan hover:to-kuwex-blue hover:text-black px-6 py-2.5 rounded-full font-semibold text-sm transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,229,255,0.3)] w-fit"
                 >
                   Read Article <ArrowRight size={16} className="group-hover/link:translate-x-1 transition-transform duration-300" />
@@ -206,35 +213,39 @@ export default function Blog() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="x-card-vibrant rounded-3xl overflow-hidden group"
               >
-                <div className="relative h-48">
-                  <Image
-                    src={post.image}
-                    alt={post.title}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="absolute top-4 left-4">
-                    <span className="bg-black/60 backdrop-blur-xl text-white text-xs font-medium px-3 py-1.5 rounded-full border border-white/10">
-                      {post.category}
-                    </span>
+                <Link href={`/blog/${post.slug}`} className="x-card-vibrant rounded-3xl overflow-hidden group block h-full">
+                  <div className="relative h-48">
+                    <Image
+                      src={post.image}
+                      alt={post.title}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <div className="absolute top-4 left-4">
+                      <span className="bg-black/60 backdrop-blur-xl text-white text-xs font-medium px-3 py-1.5 rounded-full border border-white/10">
+                        {post.category}
+                      </span>
+                    </div>
                   </div>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-lg font-bold mb-3 text-white group-hover:text-kuwex-cyan transition-colors duration-300 line-clamp-2">
-                    {post.title}
-                  </h3>
-                  <p className="text-gray-500 text-sm mb-4 line-clamp-2">{post.excerpt}</p>
-                  <div className="flex items-center justify-between text-xs text-gray-500">
-                    <span className="flex items-center gap-1">
-                      <User size={14} />
-                      {post.author}
-                    </span>
-                    <span>{post.readTime}</span>
+                  <div className="p-6">
+                    <h3 className="text-lg font-bold mb-3 text-white group-hover:text-kuwex-cyan transition-colors duration-300 line-clamp-2">
+                      {post.title}
+                    </h3>
+                    <p className="text-gray-500 text-sm mb-4 line-clamp-2">{post.excerpt}</p>
+                    <div className="flex items-center justify-between text-xs text-gray-500">
+                      <span className="flex items-center gap-1">
+                        <User size={14} />
+                        {post.author}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Calendar size={14} />
+                        {post.date}
+                      </span>
+                    </div>
                   </div>
-                </div>
+                </Link>
               </motion.article>
             ))}
           </div>
