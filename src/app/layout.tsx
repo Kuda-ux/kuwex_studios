@@ -66,7 +66,16 @@ export const metadata: Metadata = {
     images: [`${SITE_URL}/og-image.jpg`],
   },
   verification: {
-    google: 'YOUR_GOOGLE_SEARCH_CONSOLE_ID',
+    google: 'googlecb9e0a28b7d8003e',
+  },
+  icons: {
+    icon: [
+      { url: '/logo.jpg', type: 'image/jpeg' },
+      { url: '/logo.jpg', sizes: '32x32', type: 'image/jpeg' },
+      { url: '/logo.jpg', sizes: '16x16', type: 'image/jpeg' },
+    ],
+    apple: [{ url: '/logo.jpg' }],
+    shortcut: '/logo.jpg',
   },
   alternates: {
     canonical: SITE_URL,
@@ -203,6 +212,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="/logo.jpg" type="image/jpeg" />
+        <link rel="apple-touch-icon" href="/logo.jpg" />
+        <meta name="theme-color" content="#00E5FF" />
+      </head>
       <body className={cn("min-h-screen antialiased")} style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>
         <ThemeProvider
           attribute="class"

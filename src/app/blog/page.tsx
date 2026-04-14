@@ -8,80 +8,140 @@ import Link from "next/link";
 import Image from "next/image";
 
 const featuredPost = {
-  slug: "how-much-does-website-cost-zimbabwe-2026",
-  title: "How Much Does a Website Cost in Zimbabwe? (2026 Complete Guide)",
-  excerpt: "A detailed pricing breakdown for website design in Zimbabwe — from simple business sites to full e-commerce platforms. Learn what affects cost and how to budget for your next web project.",
-  image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=600&fit=crop",
+  slug: "zimbabwe-ai-economy-business-lead-or-left-behind",
+  title: "Zimbabwe Is Entering the AI Economy: Will Your Business Lead or Be Left Behind?",
+  excerpt: "The Zimbabwe National AI Strategy (2026–2030) is here. Artificial intelligence is no longer a Western luxury — it's becoming the backbone of Zimbabwe's economic future. This is what every business owner must know now.",
+  image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=600&fit=crop",
   author: "Kuda",
-  date: "April 8, 2026",
-  readTime: "12 min read",
-  category: "Web Design"
+  date: "April 14, 2026",
+  readTime: "14 min read",
+  category: "AI & Digital Transformation"
 };
 
 const blogPosts = [
   {
-    slug: "seo-guide-zimbabwe-small-businesses",
-    title: "SEO Guide for Zimbabwe Small Businesses: Rank #1 on Google in 2026",
-    excerpt: "A step-by-step local SEO guide for SMEs in Harare and beyond. Learn keyword research, on-page optimization, and Google Business Profile setup.",
+    slug: "why-every-zimbabwean-sme-needs-digital-presence-2026",
+    title: "Why Every Zimbabwean SME Needs a Serious Digital Presence in 2026",
+    excerpt: "The market has shifted. Your customers search Google before they visit your shop. If you're invisible online, you're invisible — period.",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
+    author: "Kuda",
+    date: "April 12, 2026",
+    readTime: "12 min read",
+    category: "Digital Strategy"
+  },
+  {
+    slug: "hustle-to-brand-zimbabwean-startups-trust-online",
+    title: "From Hustle to Brand: How Zimbabwean Startups Can Build Trust Online Faster",
+    excerpt: "You have the hustle. But trust is what converts browsers into buyers. Here's how Zimbabwean startups can build credibility online — fast.",
+    image: "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&h=400&fit=crop",
+    author: "Weston",
+    date: "April 10, 2026",
+    readTime: "11 min read",
+    category: "Branding"
+  },
+  {
+    slug: "new-zimbabwean-customer-checks-google-first",
+    title: "The New Zimbabwean Customer Checks Google First — Is Your Business Ready?",
+    excerpt: "Before they call, before they visit, before they buy — they Google you. What are they finding? The answer determines your revenue.",
     image: "https://images.unsplash.com/photo-1562577309-4932fdd64cd1?w=600&h=400&fit=crop",
     author: "Kuda",
+    date: "April 8, 2026",
+    readTime: "10 min read",
+    category: "SEO"
+  },
+  {
+    slug: "zimbabwe-national-ai-strategy-ngos-corporates-government",
+    title: "What the Zimbabwe National AI Strategy Means for NGOs, Corporates, and Government",
+    excerpt: "The government has spoken. AI is national priority. Here's what every sector — from NGOs to mining — must do to align with Zimbabwe's AI vision.",
+    image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600&h=400&fit=crop",
+    author: "Kuda",
+    date: "April 5, 2026",
+    readTime: "13 min read",
+    category: "AI & Digital Transformation"
+  },
+  {
+    slug: "digital-skills-national-power-upskill-team-zimbabwe",
+    title: "Digital Skills Are Becoming National Power: Why Your Team Must Upskill Now",
+    excerpt: "Zimbabwe's ICT policy demands a digitally literate workforce by 2027. Companies that invest in digital skills now will dominate. Those that don't will disappear.",
+    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=400&fit=crop",
+    author: "Weston",
     date: "April 2, 2026",
+    readTime: "10 min read",
+    category: "Digital Strategy"
+  },
+  {
+    slug: "cybersecurity-data-privacy-trust-zimbabwe-digital-economy",
+    title: "Cybersecurity, Data Privacy, and Trust in Zimbabwe's Digital Economy",
+    excerpt: "Data breaches destroy trust instantly. As Zimbabwe goes digital, cybersecurity isn't IT's problem — it's the CEO's problem. Here's why.",
+    image: "https://images.unsplash.com/photo-1563986768609-322da13575f2?w=600&h=400&fit=crop",
+    author: "Kuda",
+    date: "March 28, 2026",
+    readTime: "12 min read",
+    category: "Cybersecurity"
+  },
+  {
+    slug: "world-class-website-zimbabwean-businesses-compete-globally",
+    title: "How a World-Class Website Can Help Zimbabwean Businesses Compete Globally",
+    excerpt: "Your website is your 24/7 salesperson. In a global economy, a mediocre website doesn't just look bad — it costs you international clients.",
+    image: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=600&h=400&fit=crop",
+    author: "Weston",
+    date: "March 22, 2026",
+    readTime: "11 min read",
+    category: "Web Design"
+  },
+  {
+    slug: "rise-of-smart-zimbabwe-preparing-businesses-digital-economy",
+    title: "The Rise of Smart Zimbabwe: Preparing Businesses for a Digital Economy",
+    excerpt: "Smart cities. Smart agriculture. Smart governance. Zimbabwe's digital transformation is accelerating. Is your business keeping pace?",
+    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop",
+    author: "Kuda",
+    date: "March 16, 2026",
+    readTime: "13 min read",
+    category: "AI & Digital Transformation"
+  },
+  {
+    slug: "zimbabwe-future-belongs-visible-businesses-online-growth",
+    title: "Zimbabwe's Future Belongs to Visible Businesses: Build Your Online Growth Machine",
+    excerpt: "Visibility is the new currency. In Zimbabwe's fast-moving economy, the businesses that get seen are the businesses that win. This is your blueprint.",
+    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&h=400&fit=crop",
+    author: "Weston",
+    date: "March 10, 2026",
+    readTime: "12 min read",
+    category: "Digital Strategy"
+  },
+  {
+    slug: "how-much-does-website-cost-zimbabwe-2026",
+    title: "How Much Does a Website Cost in Zimbabwe? (2026 Complete Guide)",
+    excerpt: "A detailed pricing breakdown for website design in Zimbabwe — from simple business sites to full e-commerce platforms.",
+    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&h=400&fit=crop",
+    author: "Kuda",
+    date: "March 5, 2026",
+    readTime: "12 min read",
+    category: "Web Design"
+  },
+  {
+    slug: "seo-guide-zimbabwe-small-businesses",
+    title: "SEO Guide for Zimbabwe Small Businesses: Rank #1 on Google in 2026",
+    excerpt: "A step-by-step local SEO guide for SMEs in Harare and beyond.",
+    image: "https://images.unsplash.com/photo-1493421419110-74f4e85ba126?w=600&h=400&fit=crop",
+    author: "Kuda",
+    date: "February 28, 2026",
     readTime: "15 min read",
     category: "SEO"
   },
   {
     slug: "google-ads-zimbabwe-beginners-guide",
     title: "Google Ads Zimbabwe: The Complete Beginner's Guide for 2026",
-    excerpt: "How to set up, manage, and optimize Google Ads campaigns for Zimbabwe businesses. Budgets, targeting, ad policies, and ROI tracking explained.",
+    excerpt: "How to set up, manage, and optimize Google Ads campaigns for Zimbabwe businesses.",
     image: "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&h=400&fit=crop",
     author: "Kuda",
-    date: "March 25, 2026",
+    date: "February 22, 2026",
     readTime: "14 min read",
     category: "Google Ads"
   },
-  {
-    slug: "best-social-media-platforms-zimbabwe-businesses",
-    title: "Best Social Media Platforms for Zimbabwe Businesses in 2026",
-    excerpt: "Facebook, Instagram, LinkedIn, TikTok, or WhatsApp? We compare each platform's reach, demographics, and ROI for the Zimbabwe market.",
-    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&h=400&fit=crop",
-    author: "Weston",
-    date: "March 18, 2026",
-    readTime: "10 min read",
-    category: "Social Media"
-  },
-  {
-    slug: "web-design-trends-zimbabwe-2026",
-    title: "10 Web Design Trends Zimbabwe Businesses Must Adopt in 2026",
-    excerpt: "From AI-powered design to dark mode UIs — the design trends shaping Zimbabwe's digital landscape this year and how to implement them.",
-    image: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=600&h=400&fit=crop",
-    author: "Weston",
-    date: "March 10, 2026",
-    readTime: "8 min read",
-    category: "Web Design"
-  },
-  {
-    slug: "google-ads-vs-seo-zimbabwe",
-    title: "Google Ads vs SEO: Which is Better for Zimbabwe SMEs?",
-    excerpt: "A data-driven comparison of paid search vs organic SEO for Zimbabwean businesses. When to use each, expected costs, timelines, and real ROI.",
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&h=400&fit=crop",
-    author: "Kuda",
-    date: "March 3, 2026",
-    readTime: "11 min read",
-    category: "SEO"
-  },
-  {
-    slug: "branding-mistakes-zimbabwe-businesses",
-    title: "7 Branding Mistakes Zimbabwe Businesses Make (And How to Fix Them)",
-    excerpt: "Common branding pitfalls that cost Zimbabwean businesses customers and credibility. Expert advice on logo design, brand consistency, and positioning.",
-    image: "https://images.unsplash.com/photo-1493421419110-74f4e85ba126?w=600&h=400&fit=crop",
-    author: "Weston",
-    date: "February 24, 2026",
-    readTime: "9 min read",
-    category: "Branding"
-  },
 ];
 
-const categories = ["All", "Web Design", "SEO", "Google Ads", "Social Media", "Branding"];
+const categories = ["All", "AI & Digital Transformation", "Digital Strategy", "SEO", "Web Design", "Branding", "Cybersecurity", "Google Ads"];
 
 export default function Blog() {
   return (

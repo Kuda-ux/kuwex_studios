@@ -122,8 +122,8 @@
   }
 
   .btn-primary:hover {
-    box-shadow: 0 0 40px rgba(0, 229, 255, 0.5);
-    transform: translateY(-1px);
+    box-shadow: 0 0 40px rgba(0, 229, 255, 0.5), 0 0 80px rgba(0, 133, 255, 0.2);
+    transform: translateY(-2px);
   }
 
   .btn-secondary {
@@ -145,13 +145,14 @@
   }
 
   .x-card-vibrant:hover {
-    border-color: rgba(0, 229, 255, 0.3);
-    box-shadow: 0 0 40px rgba(0, 229, 255, 0.08), 0 8px 40px rgba(0, 0, 0, 0.4);
-    transform: translateY(-3px);
+    border-color: rgba(0, 229, 255, 0.4);
+    box-shadow: 0 0 50px rgba(0, 229, 255, 0.12), 0 0 100px rgba(0, 133, 255, 0.06), 0 8px 40px rgba(0, 0, 0, 0.4);
+    transform: translateY(-4px);
   }
 
   .vibrant-badge {
-    @apply inline-flex items-center gap-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full px-4 py-2;
+    @apply inline-flex items-center gap-2 bg-[#16181C]/90 backdrop-blur-sm border border-[#2F3336]/60 rounded-full px-4 py-2;
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.05);
   }
 
   .section-heading {
@@ -166,10 +167,11 @@
     @apply bg-clip-text text-transparent bg-gradient-to-r from-[#00E5FF] via-[#0085FF] to-[#00E5FF];
     background-size: 200% auto;
     animation: shimmer 3s linear infinite;
+    filter: brightness(1.15);
   }
 
   .vibrant-glow {
-    box-shadow: 0 0 60px rgba(0, 229, 255, 0.15), 0 0 120px rgba(0, 133, 255, 0.08);
+    box-shadow: 0 0 60px rgba(0, 229, 255, 0.2), 0 0 120px rgba(0, 133, 255, 0.1), 0 0 200px rgba(0, 229, 255, 0.05);
   }
 
   .vibrant-border-glow {
@@ -239,4 +241,26 @@
 @keyframes border-glow {
   0%, 100% { border-color: rgba(0, 229, 255, 0.2); }
   50% { border-color: rgba(0, 229, 255, 0.5); }
+}
+
+@keyframes vibrant-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes glow-breathe {
+  0%, 100% { box-shadow: 0 0 20px rgba(0, 229, 255, 0.15), 0 0 60px rgba(0, 133, 255, 0.05); }
+  50% { box-shadow: 0 0 40px rgba(0, 229, 255, 0.3), 0 0 80px rgba(0, 133, 255, 0.1); }
+}
+
+@keyframes text-glow {
+  0%, 100% { text-shadow: 0 0 20px rgba(0, 229, 255, 0.3), 0 0 60px rgba(0, 133, 255, 0.1); }
+  50% { text-shadow: 0 0 30px rgba(0, 229, 255, 0.5), 0 0 80px rgba(0, 133, 255, 0.2); }
+}
+
+@keyframes rainbow-border {
+  0% { border-color: rgba(0, 229, 255, 0.4); }
+  33% { border-color: rgba(0, 133, 255, 0.4); }
+  66% { border-color: rgba(0, 229, 255, 0.6); }
+  100% { border-color: rgba(0, 229, 255, 0.4); }
 }

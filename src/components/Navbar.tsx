@@ -63,12 +63,6 @@ export default function Navbar() {
           {/* Right Side */}
           <div className="hidden md:flex items-center gap-3">
             <Link
-              href="/dashboard"
-              className="px-4 py-2 text-sm font-medium text-gray-500 hover:text-white transition-all duration-300 rounded-full hover:bg-white/5"
-            >
-              Dashboard
-            </Link>
-            <Link
               href="/contact"
               className="group relative inline-flex items-center gap-2 bg-gradient-to-r from-[#00E5FF] to-[#0085FF] text-black px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,229,255,0.4)] hover:scale-[1.02]"
             >
@@ -117,20 +111,6 @@ export default function Navbar() {
                   </Link>
                 </motion.div>
               ))}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: navLinks.length * 0.05 }}
-              >
-                <Link
-                  href="/dashboard"
-                  className="flex items-center justify-between py-3.5 px-4 text-lg font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-300"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Dashboard
-                  <ArrowRight size={16} className="text-gray-600" />
-                </Link>
-              </motion.div>
               <div className="pt-4 px-4">
                 <Link
                   href="/contact"
