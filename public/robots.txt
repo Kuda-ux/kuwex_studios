@@ -1,0 +1,11 @@
+# KuWeX Studios - robots.txt
+# https://kuwexstudios.co.zw
+
+User-agent: *
+Allow: /
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /_next/
+
+# Sitemaps
+Sitemap: https://kuwexstudios.co.zw/sitemap.xml

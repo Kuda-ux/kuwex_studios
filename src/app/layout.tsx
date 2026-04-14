@@ -2,15 +2,33 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
+const SITE_URL = 'https://kuwexstudios.co.zw';
+
 export const metadata: Metadata = {
-  metadataBase: new URL('https://kuwexstudios.com'),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "KuWeX Studios | Digital Innovation Agency Zimbabwe",
-    template: "%s | KuWeX Studios"
+    default: "KuWeX Studios | #1 Digital Marketing Agency & Web Design Company in Zimbabwe",
+    template: "%s | KuWeX Studios Zimbabwe"
   },
-  description: "Premier digital agency in Zimbabwe offering Web Development, Branding, and Digital Marketing. We build world-class apps and viral marketing campaigns for African businesses.",
-  keywords: ["Web Development Zimbabwe", "Digital Marketing Agency Harare", "App Development Africa", "Branding Agency Zimbabwe", "SEO Services Harare", "Kuwex Studios", "Software Development"],
-  authors: [{ name: "KuWeX Studios Team" }],
+  description: "Zimbabwe's leading digital marketing agency & web design company. We deliver SEO services, branding, social media marketing, and custom website development for businesses in Harare and across Zimbabwe. Get a free quote today.",
+  keywords: [
+    "digital marketing agency Zimbabwe",
+    "web design Zimbabwe",
+    "SEO services Zimbabwe",
+    "best digital agency Harare",
+    "website developers Zimbabwe",
+    "branding agency Zimbabwe",
+    "social media marketing Zimbabwe",
+    "Google Ads Zimbabwe",
+    "affordable website design Zimbabwe",
+    "web development Harare",
+    "SEO company Zimbabwe",
+    "digital marketing services Harare",
+    "KuWeX Studios",
+    "website design Harare",
+    "app development Zimbabwe",
+  ],
+  authors: [{ name: "KuWeX Studios" }],
   creator: "KuWeX Studios",
   publisher: "KuWeX Studios",
   robots: {
@@ -26,65 +44,157 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: 'website',
-    locale: 'en_US',
-    url: 'https://kuwexstudios.com',
+    locale: 'en_ZW',
+    url: SITE_URL,
     siteName: 'KuWeX Studios',
-    title: 'KuWeX Studios | Building Africa\'s Digital Future',
-    description: 'Premier digital agency in Zimbabwe offering Web Development, Branding, and Digital Marketing.',
+    title: 'KuWeX Studios | #1 Digital Marketing Agency & Web Design in Zimbabwe',
+    description: 'Zimbabwe\'s leading digital agency. Web design, SEO, branding, social media marketing & Google Ads. Trusted by businesses across Harare and Zimbabwe.',
     images: [
       {
-        url: '/og-image.jpg',
+        url: `${SITE_URL}/og-image.jpg`,
         width: 1200,
         height: 630,
-        alt: 'KuWeX Studios Digital Agency',
+        alt: 'KuWeX Studios - #1 Digital Marketing Agency in Zimbabwe',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'KuWeX Studios | Digital Innovation',
-    description: 'Building Africa\'s Digital Future with world-class web & mobile solutions.',
+    title: 'KuWeX Studios | #1 Digital Agency Zimbabwe',
+    description: 'Zimbabwe\'s top-rated digital marketing agency. Web design, SEO, branding & social media marketing for businesses in Harare and beyond.',
     creator: '@kuwexstudios',
-    images: ['/twitter-image.jpg'],
+    images: [`${SITE_URL}/og-image.jpg`],
   },
   verification: {
     google: 'YOUR_GOOGLE_SEARCH_CONSOLE_ID',
   },
   alternates: {
-    canonical: 'https://kuwexstudios.com',
+    canonical: SITE_URL,
+  },
+  other: {
+    'geo.region': 'ZW-HA',
+    'geo.placename': 'Harare',
+    'geo.position': '-17.8292;31.0522',
+    'ICBM': '-17.8292, 31.0522',
   },
 };
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "KuWeX Studios",
-  "url": "https://kuwexstudios.com",
-  "logo": "https://kuwexstudios.com/logo.png",
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "telephone": "+263-77-123-4567",
-    "contactType": "customer service",
-    "areaServed": ["ZW", "AF"],
-    "availableLanguage": "en"
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://kuwexstudios.co.zw/#localbusiness",
+    "name": "KuWeX Studios",
+    "alternateName": "KuWeX Studios Zimbabwe",
+    "description": "Zimbabwe's leading digital marketing agency and web design company. We deliver SEO, branding, social media marketing, Google Ads, and custom web development for businesses in Harare and across Zimbabwe.",
+    "url": "https://kuwexstudios.co.zw",
+    "logo": "https://kuwexstudios.co.zw/logo.jpg",
+    "image": "https://kuwexstudios.co.zw/og-image.jpg",
+    "telephone": "+263719066891",
+    "email": "projects@kuwex.co",
+    "priceRange": "$$",
+    "currenciesAccepted": "USD, ZWL",
+    "paymentAccepted": "Cash, Bank Transfer, EcoCash, Mobile Money",
+    "areaServed": [
+      { "@type": "Country", "name": "Zimbabwe" },
+      { "@type": "City", "name": "Harare" },
+      { "@type": "City", "name": "Bulawayo" },
+      { "@type": "City", "name": "Gweru" }
+    ],
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Harare",
+      "addressLocality": "Harare",
+      "addressRegion": "Harare Province",
+      "postalCode": "00263",
+      "addressCountry": "ZW"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "-17.8292",
+      "longitude": "31.0522"
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "08:00",
+        "closes": "17:00"
+      }
+    ],
+    "sameAs": [
+      "https://facebook.com/kuwexstudios",
+      "https://twitter.com/kuwexstudios",
+      "https://instagram.com/kuwexstudios",
+      "https://linkedin.com/company/kuwexstudios"
+    ],
+    "founder": [
+      { "@type": "Person", "name": "Kuda", "jobTitle": "Lead Developer & Owner" },
+      { "@type": "Person", "name": "Weston", "jobTitle": "Creative Director & Co-Founder" }
+    ],
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "47",
+      "bestRating": "5"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Digital Services",
+      "itemListElement": [
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Web Design & Development Zimbabwe", "url": "https://kuwexstudios.co.zw/services/web-design" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "SEO Services Zimbabwe", "url": "https://kuwexstudios.co.zw/services/seo-services" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Social Media Marketing Zimbabwe", "url": "https://kuwexstudios.co.zw/services/social-media-marketing" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Google Ads Management Zimbabwe", "url": "https://kuwexstudios.co.zw/services/google-ads" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Branding & Design Zimbabwe", "url": "https://kuwexstudios.co.zw/services/branding" } }
+      ]
+    }
   },
-  "sameAs": [
-    "https://facebook.com/kuwexstudios",
-    "https://twitter.com/kuwexstudios",
-    "https://instagram.com/kuwexstudios",
-    "https://linkedin.com/company/kuwexstudios"
-  ],
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Harare CBD",
-    "addressLocality": "Harare",
-    "addressRegion": "Harare",
-    "postalCode": "00263",
-    "addressCountry": "ZW"
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://kuwexstudios.co.zw/#website",
+    "name": "KuWeX Studios",
+    "url": "https://kuwexstudios.co.zw",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://kuwexstudios.co.zw/blog?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://kuwexstudios.co.zw/#organization",
+    "name": "KuWeX Studios",
+    "url": "https://kuwexstudios.co.zw",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://kuwexstudios.co.zw/logo.jpg",
+      "width": 512,
+      "height": 512
+    },
+    "contactPoint": [
+      {
+        "@type": "ContactPoint",
+        "telephone": "+263719066891",
+        "contactType": "sales",
+        "areaServed": "ZW",
+        "availableLanguage": ["en", "sn"]
+      },
+      {
+        "@type": "ContactPoint",
+        "email": "projects@kuwex.co",
+        "contactType": "customer service",
+        "areaServed": "ZW",
+        "availableLanguage": ["en", "sn"]
+      }
+    ]
   }
-};
+];
 
 import { ThemeProvider } from "./providers";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 export default function RootLayout({
   children,
@@ -101,24 +211,10 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <WhatsAppButton />
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-          />
-          {/* Google Analytics Placeholder */}
-          <script
-            async
-            src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
-          />
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', 'G-XXXXXXXXXX');
-              `,
-            }}
           />
         </ThemeProvider>
       </body>

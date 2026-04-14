@@ -117,51 +117,40 @@ const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "KuWeX Studios",
-  "url": "https://kuwexstudios.com",
+  "url": "https://kuwexstudios.co.zw",
   "potentialAction": {
     "@type": "SearchAction",
-    "target": "https://kuwexstudios.com/search?q={search_term_string}",
+    "target": "https://kuwexstudios.co.zw/blog?q={search_term_string}",
     "query-input": "required name=search_term_string"
   }
 };
 
 const serviceSchema = {
   "@context": "https://schema.org",
-  "@type": "Service",
-  "serviceType": "Digital Agency Services",
+  "@type": "ProfessionalService",
+  "name": "KuWeX Studios - Digital Marketing Agency Zimbabwe",
+  "description": "Zimbabwe's #1 digital marketing agency and web design company. SEO, social media marketing, Google Ads, branding, and custom web development for businesses in Harare and across Zimbabwe.",
+  "url": "https://kuwexstudios.co.zw",
+  "telephone": "+263719066891",
+  "email": "projects@kuwex.co",
+  "priceRange": "$$",
   "provider": {
     "@type": "Organization",
     "name": "KuWeX Studios"
   },
-  "areaServed": {
-    "@type": "Continent",
-    "name": "Africa"
-  },
+  "areaServed": [
+    { "@type": "Country", "name": "Zimbabwe" },
+    { "@type": "City", "name": "Harare" }
+  ],
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
     "name": "Digital Services",
     "itemListElement": [
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Web Development"
-        }
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Digital Branding"
-        }
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Digital Marketing"
-        }
-      }
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Web Design & Development Zimbabwe", "url": "https://kuwexstudios.co.zw/services/web-design" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "SEO Services Zimbabwe", "url": "https://kuwexstudios.co.zw/services/seo-services" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Social Media Marketing Zimbabwe", "url": "https://kuwexstudios.co.zw/services/social-media-marketing" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Google Ads Management Zimbabwe", "url": "https://kuwexstudios.co.zw/services/google-ads" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Branding & Design Zimbabwe", "url": "https://kuwexstudios.co.zw/services/branding" } }
     ]
   }
 };
@@ -203,17 +192,17 @@ export default function Home() {
                 className="vibrant-badge mb-8"
               >
                 <span className="w-2 h-2 bg-kuwex-cyan rounded-full animate-pulse" />
-                <span className="text-sm text-gray-400">Creative Digital Agency</span>
+                <span className="text-sm text-gray-400">#1 Digital Marketing Agency in Zimbabwe</span>
               </motion.div>
 
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 leading-[1.05]">
-                <span className="sr-only">KuWeX Studios: </span>
+                <span className="sr-only">KuWeX Studios - Best Digital Marketing Agency & Web Design Company in Zimbabwe</span>
                 Building Africa&apos;s<br />
                 <span className="vibrant-gradient-text">Digital Future.</span>
               </h1>
 
               <p className="text-lg sm:text-xl text-gray-400 mb-10 leading-relaxed max-w-xl">
-                Create powerful digital experiences. Attract the right customers. Watch your business grow.
+                Zimbabwe&apos;s leading digital marketing agency and web design company. We build stunning websites, dominate Google rankings, and drive real growth for businesses across Harare and Zimbabwe.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">

@@ -713,6 +713,41 @@ export default function Services() {
         </div>
       </section>
 
+      {/* Individual Service Pages - Internal Links for SEO */}
+      <section className="py-16 px-4 border-t border-[#2F3336]/40">
+        <div className="container mx-auto max-w-6xl">
+          <h3 className="text-lg font-semibold text-white mb-6">Explore Our Services in Detail</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+            <Link href="/services/web-design" className="px-4 py-3 bg-[#16181C] border border-[#2F3336]/60 rounded-xl text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300 text-center">
+              Web Design Zimbabwe
+            </Link>
+            <Link href="/services/seo-services" className="px-4 py-3 bg-[#16181C] border border-[#2F3336]/60 rounded-xl text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300 text-center">
+              SEO Services Zimbabwe
+            </Link>
+            <Link href="/services/social-media-marketing" className="px-4 py-3 bg-[#16181C] border border-[#2F3336]/60 rounded-xl text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300 text-center">
+              Social Media Marketing
+            </Link>
+            <Link href="/services/google-ads" className="px-4 py-3 bg-[#16181C] border border-[#2F3336]/60 rounded-xl text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300 text-center">
+              Google Ads Zimbabwe
+            </Link>
+            <Link href="/services/branding" className="px-4 py-3 bg-[#16181C] border border-[#2F3336]/60 rounded-xl text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300 text-center">
+              Branding & Design
+            </Link>
+          </div>
+          <div className="flex flex-wrap gap-3 mt-4">
+            <Link href="/locations/harare" className="px-4 py-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300">
+              Services in Harare
+            </Link>
+            <Link href="/locations/bulawayo" className="px-4 py-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300">
+              Services in Bulawayo
+            </Link>
+            <Link href="/locations/zimbabwe" className="px-4 py-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300">
+              Nationwide Services
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </main>
   );
