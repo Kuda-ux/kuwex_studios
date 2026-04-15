@@ -226,7 +226,7 @@ export default function Help() {
             </motion.a>
 
             <motion.a
-              href="mailto:projects@kuwex.co"
+              href="mailto:info@kuwexstudios.co.zw"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -237,7 +237,7 @@ export default function Help() {
                 <Mail size={32} className="text-kuwex-cyan" />
               </div>
               <h3 className="text-xl font-bold text-white mb-2 group-hover:text-kuwex-cyan transition-colors duration-300">Email Us</h3>
-              <p className="text-gray-500 text-sm">projects@kuwex.co</p>
+              <p className="text-gray-500 text-sm">info@kuwexstudios.co.zw</p>
             </motion.a>
 
             <motion.a

@@ -132,7 +132,7 @@ const serviceSchema = {
   "description": "Zimbabwe's #1 digital marketing agency and web design company. SEO, social media marketing, Google Ads, branding, and custom web development for businesses in Harare and across Zimbabwe.",
   "url": "https://kuwexstudios.co.zw",
   "telephone": "+263719066891",
-  "email": "projects@kuwex.co",
+  "email": "info@kuwexstudios.co.zw",
   "priceRange": "$$",
   "provider": {
     "@type": "Organization",

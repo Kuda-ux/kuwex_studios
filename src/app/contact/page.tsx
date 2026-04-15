@@ -98,7 +98,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500 mb-1">Email</p>
-                    <a href="mailto:projects@kuwex.co" className="text-lg font-medium text-white hover:text-kuwex-cyan transition-colors duration-300">projects@kuwex.co</a>
+                    <a href="mailto:info@kuwexstudios.co.zw" className="text-lg font-medium text-white hover:text-kuwex-cyan transition-colors duration-300">info@kuwexstudios.co.zw</a>
                   </div>
                 </div>
 

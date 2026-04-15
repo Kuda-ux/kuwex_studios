@@ -7,7 +7,6 @@ import {
   Target, Globe2, Star, Lightbulb, Shield, Users, Sparkles, ArrowRight,
   Globe, Zap, Heart, Rocket, Code, Palette, TrendingUp
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 // 3D Globe Visual for About Hero
@@ -157,15 +156,133 @@ const team = [
     name: "Kuda",
     role: "Co-Founder & Tech Lead",
     bio: "Visionary technologist passionate about scalable architecture and futuristic interfaces. Leading KuWeX's technical innovation.",
-    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop&crop=face"
+    color: "#00E5FF"
   },
   {
     name: "Weston",
     role: "Co-Founder & Creative Director",
     bio: "Design maestro obsessed with pixel-perfect precision and user-centric experiences. Crafting KuWeX's visual identity.",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face"
+    color: "#0085FF"
   }
 ];
+
+// Abstract Holographic Human Avatar Component
+const HolographicAvatar = ({ color }: { color: string }) => {
+  return (
+    <div className="relative w-32 h-32">
+      {/* Outer glow ring */}
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        className="absolute inset-0 rounded-full"
+        style={{ 
+          background: `conic-gradient(from 0deg, ${color}40, transparent, ${color}40)`,
+          filter: 'blur(8px)'
+        }}
+      />
+      
+      {/* Main avatar circle */}
+      <div className="absolute inset-2 rounded-full bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#2F3336] overflow-hidden">
+        {/* Holographic grid */}
+        <div className="absolute inset-0">
+          {/* Vertical lines */}
+          {[...Array(6)].map((_, i) => (
+            <motion.div
+              key={`v-${i}`}
+              className="absolute top-0 bottom-0 w-px"
+              style={{ 
+                left: `${(i + 1) * 16.66}%`,
+                background: `linear-gradient(to bottom, transparent, ${color}30, transparent)`
+              }}
+              animate={{ opacity: [0.3, 0.6, 0.3] }}
+              transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
+            />
+          ))}
+          {/* Horizontal lines */}
+          {[...Array(6)].map((_, i) => (
+            <motion.div
+              key={`h-${i}`}
+              className="absolute left-0 right-0 h-px"
+              style={{ 
+                top: `${(i + 1) * 16.66}%`,
+                background: `linear-gradient(to right, transparent, ${color}30, transparent)`
+              }}
+              animate={{ opacity: [0.3, 0.6, 0.3] }}
+              transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
+            />
+          ))}
+        </div>
+        
+        {/* Abstract human silhouette */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <motion.div
+            animate={{ scale: [1, 1.05, 1] }}
+            transition={{ duration: 3, repeat: Infinity }}
+            className="relative"
+          >
+            {/* Head */}
+            <div 
+              className="w-8 h-8 rounded-full mx-auto mb-1"
+              style={{ 
+                background: `radial-gradient(circle, ${color}60, ${color}20)`,
+                boxShadow: `0 0 20px ${color}40`
+              }}
+            />
+            {/* Body */}
+            <div 
+              className="w-12 h-16 rounded-t-full"
+              style={{ 
+                background: `linear-gradient(to bottom, ${color}40, ${color}10)`,
+                clipPath: 'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)'
+              }}
+            />
+          </motion.div>
+        </div>
+        
+        {/* Scanning line effect */}
+        <motion.div
+          className="absolute left-0 right-0 h-px"
+          style={{ background: color }}
+          animate={{ top: ['0%', '100%'] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+        />
+        
+        {/* Particle effects */}
+        {[...Array(8)].map((_, i) => (
+          <motion.div
+            key={`particle-${i}`}
+            className="absolute w-1 h-1 rounded-full"
+            style={{ 
+              background: color,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`
+            }}
+            animate={{ 
+              opacity: [0, 1, 0],
+              scale: [0, 1, 0]
+            }}
+            transition={{ 
+              duration: 2,
+              repeat: Infinity,
+              delay: i * 0.3
+            }}
+          />
+        ))}
+      </div>
+      
+      {/* Pulsing outer ring */}
+      <motion.div
+        className="absolute inset-0 rounded-full border-2"
+        style={{ borderColor: color }}
+        animate={{ 
+          scale: [1, 1.1, 1],
+          opacity: [0.5, 0.2, 0.5]
+        }}
+        transition={{ duration: 2, repeat: Infinity }}
+      />
+    </div>
+  );
+};
 
 
 export default function About() {
@@ -339,13 +456,8 @@ export default function About() {
                 className="x-card-vibrant rounded-3xl p-8 group"
               >
                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
-                  <div className="relative w-32 h-32 rounded-2xl overflow-hidden flex-shrink-0 border-2 border-[#2F3336]/60 group-hover:border-kuwex-cyan/40 transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(0,229,255,0.15)]">
-                    <Image
-                      src={member.image}
-                      alt={member.name}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
+                  <div className="flex-shrink-0">
+                    <HolographicAvatar color={member.color} />
                   </div>
                   <div className="text-center sm:text-left">
                     <h3 className="text-2xl font-bold text-white mb-1 group-hover:text-kuwex-cyan transition-colors duration-300">{member.name}</h3>

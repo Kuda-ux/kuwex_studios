@@ -148,7 +148,7 @@ export default function HararePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               { icon: Phone, label: "Phone", value: "+263 719 066 891", href: "tel:+263719066891" },
-              { icon: Mail, label: "Email", value: "projects@kuwex.co", href: "mailto:projects@kuwex.co" },
+              { icon: Mail, label: "Email", value: "info@kuwexstudios.co.zw", href: "mailto:info@kuwexstudios.co.zw" },
               { icon: Building2, label: "Location", value: "Harare, Zimbabwe", href: "/contact" },
             ].map((item, i) => (
               <a key={i} href={item.href} className="x-card-vibrant rounded-2xl p-6 text-center group block">

@@ -229,7 +229,7 @@ export default function DashboardLayout({
                     >
                       <div className="px-4 py-3 border-b border-[#2F3336]/60">
                         <p className="font-semibold text-white">Kuda</p>
-                        <p className="text-xs text-gray-500">projects@kuwex.co</p>
+                        <p className="text-xs text-gray-500">info@kuwexstudios.co.zw</p>
                       </div>
                       <div className="py-2">
                         <Link

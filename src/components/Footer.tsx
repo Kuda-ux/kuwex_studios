@@ -47,9 +47,9 @@ export default function Footer() {
               Building Africa&apos;s digital future with world-class creative technology and innovation.
             </p>
             <div className="space-y-3">
-              <a href="mailto:projects@kuwex.co" className="flex items-center gap-2.5 text-gray-500 text-sm hover:text-kuwex-cyan transition-colors duration-300">
+              <a href="mailto:info@kuwexstudios.co.zw" className="flex items-center gap-2.5 text-gray-500 text-sm hover:text-kuwex-cyan transition-colors duration-300">
                 <Mail size={14} className="text-kuwex-cyan/60" />
-                projects@kuwex.co
+                info@kuwexstudios.co.zw
               </a>
               <a href="tel:+263719066891" className="flex items-center gap-2.5 text-gray-500 text-sm hover:text-kuwex-cyan transition-colors duration-300">
                 <Phone size={14} className="text-kuwex-cyan/60" />

@@ -106,7 +106,7 @@ export default function Cookies() {
                 If you have questions about our use of cookies, please contact us at:
               </p>
               <ul className="text-gray-400 mt-4 space-y-2">
-                <li><strong className="text-white">Email:</strong> projects@kuwex.co</li>
+                <li><strong className="text-white">Email:</strong> info@kuwexstudios.co.zw</li>
                 <li><strong className="text-white">Phone:</strong> +263 719 066 891</li>
               </ul>
             </div>
