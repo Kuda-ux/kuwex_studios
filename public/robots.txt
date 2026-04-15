@@ -7,5 +7,15 @@ Disallow: /dashboard/
 Disallow: /api/
 Disallow: /_next/
 
+# Crawl-delay for specific bots
+User-agent: Googlebot
+Crawl-delay: 0
+
+User-agent: Bingbot
+Crawl-delay: 0
+
 # Sitemaps
 Sitemap: https://kuwexstudios.co.zw/sitemap.xml
+
+# RSS Feed for News Aggregators
+# RSS: https://kuwexstudios.co.zw/rss.xml

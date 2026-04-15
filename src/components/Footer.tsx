@@ -17,10 +17,10 @@ const footerLinks = {
     { name: "Contact", href: "/contact" },
   ],
   resources: [
+    { name: "FAQ", href: "/faq" },
     { name: "Help Center", href: "/help" },
     { name: "Privacy Policy", href: "/privacy" },
     { name: "Terms of Service", href: "/terms" },
-    { name: "Cookie Policy", href: "/cookies" },
   ],
 };
 
