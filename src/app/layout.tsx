@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     description: 'Zimbabwe\'s leading digital agency. Web design, SEO, branding, social media marketing & Google Ads. Trusted by businesses across Harare and Zimbabwe.',
     images: [
       {
-        url: `${SITE_URL}/og-image.jpg`,
+        url: `${SITE_URL}/logo.jpg`,
         width: 1200,
         height: 630,
         alt: 'KuWeX Studios - #1 Digital Marketing Agency in Zimbabwe',
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     title: 'KuWeX Studios | #1 Digital Agency Zimbabwe',
     description: 'Zimbabwe\'s top-rated digital marketing agency. Web design, SEO, branding & social media marketing for businesses in Harare and beyond.',
     creator: '@kuwexstudios',
-    images: [`${SITE_URL}/og-image.jpg`],
+    images: [`${SITE_URL}/logo.jpg`],
   },
   verification: {
     google: 'googlecb9e0a28b7d8003e',
@@ -98,7 +98,7 @@ const jsonLd = [
     "description": "Zimbabwe's leading digital marketing agency and web design company. We deliver SEO, branding, social media marketing, Google Ads, and custom web development for businesses in Harare and across Zimbabwe.",
     "url": "https://kuwexstudios.co.zw",
     "logo": "https://kuwexstudios.co.zw/logo.jpg",
-    "image": "https://kuwexstudios.co.zw/og-image.jpg",
+    "image": "https://kuwexstudios.co.zw/logo.jpg",
     "telephone": "+263719066891",
     "email": "info@kuwexstudios.co.zw",
     "priceRange": "$$",
@@ -228,6 +228,8 @@ export default function RootLayout({
         <link rel="icon" href="/logo.jpg" type="image/jpeg" />
         <link rel="apple-touch-icon" href="/logo.jpg" />
         <meta name="theme-color" content="#00E5FF" />
+        {/* RSS Feed for news aggregators, Google News, Opera Mini */}
+        <link rel="alternate" type="application/rss+xml" title="KuWeX Studios Blog" href="https://kuwexstudios.co.zw/rss.xml" />
       </head>
       <body className={cn("min-h-screen antialiased")} style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>
         <ThemeProvider
