@@ -31,16 +31,16 @@ export default function Navbar() {
           : "bg-black/20 backdrop-blur-sm border-b border-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-[70px] sm:h-[80px] gap-2">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
+        <div className="flex items-center justify-between h-[60px] sm:h-[70px] md:h-[80px] gap-1 sm:gap-2">
           {/* Logo */}
-          <Link href="/" className="flex items-center group relative flex-shrink-0 max-w-[120px] sm:max-w-[160px] md:max-w-none">
+          <Link href="/" className="flex items-center group relative flex-shrink-0 min-w-0 max-w-[100px] sm:max-w-[140px] md:max-w-none">
             <Image
               src="/logo.jpg"
-              alt="KuWeX Studios - Digital Marketing Agency Zimbabwe"
+              alt="KuWeX Studios"
               width={200}
               height={56}
-              className="h-8 sm:h-10 md:h-12 lg:h-14 w-auto object-contain group-hover:brightness-125 transition-all duration-300"
+              className="h-7 sm:h-9 md:h-11 lg:h-14 w-auto object-contain group-hover:brightness-125 transition-all duration-300"
               priority
             />
             <div className="absolute -inset-2 bg-kuwex-cyan/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
@@ -72,15 +72,13 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex-shrink-0 ml-auto">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="relative p-2 sm:p-2.5 rounded-xl text-white hover:bg-white/5 border border-[#2F3336]/30 hover:border-[#2F3336]/60 transition-all duration-300 bg-black/40 backdrop-blur-sm"
-              aria-label="Toggle menu"
-            >
-              {isOpen ? <X size={20} className="sm:w-[22px] sm:h-[22px]" /> : <Menu size={20} className="sm:w-[22px] sm:h-[22px]" />}
-            </button>
-          </div>
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden flex-shrink-0 relative p-1.5 sm:p-2 rounded-lg text-white hover:bg-white/5 border border-[#2F3336]/40 hover:border-kuwex-cyan/40 transition-all duration-300 bg-black/60 backdrop-blur-sm"
+            aria-label="Toggle menu"
+          >
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
         </div>
       </div>
 
