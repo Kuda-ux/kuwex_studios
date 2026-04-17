@@ -69,9 +69,11 @@ export function middleware(request: NextRequest) {
     // Clean up old entries periodically
     if (rateLimit.size > 10000) {
       const cutoff = now - RATE_LIMIT_WINDOW * 2;
-      for (const [key, value] of rateLimit.entries()) {
-        if (value.timestamp < cutoff) rateLimit.delete(key);
-      }
+      const keys = Array.from(rateLimit.keys());
+      keys.forEach((key) => {
+        const val = rateLimit.get(key);
+        if (val && val.timestamp < cutoff) rateLimit.delete(key);
+      });
     }
   }
 
