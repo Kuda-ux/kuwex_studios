@@ -28,6 +28,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/careers`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.6 },
     
     // Blog posts - Zimbabwe digital transformation series (high priority thought leadership)
+    { url: `${baseUrl}/blog/econet-ai-launch-zimbabwe-new-era-artificial-intelligence`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.9 },
     { url: `${baseUrl}/blog/zimbabwe-ai-economy-business-lead-or-left-behind`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${baseUrl}/blog/why-every-zimbabwean-sme-needs-digital-presence-2026`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${baseUrl}/blog/hustle-to-brand-zimbabwean-startups-trust-online`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },

@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
 
 const postMeta: Record<string, { title: string; description: string; keywords: string[]; image: string; author: string; date: string }> = {
+  "econet-ai-launch-zimbabwe-new-era-artificial-intelligence": {
+    title: "Econet Launches AI in Zimbabwe — A New Era Begins | KuWeX Studios",
+    description: "Econet Wireless officially launches Econet AI with ICT Minister Tatenda Mavetera. How this historic moment aligns with Zimbabwe's National AI Strategy, NDS2, and transforms business, youth, and the economy.",
+    keywords: ["Econet AI Zimbabwe", "Econet AI launch", "Econet artificial intelligence", "Zimbabwe AI strategy", "Tatenda Mavetera AI", "NDS2 digital transformation", "AI Zimbabwe 2026", "Econet Wireless AI", "Zimbabwe digital economy", "AI Africa"],
+    image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&h=630&fit=crop",
+    author: "Kuda",
+    date: "2026-04-17",
+  },
   "how-much-does-website-cost-zimbabwe-2026": {
     title: "How Much Does a Website Cost in Zimbabwe? (2026 Pricing Guide) | KuWeX Studios",
     description: "Complete website pricing guide for Zimbabwe businesses in 2026. From basic sites ($499) to e-commerce ($2,499+). Learn what affects cost and get a free quote from KuWeX Studios.",
