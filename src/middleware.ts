@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 // Known spam/malicious bot user agents
+// NOTE: AI bots (GPTBot, ClaudeBot, PerplexityBot, etc.) are ALLOWED
+// for Answer Engine Optimization (AEO) — essential for 2026 discoverability
 const BLOCKED_BOTS = [
   'AhrefsBot',
   'MJ12bot',
@@ -15,17 +17,10 @@ const BLOCKED_BOTS = [
   'ZoominfoBot',
   'Buck/',
   'SeznamBot',
-  'CCBot',
-  'Bytespider',
-  'GPTBot',
-  'ClaudeBot',
-  'anthropic-ai',
   'Scrapy',
   'colly',
   'python-requests',
   'Go-http-client',
-  'curl/',
-  'wget/',
 ];
 
 // Rate limiting map (in-memory, resets on deploy)

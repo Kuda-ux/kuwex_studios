@@ -83,6 +83,17 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: SITE_URL,
+    languages: {
+      'en': SITE_URL,
+      'en-ZW': SITE_URL,
+      'en-ZA': SITE_URL,
+      'en-US': SITE_URL,
+      'en-GB': SITE_URL,
+      'x-default': SITE_URL,
+    },
+    types: {
+      'application/rss+xml': `${SITE_URL}/rss.xml`,
+    },
   },
   other: {
     'geo.region': 'ZW-HA',
@@ -207,7 +218,7 @@ const jsonLd = [
 ];
 
 import { ThemeProvider } from "./providers";
-import WhatsAppButton from "@/components/WhatsAppButton";
+import ContactWidget from "@/components/ContactWidget";
 
 export default function RootLayout({
   children,
@@ -244,6 +255,10 @@ export default function RootLayout({
         <meta name="theme-color" content="#00E5FF" />
         {/* RSS Feed for news aggregators, Google News, Opera Mini */}
         <link rel="alternate" type="application/rss+xml" title="KuWeX Studios Blog" href="https://kuwexstudios.co.zw/rss.xml" />
+        {/* Google News sitemap for Google News indexing */}
+        <link rel="alternate" type="application/xml" title="KuWeX Studios News Sitemap" href="https://kuwexstudios.co.zw/news-sitemap.xml" />
+        {/* llms.txt for AI Answer Engine discovery (ChatGPT, Claude, Perplexity) */}
+        <link rel="alternate" type="text/plain" title="LLM Instructions" href="https://kuwexstudios.co.zw/llms.txt" />
       </head>
       <body className={cn("min-h-screen antialiased")} style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>
         <ThemeProvider
@@ -253,7 +268,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
-          <WhatsAppButton />
+          <ContactWidget />
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

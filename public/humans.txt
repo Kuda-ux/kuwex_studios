@@ -1,0 +1,26 @@
+/* TEAM */
+
+Lead Developer & Owner: Kuda
+Site: https://kuwexstudios.co.zw
+Contact: info@kuwexstudios.co.zw
+Location: Harare, Zimbabwe
+
+Creative Director & Co-Founder: Weston
+Contact: info@kuwexstudios.co.zw
+Location: Harare, Zimbabwe
+
+/* THANKS */
+
+To every Zimbabwean business that trusts us with their digital transformation.
+To every African builder pushing the continent forward.
+
+/* SITE */
+
+Last update: 2026/04/19
+Language: English
+Doctype: HTML5
+Standards: HTML5, CSS3, ES2022
+Components: Next.js 14, React 18, Tailwind CSS, Framer Motion, TypeScript
+Software: Visual Studio Code, Cascade AI, Figma
+Host: Netlify
+Version Control: GitHub

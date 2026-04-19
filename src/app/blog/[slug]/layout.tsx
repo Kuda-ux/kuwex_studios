@@ -202,6 +202,82 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
 }
 
-export default function BlogPostLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+export default function BlogPostLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: { slug: string };
+}) {
+  const meta = postMeta[params.slug];
+  const baseUrl = "https://kuwexstudios.co.zw";
+
+  if (!meta) return <>{children}</>;
+
+  const postUrl = `${baseUrl}/blog/${params.slug}`;
+
+  // Article JSON-LD for Google rich results, Google News, and AI engines
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": postUrl,
+    },
+    "headline": meta.title,
+    "description": meta.description,
+    "image": {
+      "@type": "ImageObject",
+      "url": meta.image,
+      "width": 1200,
+      "height": 630,
+    },
+    "datePublished": meta.date,
+    "dateModified": meta.date,
+    "author": {
+      "@type": "Person",
+      "name": meta.author,
+      "url": `${baseUrl}/about`,
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "KuWeX Studios",
+      "url": baseUrl,
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${baseUrl}/logo.jpg`,
+        "width": 600,
+        "height": 60,
+      },
+    },
+    "keywords": meta.keywords.join(", "),
+    "articleSection": "Digital Marketing",
+    "inLanguage": "en-ZW",
+    "isAccessibleForFree": true,
+  };
+
+  // Breadcrumb schema
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": baseUrl },
+      { "@type": "ListItem", "position": 2, "name": "Blog", "item": `${baseUrl}/blog` },
+      { "@type": "ListItem", "position": 3, "name": meta.title, "item": postUrl },
+    ],
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      {children}
+    </>
+  );
 }
