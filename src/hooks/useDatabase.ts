@@ -26,7 +26,7 @@ import {
   Document, 
   SocialPost,
   CompanySettings 
-} from '@/lib/supabase';
+} from '@/lib/types';
 
 // Generic hook for database operations - fixed to prevent infinite loops
 function useDbCollection<T>(

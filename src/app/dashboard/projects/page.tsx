@@ -20,7 +20,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { useProjects } from "@/hooks/useDatabase";
-import { Project } from "@/lib/supabase";
+import { Project } from "@/lib/types";
 
 type ProjectStatus = "planning" | "in_progress" | "review" | "completed";
 

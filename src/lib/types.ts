@@ -1,11 +1,8 @@
-import { createClient } from '@supabase/supabase-js';
+// =====================================================
+// KuWeX Studios — Dashboard Database Types
+// These interfaces define the shape of data stored in Turso
+// =====================================================
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-// Types for database tables
 export interface Project {
   id: string;
   name: string;
@@ -50,6 +47,13 @@ export interface Client {
   updated_at: string;
 }
 
+export interface QuotationItem {
+  description: string;
+  quantity: number;
+  unit_price: number;
+  total: number;
+}
+
 export interface Quotation {
   id: string;
   quote_number: string;
@@ -64,7 +68,7 @@ export interface Quotation {
   updated_at: string;
 }
 
-export interface QuotationItem {
+export interface InvoiceItem {
   description: string;
   quantity: number;
   unit_price: number;
@@ -84,13 +88,6 @@ export interface Invoice {
   items: InvoiceItem[];
   created_at: string;
   updated_at: string;
-}
-
-export interface InvoiceItem {
-  description: string;
-  quantity: number;
-  unit_price: number;
-  total: number;
 }
 
 export interface Tender {
@@ -170,3 +167,34 @@ export interface CompanySettings {
   created_at: string;
   updated_at: string;
 }
+
+// Table name type — used for generic API routes
+export type TableName =
+  | 'projects'
+  | 'leads'
+  | 'clients'
+  | 'quotations'
+  | 'invoices'
+  | 'tenders'
+  | 'team_members'
+  | 'tasks'
+  | 'documents'
+  | 'social_posts'
+  | 'company_settings';
+
+// JSON columns for each table — need serialize/deserialize on the server
+export const JSON_COLUMNS: Record<TableName, string[]> = {
+  projects: ['team'],
+  leads: [],
+  clients: [],
+  quotations: ['items'],
+  invoices: ['items'],
+  tenders: [],
+  team_members: [],
+  tasks: [],
+  documents: [],
+  social_posts: ['platforms'],
+  company_settings: [],
+};
+
+export const VALID_TABLES = Object.keys(JSON_COLUMNS) as TableName[];

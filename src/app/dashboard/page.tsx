@@ -21,7 +21,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { useProjects, useInvoices, useLeads, useClients, useQuotations, useTenders } from "@/hooks/useDatabase";
-import { Project, Lead, Invoice, Quotation, Client, Tender } from "@/lib/supabase";
+import { Project, Lead, Invoice, Quotation, Client, Tender } from "@/lib/types";
 
 export default function Dashboard() {
   const { projects, loading: projectsLoading } = useProjects();

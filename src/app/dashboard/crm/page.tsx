@@ -23,7 +23,7 @@ import {
   UserCheck,
 } from "lucide-react";
 import { useLeads, useClients } from "@/hooks/useDatabase";
-import { Lead, Client } from "@/lib/supabase";
+import { Lead, Client } from "@/lib/types";
 
 type LeadStatus = "new" | "contacted" | "qualified" | "proposal" | "won" | "lost";
 

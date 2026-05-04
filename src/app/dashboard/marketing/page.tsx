@@ -26,7 +26,7 @@ import {
   Image as ImageIcon,
 } from "lucide-react";
 import { useSocialPosts } from "@/hooks/useDatabase";
-import { SocialPost } from "@/lib/supabase";
+import { SocialPost } from "@/lib/types";
 
 // Platform configuration
 const platformIcons: Record<string, typeof Facebook> = {

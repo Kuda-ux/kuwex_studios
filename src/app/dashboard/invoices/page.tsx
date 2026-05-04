@@ -18,7 +18,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { useInvoices, useClients } from "@/hooks/useDatabase";
-import { Invoice } from "@/lib/supabase";
+import { Invoice } from "@/lib/types";
 
 type InvoiceStatus = "draft" | "sent" | "paid" | "overdue" | "partial";
 

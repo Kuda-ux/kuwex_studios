@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.39.0",
+    "@libsql/client": "^0.17.3",
     "axios": "^1.6.2",
     "cheerio": "^1.0.0-rc.12",
     "clsx": "^2.1.0",
