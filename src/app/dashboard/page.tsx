@@ -33,17 +33,66 @@ export default function Dashboard() {
 
   const loading = projectsLoading || invoicesLoading || leadsLoading || clientsLoading || quotationsLoading || tendersLoading;
 
-  // Calculate KPIs from real database data
+  // ---------- Real KPI calculations ----------
+  const now = Date.now();
+  const thisMonthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1).getTime();
+  const lastMonthStart = new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1).getTime();
+  const inThisMonth = (d?: string) => !!d && new Date(d).getTime() >= thisMonthStart;
+  const inLastMonth = (d?: string) => !!d && new Date(d).getTime() >= lastMonthStart && new Date(d).getTime() < thisMonthStart;
+  const pctChange = (curr: number, prev: number): number | null => {
+    if (prev === 0 && curr === 0) return null;
+    if (prev === 0) return null; // no baseline to compare against
+    return Math.round(((curr - prev) / prev) * 100);
+  };
+
+  // Revenue (real money received)
   const totalRevenue = invoices.reduce((sum: number, inv: Invoice) => sum + (inv.paid_amount || 0), 0);
   const totalInvoiced = invoices.reduce((sum: number, inv: Invoice) => sum + (inv.amount || 0), 0);
+  const outstandingRevenue = totalInvoiced - totalRevenue;
+  const revenueThisMonth = invoices.filter((i: Invoice) => inThisMonth(i.created_at)).reduce((s, i) => s + (i.paid_amount || 0), 0);
+  const revenueLastMonth = invoices.filter((i: Invoice) => inLastMonth(i.created_at)).reduce((s, i) => s + (i.paid_amount || 0), 0);
+  const revenueChange = pctChange(revenueThisMonth, revenueLastMonth);
+  const invoicedThisMonth = invoices.filter((i: Invoice) => inThisMonth(i.created_at)).reduce((s, i) => s + (i.amount || 0), 0);
+  const invoicedLastMonth = invoices.filter((i: Invoice) => inLastMonth(i.created_at)).reduce((s, i) => s + (i.amount || 0), 0);
+  const invoicedChange = pctChange(invoicedThisMonth, invoicedLastMonth);
+
+  // Projects
   const activeProjects = projects.filter((p: Project) => p.status === "in_progress").length;
   const completedProjects = projects.filter((p: Project) => p.status === "completed").length;
+  const totalProjects = projects.length;
+  const projectsThisMonth = projects.filter((p: Project) => inThisMonth(p.created_at)).length;
+  const projectsLastMonth = projects.filter((p: Project) => inLastMonth(p.created_at)).length;
+  const projectsChange = pctChange(projectsThisMonth, projectsLastMonth);
+
+  // Leads
+  const totalLeads = leads.length;
   const newLeadsCount = leads.filter((l: Lead) => l.status === "new").length;
   const qualifiedLeads = leads.filter((l: Lead) => l.status === "qualified" || l.status === "proposal").length;
+  const pipelineValue = leads
+    .filter((l: Lead) => l.status !== "won" && l.status !== "lost")
+    .reduce((s, l) => s + (l.value || 0), 0);
+  const leadsThisMonth = leads.filter((l: Lead) => inThisMonth(l.created_at)).length;
+  const leadsLastMonth = leads.filter((l: Lead) => inLastMonth(l.created_at)).length;
+  const leadsChange = pctChange(leadsThisMonth, leadsLastMonth);
+
+  // Clients
   const totalClients = clients.length;
   const activeClients = clients.filter((c: Client) => c.status === "active").length;
+  const clientsThisMonth = clients.filter((c: Client) => inThisMonth(c.created_at)).length;
+  const clientsLastMonth = clients.filter((c: Client) => inLastMonth(c.created_at)).length;
+  const clientsChange = pctChange(clientsThisMonth, clientsLastMonth);
+
+  // Quotations
   const pendingQuotations = quotations.filter((q: Quotation) => q.status === "sent" || q.status === "draft").length;
+  const totalQuotations = quotations.length;
+  const pendingQuotationValue = quotations
+    .filter((q: Quotation) => q.status === "sent" || q.status === "draft")
+    .reduce((s, q) => s + (q.amount || 0), 0);
+
+  // Tenders
   const activeTenders = tenders.filter((t: Tender) => t.status === "identified" || t.status === "submitted" || t.status === "planning").length;
+  const totalTenders = tenders.length;
+  void now; // keep date math available; reserved for future use
 
   // Calculate revenue by project category
   const revenueByCategory: Record<string, number> = {};
@@ -194,58 +243,66 @@ export default function Dashboard() {
         <KPICard
           title="Total Revenue"
           value={`$${totalRevenue.toLocaleString()}`}
-          change={0}
+          subtitle={outstandingRevenue > 0 ? `$${outstandingRevenue.toLocaleString()} outstanding` : "All invoices paid"}
+          change={revenueChange}
           icon={DollarSign}
           color="cyan"
         />
         <KPICard
-          title="Active Projects"
-          value={activeProjects}
-          change={0}
-          icon={FolderKanban}
-          color="blue"
+          title="Total Invoiced"
+          value={`$${totalInvoiced.toLocaleString()}`}
+          subtitle={`${invoices.length} invoice${invoices.length === 1 ? "" : "s"}`}
+          change={invoicedChange}
+          icon={TrendingUp}
+          color="cyan"
+        />
+        <KPICard
+          title="Pipeline Value"
+          value={`$${pipelineValue.toLocaleString()}`}
+          subtitle={`${qualifiedLeads} qualified · ${totalLeads} total leads`}
+          change={null}
+          icon={Target}
+          color="purple"
         />
         <KPICard
           title="Pending Quotations"
           value={pendingQuotations}
-          change={0}
+          subtitle={pendingQuotationValue > 0 ? `$${pendingQuotationValue.toLocaleString()} value` : `${totalQuotations} total quotation${totalQuotations === 1 ? "" : "s"}`}
+          change={null}
           icon={FileText}
           color="yellow"
         />
         <KPICard
+          title="Active Projects"
+          value={activeProjects}
+          subtitle={`${completedProjects} completed · ${totalProjects} total`}
+          change={projectsChange}
+          icon={FolderKanban}
+          color="blue"
+        />
+        <KPICard
           title="New Leads"
           value={newLeadsCount}
-          change={0}
+          subtitle={`${totalLeads} total lead${totalLeads === 1 ? "" : "s"}`}
+          change={leadsChange}
           icon={Users}
           color="green"
         />
         <KPICard
           title="Total Clients"
           value={totalClients}
-          change={0}
-          icon={Target}
-          color="purple"
-        />
-        <KPICard
-          title="Active Clients"
-          value={activeClients}
-          change={0}
+          subtitle={`${activeClients} active`}
+          change={clientsChange}
           icon={Globe}
           color="pink"
         />
         <KPICard
           title="Active Tenders"
           value={activeTenders}
-          change={0}
+          subtitle={`${totalTenders} total tender${totalTenders === 1 ? "" : "s"}`}
+          change={null}
           icon={Briefcase}
           color="orange"
-        />
-        <KPICard
-          title="Total Invoiced"
-          value={`$${totalInvoiced.toLocaleString()}`}
-          change={0}
-          icon={TrendingUp}
-          color="cyan"
         />
       </div>
 
@@ -297,6 +354,9 @@ export default function Dashboard() {
           className="lg:col-span-2 bg-[#16181C]/80 backdrop-blur-sm border border-[#2F3336]/60 rounded-2xl p-6"
         >
           <h2 className="text-lg font-semibold text-white mb-6">Revenue by Service</h2>
+          {revenueByService.length === 0 ? (
+            <p className="text-sm text-gray-500 py-8 text-center">No project revenue yet. Add projects with values to see this breakdown.</p>
+          ) : (
           <div className="space-y-4">
             {revenueByService.map((service, index) => (
               <div key={index}>
@@ -315,6 +375,7 @@ export default function Dashboard() {
               </div>
             ))}
           </div>
+          )}
         </motion.div>
 
         {/* Upcoming Deadlines */}
@@ -325,6 +386,9 @@ export default function Dashboard() {
           className="bg-[#16181C]/80 backdrop-blur-sm border border-[#2F3336]/60 rounded-2xl p-6"
         >
           <h2 className="text-lg font-semibold text-white mb-4">Upcoming Deadlines</h2>
+          {upcomingDeadlines.length === 0 ? (
+            <p className="text-sm text-gray-500 py-8 text-center">No upcoming deadlines.</p>
+          ) : (
           <div className="space-y-4">
             {upcomingDeadlines.map((deadline) => (
               <div key={deadline.id} className="flex items-center gap-4 p-3 bg-[#1a1a1a] rounded-xl">
@@ -346,6 +410,7 @@ export default function Dashboard() {
               </div>
             ))}
           </div>
+          )}
         </motion.div>
       </div>
 
@@ -362,6 +427,9 @@ export default function Dashboard() {
             <h2 className="text-lg font-semibold text-white">Active Projects</h2>
             <button className="text-sm text-kuwex-cyan hover:underline">View All</button>
           </div>
+          {recentProjects.length === 0 ? (
+            <p className="text-sm text-gray-500 py-8 text-center">No active projects. {completedProjects > 0 ? `${completedProjects} completed.` : "Add a project to get started."}</p>
+          ) : (
           <div className="space-y-4">
             {recentProjects.map((project: Project) => (
               <div key={project.id} className="p-4 bg-[#1a1a1a] rounded-xl">
@@ -392,6 +460,7 @@ export default function Dashboard() {
               </div>
             ))}
           </div>
+          )}
         </motion.div>
 
         {/* Recent Leads */}
@@ -405,6 +474,9 @@ export default function Dashboard() {
             <h2 className="text-lg font-semibold text-white">Recent Leads</h2>
             <button className="text-sm text-kuwex-cyan hover:underline">View All</button>
           </div>
+          {recentLeads.length === 0 ? (
+            <p className="text-sm text-gray-500 py-8 text-center">No leads yet. Add leads in the CRM page.</p>
+          ) : (
           <div className="space-y-4">
             {recentLeads.map((lead: Lead) => (
               <div key={lead.id} className="flex items-center gap-4 p-4 bg-[#1a1a1a] rounded-xl">
@@ -422,6 +494,7 @@ export default function Dashboard() {
               </div>
             ))}
           </div>
+          )}
         </motion.div>
       </div>
     </div>
@@ -432,13 +505,15 @@ export default function Dashboard() {
 function KPICard({
   title,
   value,
+  subtitle,
   change,
   icon: Icon,
   color,
 }: {
   title: string;
   value: string | number;
-  change: number;
+  subtitle?: string;
+  change?: number | null;
   icon: LucideIcon;
   color: string;
 }) {
@@ -452,6 +527,9 @@ function KPICard({
     orange: "bg-orange-500/10 text-orange-500",
   };
 
+  const showChange = change !== null && change !== undefined;
+  const isPositive = (change ?? 0) >= 0;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -462,13 +540,23 @@ function KPICard({
         <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${colorClasses[color]}`}>
           <Icon size={20} />
         </div>
-        <div className={`flex items-center gap-1 text-sm ${change >= 0 ? "text-green-500" : "text-red-500"}`}>
-          {change >= 0 ? <ArrowUpRight size={16} /> : <ArrowDownRight size={16} />}
-          {Math.abs(change)}%
-        </div>
+        {showChange ? (
+          <div
+            className={`flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full ${
+              isPositive ? "bg-green-500/10 text-green-400" : "bg-red-500/10 text-red-400"
+            }`}
+            title="vs. last month"
+          >
+            {isPositive ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />}
+            {Math.abs(change as number)}%
+          </div>
+        ) : (
+          <span className="text-[10px] text-gray-600 uppercase tracking-wider">No prior data</span>
+        )}
       </div>
       <p className="text-2xl font-bold text-white mb-1">{value}</p>
-      <p className="text-sm text-gray-500">{title}</p>
+      <p className="text-sm text-gray-400">{title}</p>
+      {subtitle && <p className="text-xs text-gray-500 mt-1">{subtitle}</p>}
     </motion.div>
   );
 }
