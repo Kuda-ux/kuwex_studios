@@ -64,7 +64,7 @@
 ### 1. Google Search Console (30 minutes)
 1. Go to https://search.google.com/search-console
 2. **Submit sitemap**: `https://kuwexstudios.co.zw/sitemap.xml`
-3. **Submit news sitemap**: `https://kuwexstudios.co.zw/news-sitemap.xml`
+3. **Submit news sitemap**: ` .xml`
 4. **URL Inspection** — request indexing for top 10 pages:
    - Homepage
    - /portfolio

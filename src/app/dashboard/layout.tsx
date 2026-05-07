@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { useDashboardNotifications } from "@/hooks/useDashboardNotifications";
 import {
   LayoutDashboard,
   FolderKanban,
@@ -15,7 +16,6 @@ import {
   UserCog,
   FolderOpen,
   Settings,
-  Brain,
   Menu,
   X,
   Bell,
@@ -34,14 +34,7 @@ const navigation = [
   { name: "Marketing", href: "/dashboard/marketing", icon: Megaphone },
   { name: "HR & Team", href: "/dashboard/hr", icon: UserCog },
   { name: "Documents", href: "/dashboard/documents", icon: FolderOpen },
-  { name: "AI Insights", href: "/dashboard/insights", icon: Brain },
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
-];
-
-const notifications = [
-  { id: 1, title: "New lead from website", time: "5 min ago", unread: true },
-  { id: 2, title: "Project deadline approaching", time: "1 hour ago", unread: true },
-  { id: 3, title: "Invoice #INV-024 paid", time: "3 hours ago", unread: false },
 ];
 
 export default function DashboardLayout({
@@ -53,6 +46,7 @@ export default function DashboardLayout({
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const pathname = usePathname();
+  const notifications = useDashboardNotifications();
 
   return (
     <div className="min-h-screen bg-[#0A0A0A]">
@@ -125,7 +119,7 @@ export default function DashboardLayout({
                 K
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-white truncate">Kuda</p>
+                <p className="text-sm font-medium text-white truncate">KuWeX Studios</p>
                 <p className="text-xs text-gray-500 truncate">Admin</p>
               </div>
             </div>
@@ -185,22 +179,25 @@ export default function DashboardLayout({
                         <h3 className="font-semibold text-white">Notifications</h3>
                       </div>
                       <div className="max-h-80 overflow-y-auto">
-                        {notifications.map((notif) => (
-                          <div
-                            key={notif.id}
-                            className={`px-4 py-3 hover:bg-[#1a1a1a] cursor-pointer ${
-                              notif.unread ? "bg-kuwex-cyan/5" : ""
-                            }`}
-                          >
-                            <p className="text-sm text-white">{notif.title}</p>
-                            <p className="text-xs text-gray-500 mt-1">{notif.time}</p>
+                        {notifications.length === 0 ? (
+                          <div className="px-4 py-8 text-center text-sm text-gray-500">
+                            No new notifications
                           </div>
-                        ))}
-                      </div>
-                      <div className="px-4 py-3 border-t border-[#2F3336]/60">
-                        <button className="text-sm text-kuwex-cyan hover:underline">
-                          View all notifications
-                        </button>
+                        ) : (
+                          notifications.map((notif) => (
+                            <Link
+                              key={notif.id}
+                              href={notif.href}
+                              onClick={() => setNotificationsOpen(false)}
+                              className={`block px-4 py-3 hover:bg-[#1a1a1a] cursor-pointer ${
+                                notif.unread ? "bg-kuwex-cyan/5" : ""
+                              }`}
+                            >
+                              <p className="text-sm text-white">{notif.title}</p>
+                              <p className="text-xs text-gray-500 mt-1">{notif.time}</p>
+                            </Link>
+                          ))
+                        )}
                       </div>
                     </motion.div>
                   )}
@@ -228,7 +225,7 @@ export default function DashboardLayout({
                       className="absolute right-0 mt-2 w-56 bg-[#16181C]/95 backdrop-blur-xl border border-[#2F3336]/60 rounded-2xl shadow-2xl overflow-hidden"
                     >
                       <div className="px-4 py-3 border-b border-[#2F3336]/60">
-                        <p className="font-semibold text-white">Kuda</p>
+                        <p className="font-semibold text-white">KuWeX Studios</p>
                         <p className="text-xs text-gray-500">info@kuwexstudios.co.zw</p>
                       </div>
                       <div className="py-2">
