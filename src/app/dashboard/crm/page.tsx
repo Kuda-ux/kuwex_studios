@@ -23,7 +23,6 @@ import {
   Flame,
   AlertTriangle,
   Trophy,
-  Filter,
 } from "lucide-react";
 import { useLeads, useClients, useInvoices } from "@/hooks/useDatabase";
 import { Lead, Client, Invoice } from "@/lib/types";
@@ -482,81 +481,8 @@ export default function CRMPage() {
         </div>
       )}
 
-      {/* Pipeline Funnel */}
-      <div className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-5">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <Filter size={18} className="text-kuwex-cyan" />
-            <h2 className="font-semibold text-white">Sales Pipeline</h2>
-          </div>
-          <p className="text-xs text-gray-500">Click a stage to filter</p>
-        </div>
-        <div className="space-y-2">
-          {analytics.funnel.map((f) => {
-            const widthPct = (f.count / analytics.maxFunnelCount) * 100;
-            const cfg = statusConfig[f.stage];
-            return (
-              <button
-                key={f.stage}
-                onClick={() => { setActiveTab("leads"); setStatusFilter(f.stage); }}
-                className="w-full text-left group"
-              >
-                <div className="flex items-center justify-between text-xs mb-1">
-                  <span className="text-gray-300 font-medium group-hover:text-white">{cfg.label}</span>
-                  <div className="flex items-center gap-3 text-gray-500">
-                    <span>{f.count} lead{f.count === 1 ? "" : "s"}</span>
-                    <span className="text-kuwex-cyan font-medium">{fmtMoney(f.value)}</span>
-                  </div>
-                </div>
-                <div className="h-7 bg-[#0A0A0A] rounded-lg overflow-hidden">
-                  <div
-                    className={`h-full ${cfg.color.replace("/20", "/40")} transition-all duration-500`}
-                    style={{ width: `${Math.max(widthPct, f.count > 0 ? 4 : 0)}%` }}
-                  />
-                </div>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Lead Sources + Top Clients */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-5">
-          <div className="flex items-center gap-2 mb-4">
-            <Globe size={18} className="text-kuwex-cyan" />
-            <h2 className="font-semibold text-white">Lead Sources</h2>
-          </div>
-          {analytics.sources.length === 0 ? (
-            <p className="text-sm text-gray-500">No leads yet.</p>
-          ) : (
-            <div className="space-y-3">
-              {analytics.sources.map((s) => {
-                const totalLeads = analytics.totalLeads || 1;
-                const sharePct = Math.round((s.total / totalLeads) * 100);
-                const cfg = sourceConfig[s.source] || sourceConfig.other;
-                return (
-                  <div key={s.source}>
-                    <div className="flex items-center justify-between text-sm mb-1">
-                      <span className={`font-medium ${cfg.color}`}>{cfg.label}</span>
-                      <div className="flex items-center gap-3 text-xs text-gray-500">
-                        <span>{s.total} lead{s.total === 1 ? "" : "s"}</span>
-                        <span className="text-green-400">{s.conversionRate}% won</span>
-                        <span className="text-kuwex-cyan font-medium">{fmtMoney(s.value)}</span>
-                      </div>
-                    </div>
-                    <div className="h-2 bg-[#0A0A0A] rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-gradient-to-r from-kuwex-cyan to-kuwex-blue transition-all duration-500"
-                        style={{ width: `${sharePct}%` }}
-                      />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
+      {/* Top Clients */}
+      <div>
         <div className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-5">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
