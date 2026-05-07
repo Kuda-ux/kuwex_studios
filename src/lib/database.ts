@@ -174,8 +174,12 @@ export const invoicesDb = {
   async recordPayment(id: string, amount: number) {
     const invoice = await this.getById(id);
     if (!invoice) throw new Error('Invoice not found');
-    const newPaidAmount = (invoice.paid_amount || 0) + amount;
-    const newStatus: Invoice['status'] = newPaidAmount >= invoice.amount ? 'paid' : 'partial';
+    const total = invoice.amount || 0;
+    const rawPaid = (invoice.paid_amount || 0) + amount;
+    // Clamp at total — never allow overpayment
+    const newPaidAmount = total > 0 ? Math.min(rawPaid, total) : rawPaid;
+    const newStatus: Invoice['status'] =
+      total > 0 && newPaidAmount >= total ? 'paid' : newPaidAmount > 0 ? 'partial' : invoice.status;
     return this.update(id, { paid_amount: newPaidAmount, status: newStatus });
   },
   async generateInvoiceNumber() {

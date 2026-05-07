@@ -105,8 +105,47 @@ export default function InvoicesPage() {
     }
   };
 
-  const handleStatusChange = async (id: string, newStatus: InvoiceStatus) => {
-    await updateInvoice(id, { status: newStatus });
+  const handleStatusChange = async (invoice: Invoice, newStatus: InvoiceStatus) => {
+    const amount = invoice.amount || 0;
+    const currentPaid = invoice.paid_amount || 0;
+    const updates: Partial<Invoice> = { status: newStatus };
+
+    // Keep status and paid_amount aligned automatically
+    if (newStatus === "paid") {
+      // Mark fully paid
+      if (currentPaid !== amount) updates.paid_amount = amount;
+    } else if (newStatus === "draft" || newStatus === "sent") {
+      // Going back to unpaid — only reset if it was previously fully/partially paid
+      if (currentPaid > 0) {
+        const ok = confirm(
+          `This invoice currently has $${currentPaid.toLocaleString()} recorded as paid. Reset paid amount to $0?`
+        );
+        if (ok) updates.paid_amount = 0;
+      }
+    } else if (newStatus === "partial") {
+      // Need a real partial amount; prompt for it
+      const input = prompt(
+        `Enter partial paid amount (invoice total: $${amount.toLocaleString()})`,
+        String(currentPaid || 0)
+      );
+      if (input === null) return; // user cancelled
+      const partial = parseFloat(input);
+      if (isNaN(partial) || partial < 0) {
+        alert("Invalid amount");
+        return;
+      }
+      if (partial >= amount && amount > 0) {
+        // It's actually fully paid
+        updates.status = "paid";
+        updates.paid_amount = amount;
+      } else {
+        updates.paid_amount = partial;
+      }
+    } else if (newStatus === "overdue") {
+      // No paid_amount change; just status
+    }
+
+    await updateInvoice(invoice.id, updates);
   };
 
   const handleDelete = async (id: string) => {
@@ -230,7 +269,15 @@ export default function InvoicesPage() {
                       <span className="text-white font-semibold">${(invoice.amount || 0).toLocaleString()}</span>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="text-green-400 font-semibold">${(invoice.paid_amount || 0).toLocaleString()}</span>
+                      <div className="flex flex-col">
+                        <span className="text-green-400 font-semibold">${(invoice.paid_amount || 0).toLocaleString()}</span>
+                        {(() => {
+                          const remaining = (invoice.amount || 0) - (invoice.paid_amount || 0);
+                          if (remaining > 0) return <span className="text-[10px] text-yellow-500">${remaining.toLocaleString()} due</span>;
+                          if ((invoice.amount || 0) > 0 && remaining <= 0) return <span className="text-[10px] text-green-500">Fully paid</span>;
+                          return null;
+                        })()}
+                      </div>
                     </td>
                     <td className="px-6 py-4">
                       <span className="text-gray-400">{invoice.due_date ? new Date(invoice.due_date).toLocaleDateString() : "-"}</span>
@@ -238,7 +285,7 @@ export default function InvoicesPage() {
                     <td className="px-6 py-4">
                       <select
                         value={status}
-                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleStatusChange(invoice.id, e.target.value as InvoiceStatus)}
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleStatusChange(invoice, e.target.value as InvoiceStatus)}
                         className={`text-xs rounded-full px-2.5 py-1 border-0 cursor-pointer ${statusConfig[status].color}`}
                       >
                         <option value="draft">Draft</option>
