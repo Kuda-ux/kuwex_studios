@@ -19,9 +19,19 @@ const blogPosts = [
   { slug: "branding-mistakes-zimbabwe-businesses", title: "7 Branding Mistakes Zimbabwe Businesses Make (And How to Fix Them)", excerpt: "Common branding pitfalls that cost Zimbabwean businesses customers and credibility.", image: "https://images.unsplash.com/photo-1493421419110-74f4e85ba126?w=1200&h=630&fit=crop", author: "Weston", date: "January 25, 2026", category: "Branding" },
 ];
 
+// Escape XML special characters for safe inclusion in element text or attribute values.
+function escapeXml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
 export async function GET() {
   const baseUrl = 'https://kuwexstudios.co.zw';
-  
+
   const rssItems = blogPosts.map((post) => `
     <item>
       <title><![CDATA[${post.title}]]></title>
@@ -29,9 +39,9 @@ export async function GET() {
       <guid isPermaLink="true">${baseUrl}/blog/${post.slug}</guid>
       <description><![CDATA[${post.excerpt}]]></description>
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
-      <category>${post.category}</category>
-      <author>info@kuwexstudios.co.zw (${post.author})</author>
-      <enclosure url="${post.image}" type="image/jpeg" length="0" />
+      <category>${escapeXml(post.category)}</category>
+      <author>info@kuwexstudios.co.zw (${escapeXml(post.author)})</author>
+      <enclosure url="${escapeXml(post.image)}" type="image/jpeg" length="0" />
     </item>
   `).join('');
 
