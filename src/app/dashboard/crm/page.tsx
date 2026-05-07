@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   Plus,
@@ -10,20 +10,23 @@ import {
   DollarSign,
   Mail,
   Phone,
-  MessageCircle,
-  MoreVertical,
-  Calendar,
   Globe,
-  ArrowUpRight,
   Loader2,
-  AlertCircle,
   X,
   Trash2,
   Edit,
   UserCheck,
+  TrendingUp,
+  TrendingDown,
+  Target,
+  Clock,
+  Flame,
+  AlertTriangle,
+  Trophy,
+  Filter,
 } from "lucide-react";
-import { useLeads, useClients } from "@/hooks/useDatabase";
-import { Lead, Client } from "@/lib/types";
+import { useLeads, useClients, useInvoices } from "@/hooks/useDatabase";
+import { Lead, Client, Invoice } from "@/lib/types";
 
 type LeadStatus = "new" | "contacted" | "qualified" | "proposal" | "won" | "lost";
 
@@ -45,12 +48,31 @@ const sourceConfig: Record<string, { label: string; color: string }> = {
   other: { label: "Other", color: "text-gray-400" },
 };
 
+// Probability of closing per pipeline stage (industry-standard weighted forecast)
+const stageProbability: Record<LeadStatus, number> = {
+  new: 0.1,
+  contacted: 0.2,
+  qualified: 0.4,
+  proposal: 0.6,
+  won: 1.0,
+  lost: 0,
+};
+
+const funnelStages: LeadStatus[] = ["new", "contacted", "qualified", "proposal", "won"];
+
+const fmtMoney = (n: number) =>
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(n);
+
+const daysSince = (iso: string) => Math.floor((Date.now() - new Date(iso).getTime()) / (1000 * 60 * 60 * 24));
+
 export default function CRMPage() {
   const { leads, loading: leadsLoading, createLead, updateLead, deleteLead, convertToClient } = useLeads();
   const { clients, loading: clientsLoading, createClient, updateClient, deleteClient } = useClients();
+  const { invoices } = useInvoices();
   
   const [activeTab, setActiveTab] = useState<"leads" | "clients">("leads");
   const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<LeadStatus | "all">("all");
   const [showNewLeadModal, setShowNewLeadModal] = useState(false);
   const [showNewClientModal, setShowNewClientModal] = useState(false);
   const [editingLead, setEditingLead] = useState<Lead | null>(null);
@@ -88,19 +110,138 @@ export default function CRMPage() {
 
   const loading = leadsLoading || clientsLoading;
 
-  const stats = {
-    totalLeads: leads.length,
-    newLeads: leads.filter((l) => l.status === "new").length,
-    totalClients: clients.length,
-    activeClients: clients.filter((c) => c.status === "active").length,
-    totalRevenue: clients.reduce((sum, c) => sum + (c.total_spent || 0), 0),
-    avgRating: clients.length > 0 ? "5.0" : "0",
-  };
+  // ---------- Real-time business analytics ----------
+  const analytics = useMemo(() => {
+    const thisMonthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1).getTime();
+    const lastMonthStart = new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1).getTime();
 
-  const filteredLeads = leads.filter((lead) =>
-    lead.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    lead.company.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+    // Leads created in periods
+    const leadsThisMonth = leads.filter((l) => new Date(l.created_at).getTime() >= thisMonthStart).length;
+    const leadsLastMonth = leads.filter((l) => {
+      const t = new Date(l.created_at).getTime();
+      return t >= lastMonthStart && t < thisMonthStart;
+    }).length;
+    const monthGrowth = leadsLastMonth > 0
+      ? Math.round(((leadsThisMonth - leadsLastMonth) / leadsLastMonth) * 100)
+      : leadsThisMonth > 0 ? 100 : 0;
+
+    // Pipeline value (open leads only)
+    const openLeads = leads.filter((l) => l.status !== "won" && l.status !== "lost");
+    const pipelineValue = openLeads.reduce((s, l) => s + (l.value || 0), 0);
+    const weightedPipeline = openLeads.reduce(
+      (s, l) => s + (l.value || 0) * (stageProbability[l.status as LeadStatus] || 0),
+      0
+    );
+
+    // Conversion rate (won out of finalized leads)
+    const wonLeads = leads.filter((l) => l.status === "won");
+    const lostLeads = leads.filter((l) => l.status === "lost");
+    const closed = wonLeads.length + lostLeads.length;
+    const conversionRate = closed > 0 ? Math.round((wonLeads.length / closed) * 100) : 0;
+
+    // Average deal size (won leads)
+    const wonValue = wonLeads.reduce((s, l) => s + (l.value || 0), 0);
+    const avgDealSize = wonLeads.length > 0 ? wonValue / wonLeads.length : 0;
+
+    // Average time to close (won leads, created_at -> updated_at)
+    const avgTimeToClose = wonLeads.length > 0
+      ? Math.round(
+          wonLeads.reduce((s, l) => {
+            const created = new Date(l.created_at).getTime();
+            const closedAt = new Date(l.updated_at).getTime();
+            return s + Math.max(0, (closedAt - created) / (1000 * 60 * 60 * 24));
+          }, 0) / wonLeads.length
+        )
+      : 0;
+
+    // Lead funnel — counts and value per stage
+    const funnel = funnelStages.map((stage) => {
+      const stageLeads = leads.filter((l) => l.status === stage);
+      return {
+        stage,
+        label: statusConfig[stage].label,
+        count: stageLeads.length,
+        value: stageLeads.reduce((s, l) => s + (l.value || 0), 0),
+      };
+    });
+    const maxFunnelCount = Math.max(1, ...funnel.map((f) => f.count));
+
+    // Lead sources breakdown with per-source conversion
+    const sourceMap = new Map<string, { total: number; won: number; value: number }>();
+    leads.forEach((l) => {
+      const src = l.source || "other";
+      const cur = sourceMap.get(src) || { total: 0, won: 0, value: 0 };
+      cur.total += 1;
+      if (l.status === "won") cur.won += 1;
+      cur.value += l.value || 0;
+      sourceMap.set(src, cur);
+    });
+    const sources = Array.from(sourceMap.entries())
+      .map(([src, v]) => ({
+        source: src,
+        ...v,
+        conversionRate: v.total > 0 ? Math.round((v.won / v.total) * 100) : 0,
+      }))
+      .sort((a, b) => b.total - a.total);
+
+    // Top clients by REAL revenue (paid invoices)
+    const clientRevenue = clients.map((c) => {
+      const revenue = invoices
+        .filter((inv: Invoice) => inv.client_id === c.id)
+        .reduce((s: number, inv: Invoice) => s + (inv.paid_amount || 0), 0);
+      const outstanding = invoices
+        .filter((inv: Invoice) => inv.client_id === c.id && inv.status !== "paid")
+        .reduce((s: number, inv: Invoice) => s + ((inv.amount || 0) - (inv.paid_amount || 0)), 0);
+      return { client: c, revenue, outstanding };
+    });
+    const totalRevenue = clientRevenue.reduce((s, x) => s + x.revenue, 0);
+    const totalOutstanding = clientRevenue.reduce((s, x) => s + x.outstanding, 0);
+    const topClients = [...clientRevenue].sort((a, b) => b.revenue - a.revenue).slice(0, 5);
+
+    // Smart alerts
+    const staleLeads = openLeads.filter((l) => daysSince(l.updated_at) >= 14);
+    const hotLeads = leads.filter((l) => l.status === "qualified" || l.status === "proposal");
+    const inactiveClients = clients.filter((c) => {
+      const recent = invoices.find((inv: Invoice) => inv.client_id === c.id);
+      if (!recent) return c.status === "inactive" || daysSince(c.created_at) > 60;
+      return daysSince(recent.created_at) > 60;
+    });
+
+    return {
+      totalLeads: leads.length,
+      newLeads: leads.filter((l) => l.status === "new").length,
+      totalClients: clients.length,
+      activeClients: clients.filter((c) => c.status === "active").length,
+      leadsThisMonth,
+      leadsLastMonth,
+      monthGrowth,
+      pipelineValue,
+      weightedPipeline,
+      conversionRate,
+      avgDealSize,
+      avgTimeToClose,
+      wonValue,
+      wonCount: wonLeads.length,
+      lostCount: lostLeads.length,
+      funnel,
+      maxFunnelCount,
+      sources,
+      topClients,
+      totalRevenue,
+      totalOutstanding,
+      staleLeads,
+      hotLeads,
+      inactiveClients,
+    };
+  }, [leads, clients, invoices]);
+
+  const filteredLeads = leads.filter((lead) => {
+    if (statusFilter !== "all" && lead.status !== statusFilter) return false;
+    return (
+      lead.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      lead.company.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  });
 
   const filteredClients = clients.filter((client) =>
     client.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -241,52 +382,256 @@ export default function CRMPage() {
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      {/* KPI Row — Business Analytics */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-4">
-          <p className="text-2xl font-bold text-white">{stats.totalLeads}</p>
-          <p className="text-xs text-gray-500">Total Leads</p>
+          <div className="flex items-center gap-2 text-gray-500 text-xs mb-1">
+            <DollarSign size={12} /> Pipeline Value
+          </div>
+          <p className="text-xl font-bold text-white">{fmtMoney(analytics.pipelineValue)}</p>
+          <p className="text-[10px] text-gray-500 mt-1">{analytics.totalLeads - analytics.wonCount - analytics.lostCount} open leads</p>
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-4">
-          <p className="text-2xl font-bold text-blue-400">{stats.newLeads}</p>
-          <p className="text-xs text-gray-500">New Leads</p>
+          <div className="flex items-center gap-2 text-gray-500 text-xs mb-1">
+            <Target size={12} /> Weighted Forecast
+          </div>
+          <p className="text-xl font-bold text-kuwex-cyan">{fmtMoney(analytics.weightedPipeline)}</p>
+          <p className="text-[10px] text-gray-500 mt-1">probability-adjusted</p>
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-4">
-          <p className="text-2xl font-bold text-white">{stats.totalClients}</p>
-          <p className="text-xs text-gray-500">Total Clients</p>
+          <div className="flex items-center gap-2 text-gray-500 text-xs mb-1">
+            <Trophy size={12} /> Conversion Rate
+          </div>
+          <p className="text-xl font-bold text-green-400">{analytics.conversionRate}%</p>
+          <p className="text-[10px] text-gray-500 mt-1">{analytics.wonCount} won / {analytics.lostCount} lost</p>
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-4">
-          <p className="text-2xl font-bold text-green-400">{stats.activeClients}</p>
-          <p className="text-xs text-gray-500">Active Clients</p>
+          <div className="flex items-center gap-2 text-gray-500 text-xs mb-1">
+            <DollarSign size={12} /> Avg Deal Size
+          </div>
+          <p className="text-xl font-bold text-white">{fmtMoney(analytics.avgDealSize)}</p>
+          <p className="text-[10px] text-gray-500 mt-1">{fmtMoney(analytics.wonValue)} total won</p>
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-4">
-          <p className="text-2xl font-bold text-kuwex-cyan">${stats.totalRevenue.toLocaleString()}</p>
-          <p className="text-xs text-gray-500">Total Revenue</p>
+          <div className="flex items-center gap-2 text-gray-500 text-xs mb-1">
+            <UserPlus size={12} /> Leads This Month
+          </div>
+          <p className="text-xl font-bold text-white">{analytics.leadsThisMonth}</p>
+          <p className={`text-[10px] mt-1 flex items-center gap-1 ${analytics.monthGrowth >= 0 ? "text-green-400" : "text-red-400"}`}>
+            {analytics.monthGrowth >= 0 ? <TrendingUp size={10} /> : <TrendingDown size={10} />}
+            {analytics.monthGrowth >= 0 ? "+" : ""}{analytics.monthGrowth}% vs last
+          </p>
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-4">
-          <p className="text-2xl font-bold text-yellow-400">{stats.avgRating} ⭐</p>
-          <p className="text-xs text-gray-500">Avg Rating</p>
+          <div className="flex items-center gap-2 text-gray-500 text-xs mb-1">
+            <Clock size={12} /> Avg Time to Close
+          </div>
+          <p className="text-xl font-bold text-white">{analytics.avgTimeToClose}<span className="text-sm text-gray-500"> days</span></p>
+          <p className="text-[10px] text-gray-500 mt-1">based on won deals</p>
         </motion.div>
       </div>
 
+      {/* Smart Alerts */}
+      {(analytics.staleLeads.length > 0 || analytics.hotLeads.length > 0 || analytics.inactiveClients.length > 0 || analytics.totalOutstanding > 0) && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+          {analytics.hotLeads.length > 0 && (
+            <button
+              onClick={() => setActiveTab("leads")}
+              className="flex items-start gap-3 p-4 bg-orange-500/10 border border-orange-500/30 rounded-2xl text-left hover:bg-orange-500/15 transition-colors"
+            >
+              <Flame className="text-orange-400 flex-shrink-0" size={18} />
+              <div>
+                <p className="text-sm font-semibold text-orange-400">{analytics.hotLeads.length} hot lead{analytics.hotLeads.length === 1 ? "" : "s"}</p>
+                <p className="text-xs text-gray-400 mt-0.5">Qualified or in proposal stage — close them.</p>
+              </div>
+            </button>
+          )}
+          {analytics.staleLeads.length > 0 && (
+            <button
+              onClick={() => setActiveTab("leads")}
+              className="flex items-start gap-3 p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-2xl text-left hover:bg-yellow-500/15 transition-colors"
+            >
+              <AlertTriangle className="text-yellow-400 flex-shrink-0" size={18} />
+              <div>
+                <p className="text-sm font-semibold text-yellow-400">{analytics.staleLeads.length} stale lead{analytics.staleLeads.length === 1 ? "" : "s"}</p>
+                <p className="text-xs text-gray-400 mt-0.5">No update in 14+ days. Follow up now.</p>
+              </div>
+            </button>
+          )}
+          {analytics.totalOutstanding > 0 && (
+            <div className="flex items-start gap-3 p-4 bg-red-500/10 border border-red-500/30 rounded-2xl">
+              <DollarSign className="text-red-400 flex-shrink-0" size={18} />
+              <div>
+                <p className="text-sm font-semibold text-red-400">{fmtMoney(analytics.totalOutstanding)} outstanding</p>
+                <p className="text-xs text-gray-400 mt-0.5">Unpaid invoice balance across clients.</p>
+              </div>
+            </div>
+          )}
+          {analytics.inactiveClients.length > 0 && (
+            <button
+              onClick={() => setActiveTab("clients")}
+              className="flex items-start gap-3 p-4 bg-purple-500/10 border border-purple-500/30 rounded-2xl text-left hover:bg-purple-500/15 transition-colors"
+            >
+              <Users className="text-purple-400 flex-shrink-0" size={18} />
+              <div>
+                <p className="text-sm font-semibold text-purple-400">{analytics.inactiveClients.length} inactive client{analytics.inactiveClients.length === 1 ? "" : "s"}</p>
+                <p className="text-xs text-gray-400 mt-0.5">No invoices in 60+ days — re-engage.</p>
+              </div>
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* Pipeline Funnel */}
+      <div className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-5">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <Filter size={18} className="text-kuwex-cyan" />
+            <h2 className="font-semibold text-white">Sales Pipeline</h2>
+          </div>
+          <p className="text-xs text-gray-500">Click a stage to filter</p>
+        </div>
+        <div className="space-y-2">
+          {analytics.funnel.map((f) => {
+            const widthPct = (f.count / analytics.maxFunnelCount) * 100;
+            const cfg = statusConfig[f.stage];
+            return (
+              <button
+                key={f.stage}
+                onClick={() => { setActiveTab("leads"); setStatusFilter(f.stage); }}
+                className="w-full text-left group"
+              >
+                <div className="flex items-center justify-between text-xs mb-1">
+                  <span className="text-gray-300 font-medium group-hover:text-white">{cfg.label}</span>
+                  <div className="flex items-center gap-3 text-gray-500">
+                    <span>{f.count} lead{f.count === 1 ? "" : "s"}</span>
+                    <span className="text-kuwex-cyan font-medium">{fmtMoney(f.value)}</span>
+                  </div>
+                </div>
+                <div className="h-7 bg-[#0A0A0A] rounded-lg overflow-hidden">
+                  <div
+                    className={`h-full ${cfg.color.replace("/20", "/40")} transition-all duration-500`}
+                    style={{ width: `${Math.max(widthPct, f.count > 0 ? 4 : 0)}%` }}
+                  />
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Lead Sources + Top Clients */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-5">
+          <div className="flex items-center gap-2 mb-4">
+            <Globe size={18} className="text-kuwex-cyan" />
+            <h2 className="font-semibold text-white">Lead Sources</h2>
+          </div>
+          {analytics.sources.length === 0 ? (
+            <p className="text-sm text-gray-500">No leads yet.</p>
+          ) : (
+            <div className="space-y-3">
+              {analytics.sources.map((s) => {
+                const totalLeads = analytics.totalLeads || 1;
+                const sharePct = Math.round((s.total / totalLeads) * 100);
+                const cfg = sourceConfig[s.source] || sourceConfig.other;
+                return (
+                  <div key={s.source}>
+                    <div className="flex items-center justify-between text-sm mb-1">
+                      <span className={`font-medium ${cfg.color}`}>{cfg.label}</span>
+                      <div className="flex items-center gap-3 text-xs text-gray-500">
+                        <span>{s.total} lead{s.total === 1 ? "" : "s"}</span>
+                        <span className="text-green-400">{s.conversionRate}% won</span>
+                        <span className="text-kuwex-cyan font-medium">{fmtMoney(s.value)}</span>
+                      </div>
+                    </div>
+                    <div className="h-2 bg-[#0A0A0A] rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-kuwex-cyan to-kuwex-blue transition-all duration-500"
+                        style={{ width: `${sharePct}%` }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+        <div className="bg-[#16181C] border border-[#2F3336] rounded-2xl p-5">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <Trophy size={18} className="text-kuwex-cyan" />
+              <h2 className="font-semibold text-white">Top Clients by Revenue</h2>
+            </div>
+            <p className="text-xs text-gray-500">{fmtMoney(analytics.totalRevenue)} total</p>
+          </div>
+          {analytics.topClients.length === 0 || analytics.totalRevenue === 0 ? (
+            <p className="text-sm text-gray-500">
+              No paid invoices yet. Once invoices are paid, top clients will appear here.
+            </p>
+          ) : (
+            <div className="space-y-3">
+              {analytics.topClients.filter((tc) => tc.revenue > 0).map((tc, i) => {
+                const widthPct = analytics.topClients[0].revenue > 0
+                  ? (tc.revenue / analytics.topClients[0].revenue) * 100
+                  : 0;
+                return (
+                  <div key={tc.client.id}>
+                    <div className="flex items-center justify-between text-sm mb-1">
+                      <span className="font-medium text-white truncate">
+                        <span className="text-gray-500 mr-2">#{i + 1}</span>
+                        {tc.client.company || tc.client.name}
+                      </span>
+                      <span className="text-kuwex-cyan font-semibold text-xs">{fmtMoney(tc.revenue)}</span>
+                    </div>
+                    <div className="h-2 bg-[#0A0A0A] rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-kuwex-cyan to-kuwex-blue transition-all duration-500"
+                        style={{ width: `${widthPct}%` }}
+                      />
+                    </div>
+                    {tc.outstanding > 0 && (
+                      <p className="text-[10px] text-orange-400 mt-1">
+                        {fmtMoney(tc.outstanding)} outstanding
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
+
       {/* Tabs */}
-      <div className="flex gap-2 bg-[#16181C] p-1 rounded-xl w-fit">
-        <button
-          onClick={() => setActiveTab("leads")}
-          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-            activeTab === "leads" ? "bg-kuwex-cyan text-black" : "text-gray-400 hover:text-white"
-          }`}
-        >
-          Leads ({leads.length})
-        </button>
-        <button
-          onClick={() => setActiveTab("clients")}
-          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-            activeTab === "clients" ? "bg-kuwex-cyan text-black" : "text-gray-400 hover:text-white"
-          }`}
-        >
-          Clients ({clients.length})
-        </button>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex gap-2 bg-[#16181C] p-1 rounded-xl w-fit">
+          <button
+            onClick={() => setActiveTab("leads")}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              activeTab === "leads" ? "bg-kuwex-cyan text-black" : "text-gray-400 hover:text-white"
+            }`}
+          >
+            Leads ({leads.length})
+          </button>
+          <button
+            onClick={() => setActiveTab("clients")}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              activeTab === "clients" ? "bg-kuwex-cyan text-black" : "text-gray-400 hover:text-white"
+            }`}
+          >
+            Clients ({clients.length})
+          </button>
+        </div>
+        {activeTab === "leads" && statusFilter !== "all" && (
+          <button
+            onClick={() => setStatusFilter("all")}
+            className="flex items-center gap-2 text-xs px-3 py-1.5 rounded-lg bg-kuwex-cyan/10 border border-kuwex-cyan/30 text-kuwex-cyan hover:bg-kuwex-cyan/20"
+          >
+            Filter: {statusConfig[statusFilter].label}
+            <X size={12} />
+          </button>
+        )}
       </div>
 
       {/* Search */}
