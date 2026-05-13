@@ -51,7 +51,7 @@
 
 ### Email Enquiry Optimization
 - [x] **ContactWidget** — floating button on every page with Email, WhatsApp, Call, Quote
-- [x] **Pre-filled email** — subject and body auto-populated when users click "Email Us"
+- [x] **Pre-filled email** vc — subject and body auto-populated when users click "Email Us"
 - [x] **Online status indicator** — builds trust (shows "Online" with pulse)
 - [x] **Response time promise** — "~10 min average response"
 - [x] **Email prominent in footer, contact page, legal pages**
