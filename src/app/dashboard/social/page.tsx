@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { MessageCircle, Copy, Check, ExternalLink, Facebook, Linkedin, Twitter, Search, Calendar, ArrowUpRight } from "lucide-react";
+import { MessageCircle, Copy, Check, ExternalLink, Facebook, Linkedin, Twitter, Search, Calendar, ArrowUpRight, type LucideIcon } from "lucide-react";
 import { blogPostsMeta } from "@/lib/blog-meta";
 
 const SITE = "https://kuwexstudios.co.zw";
@@ -39,7 +39,7 @@ function buildShareUrl(p: Post, platform: Platform, text: string): string {
   return `https://twitter.com/intent/tweet?text=${enc}`;
 }
 
-const PLATFORMS: { id: Platform; label: string; icon: React.ComponentType<{ size?: number; className?: string }>; color: string }[] = [
+const PLATFORMS: { id: Platform; label: string; icon: LucideIcon; color: string }[] = [
   { id: "whatsapp", label: "WhatsApp", icon: MessageCircle, color: "text-green-400 border-green-400/40 bg-green-500/10" },
   { id: "facebook", label: "Facebook", icon: Facebook, color: "text-blue-400 border-blue-400/40 bg-blue-500/10" },
   { id: "linkedin", label: "LinkedIn", icon: Linkedin, color: "text-sky-400 border-sky-400/40 bg-sky-500/10" },
