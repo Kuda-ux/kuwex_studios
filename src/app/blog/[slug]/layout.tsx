@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
+import { blogPostsMeta } from "@/lib/blog-meta";
 
-const postMeta: Record<string, { title: string; description: string; keywords: string[]; image: string; author: string; date: string }> = {
+const postMeta = blogPostsMeta;
+
+// Legacy inline definitions removed — see @/lib/blog-meta.ts for source of truth.
+// (Kept block removed in subsequent edit.)
+const _legacyDeleted = {
   "econet-ai-launch-zimbabwe-new-era-artificial-intelligence": {
     title: "Econet Launches AI in Zimbabwe — A New Era Begins | KuWeX Studios",
     description: "Econet Wireless officially launches Econet AI with ICT Minister Tatenda Mavetera. How this historic moment aligns with Zimbabwe's National AI Strategy, NDS2, and transforms business, youth, and the economy.",
@@ -137,15 +142,8 @@ const postMeta: Record<string, { title: string; description: string; keywords: s
     author: "Kuda",
     date: "2026-03-16",
   },
-  "zimbabwe-future-belongs-visible-businesses-online-growth": {
-    title: "Visible Businesses Win: Online Growth Zimbabwe | KuWeX Studios",
-    description: "Visibility is the new currency. Build an online growth machine that generates leads predictably. The complete framework for Zimbabwe business owners.",
-    keywords: ["online growth Zimbabwe", "digital visibility Zimbabwe", "growth machine Zimbabwe business", "SEO leads Zimbabwe", "online marketing Zimbabwe SME"],
-    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=1200&h=630&fit=crop",
-    author: "Weston",
-    date: "2026-03-10",
-  },
-};
+} as const;
+void _legacyDeleted;
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const meta = postMeta[params.slug];
@@ -178,6 +176,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       siteName: "KuWeX Studios",
       type: "article",
       publishedTime: meta.date,
+      modifiedTime: meta.dateModified || meta.date,
       authors: [meta.author],
       images: [
         {
@@ -233,7 +232,7 @@ export default function BlogPostLayout({
       "height": 630,
     },
     "datePublished": meta.date,
-    "dateModified": meta.date,
+    "dateModified": meta.dateModified || meta.date,
     "author": {
       "@type": "Person",
       "name": meta.author,
