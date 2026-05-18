@@ -147,7 +147,9 @@ export const config = {
      * - _next/static (static files)
      * - _next/image (image optimization)
      * - favicon.ico
+     * - robots.txt, sitemap.xml, news-sitemap.xml, rss.xml (must be served fast for crawlers)
+     * - logo / brand image assets
      */
-    '/((?!_next/static|_next/image|favicon.ico).*)',
+    '/((?!_next/static|_next/image|favicon.ico|robots\\.txt|sitemap\\.xml|news-sitemap\\.xml|rss\\.xml|logo\\.jpg|logo\\.png).*)',
   ],
 };
