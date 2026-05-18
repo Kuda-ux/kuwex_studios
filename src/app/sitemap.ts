@@ -40,6 +40,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // ============================================
     // BLOG POSTS - Latest / trending (highest priority)
     // ============================================
+    // May 2026 — Africa AI series
+    { url: `${baseUrl}/blog/econet-cassava-cloud-computing-factory-zimbabwe-gpu`, lastModified: '2026-05-12', changeFrequency: 'weekly', priority: 0.95 },
+    { url: `${baseUrl}/blog/whatsapp-ai-commerce-fintech-revolution-africa-zimbabwe`, lastModified: '2026-05-10', changeFrequency: 'weekly', priority: 0.95 },
+    { url: `${baseUrl}/blog/chatcash-basa-ai-zimbabwe-virtual-assistants-sme`, lastModified: '2026-05-08', changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${baseUrl}/blog/cassava-nvidia-ai-datacenter-africa-strive-masiyiwa`, lastModified: '2026-05-05', changeFrequency: 'weekly', priority: 0.95 },
+    { url: `${baseUrl}/blog/agentic-ai-africa-digital-economy-governance-laws`, lastModified: '2026-05-02', changeFrequency: 'weekly', priority: 0.9 },
     { url: `${baseUrl}/blog/econet-ai-launch-zimbabwe-new-era-artificial-intelligence`, lastModified: '2026-04-17', changeFrequency: 'monthly', priority: 0.9 },
     
     // Blog posts - Zimbabwe digital transformation series

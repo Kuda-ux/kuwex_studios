@@ -27,6 +27,102 @@ export interface BlogPostMeta {
 const FRESHNESS_DATE = "2026-05-18";
 
 export const blogPostsMeta: Record<string, BlogPostMeta> = {
+  "econet-cassava-cloud-computing-factory-zimbabwe-gpu": {
+    title: "Zimbabwe Just Got Its Own AI Cloud Factory — Inside the Econet & Cassava GPU Launch | KuWeX Studios",
+    description:
+      "Econet AI, Cassava, Nvidia & Microsoft just launched Southern Africa's first GPU cloud. What it means for Zimbabwean developers, SMEs & startups.",
+    keywords: [
+      "Cassava AI Factory", "Econet AI cloud Zimbabwe", "GPU cloud Africa",
+      "Nvidia Cassava Zimbabwe", "Microsoft Cassava AI", "AI infrastructure Zimbabwe",
+      "cloud computing Zimbabwe", "Zimbabwe data center", "African cloud Africa",
+      "AI compute Africa", "Cassava Technologies Nvidia", "Strive Masiyiwa AI",
+      "AI Zimbabwe 2026", "GPU rental Zimbabwe", "AI model training Africa",
+      "Zimbabwe AI startup", "Southern Africa AI", "AI sovereignty Africa",
+    ],
+    image: "https://images.unsplash.com/photo-1591405351990-4726e331f141?w=1200&h=630&fit=crop",
+    author: "Kuda",
+    date: "2026-05-12",
+    dateModified: FRESHNESS_DATE,
+    category: "AI & Tech",
+    shareSummary: "Zimbabwe finally has its own GPU cloud. Here's what Econet, Cassava & Nvidia just unlocked for every local developer and SME.",
+  },
+  "whatsapp-ai-commerce-fintech-revolution-africa-zimbabwe": {
+    title: "WhatsApp Is Quietly Becoming Africa's Operating System for Commerce | KuWeX Studios",
+    description:
+      "AI chatbots inside WhatsApp are onboarding rural Zimbabweans in 90 seconds and cutting bank costs by 70%. Why your SME must move now.",
+    keywords: [
+      "WhatsApp Business Zimbabwe", "WhatsApp AI chatbot Africa",
+      "WhatsApp commerce Zimbabwe", "AI fintech Africa", "KYC automation WhatsApp",
+      "rural banking Zimbabwe", "WhatsApp banking Africa", "financial inclusion Zimbabwe",
+      "WhatsApp Business API Zimbabwe", "AI commerce Africa", "WhatsApp payments Zimbabwe",
+      "Zimbabwe digital banking", "WhatsApp marketing Zimbabwe", "AI customer service Zimbabwe",
+      "Steward Bank WhatsApp", "ZWG WhatsApp payments", "SME WhatsApp Zimbabwe",
+    ],
+    image: "https://images.unsplash.com/photo-1611605698335-8b1569810432?w=1200&h=630&fit=crop",
+    author: "Weston",
+    date: "2026-05-10",
+    dateModified: FRESHNESS_DATE,
+    category: "Fintech & AI",
+    shareSummary: "Forget apps. WhatsApp is becoming the operating system of African commerce — and most Zimbabwean businesses are sleeping on it.",
+  },
+  "chatcash-basa-ai-zimbabwe-virtual-assistants-sme": {
+    title: "Meet ChatCash & Basa AI: The Zimbabwean Startups Building AI for African SMEs | KuWeX Studios",
+    description:
+      "ChatCash and Basa AI are local startups giving Zimbabwean SMEs affordable, multilingual virtual assistants. Here's how they work — and how to use them.",
+    keywords: [
+      "ChatCash Zimbabwe", "Basa AI Zimbabwe", "AI for SMEs Zimbabwe",
+      "Zimbabwean AI startup", "virtual assistant Zimbabwe", "AI chatbot Zimbabwe",
+      "Shona AI assistant", "Ndebele AI", "small business AI Zimbabwe",
+      "African AI startup 2026", "AI customer support Africa",
+      "AI business plan generator Zimbabwe", "fiscal compliance AI Zimbabwe",
+      "ZIMRA compliance AI", "AI tools small business Africa",
+      "automation Zimbabwe SME", "AI assistant Harare",
+    ],
+    image: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=1200&h=630&fit=crop",
+    author: "Weston",
+    date: "2026-05-08",
+    dateModified: FRESHNESS_DATE,
+    category: "AI & SMEs",
+    shareSummary: "ChatCash and Basa AI are quietly solving what Silicon Valley couldn't — AI that actually works for African small businesses.",
+  },
+  "cassava-nvidia-ai-datacenter-africa-strive-masiyiwa": {
+    title: "Strive Masiyiwa's Billion-Dollar AI Bet: Inside the Cassava-Nvidia African Datacenter Rollout | KuWeX Studios",
+    description:
+      "Cassava Technologies and Nvidia are wiring Africa with GPU datacenters from Cape Town to Cairo. Why Africa is about to become AI's cheapest training ground.",
+    keywords: [
+      "Strive Masiyiwa Cassava", "Cassava Technologies AI", "Nvidia Africa datacenter",
+      "AI datacenter Zimbabwe", "African AI infrastructure", "SADC AI investment",
+      "East Africa AI datacenter", "Cassava Nvidia partnership", "AI Africa 2026",
+      "GPU datacenter Africa", "Liquid Intelligent Technologies AI",
+      "African tech billionaire", "AI sovereignty Africa", "Zimbabwe AI investment",
+      "Pan African AI", "Africa AI compute", "Masiyiwa Nvidia deal",
+    ],
+    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&h=630&fit=crop",
+    author: "Kuda",
+    date: "2026-05-05",
+    dateModified: FRESHNESS_DATE,
+    category: "AI Infrastructure",
+    shareSummary: "The richest Black man you've barely heard of is racing Nvidia to wire Africa with AI datacenters. The reason will shock you.",
+  },
+  "agentic-ai-africa-digital-economy-governance-laws": {
+    title: "The Next AI Wave Isn't ChatGPT — It's 'Agentic AI'. And Africa's Governments Are Already Writing the Rules | KuWeX Studios",
+    description:
+      "Forget chatbots. Agentic AI takes actions for you — and Nigeria & South Africa already have laws ready. What Zimbabwean businesses must do next.",
+    keywords: [
+      "agentic AI Africa", "agentic AI Zimbabwe", "Nigeria digital economy bill",
+      "South Africa AI law", "AI governance Africa", "AI regulation Zimbabwe",
+      "POPIA AI", "AI policy Africa", "autonomous AI agents", "AI agents business",
+      "AI compliance Africa", "AI data privacy Zimbabwe", "AI ethics Africa",
+      "Nigeria AI law 2026", "AI regulation SADC", "AI act Africa",
+      "AI for business Zimbabwe", "agentic AI use cases",
+    ],
+    image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=630&fit=crop",
+    author: "Kuda",
+    date: "2026-05-02",
+    dateModified: FRESHNESS_DATE,
+    category: "AI & Policy",
+    shareSummary: "Forget ChatGPT. The real AI disruption is 'agentic AI' — and Nigeria and South Africa are already writing the rules. Zimbabwe must catch up.",
+  },
   "econet-ai-launch-zimbabwe-new-era-artificial-intelligence": {
     title: "Econet Launches AI in Zimbabwe — A New Era Begins | KuWeX Studios",
     description:

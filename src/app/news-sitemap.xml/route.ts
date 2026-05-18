@@ -11,6 +11,37 @@ interface NewsPost {
 }
 
 const newsPosts: NewsPost[] = [
+  // May 2026 — Africa AI series (newest first)
+  {
+    slug: 'econet-cassava-cloud-computing-factory-zimbabwe-gpu',
+    title: 'Zimbabwe Just Got Its Own AI Cloud Factory — Inside the Econet & Cassava GPU Launch',
+    date: '2026-05-12T08:00:00+02:00',
+    keywords: 'Econet AI, Cassava Technologies, Nvidia, Microsoft, GPU cloud, Zimbabwe AI, Cassava AI Factory, African cloud infrastructure',
+  },
+  {
+    slug: 'whatsapp-ai-commerce-fintech-revolution-africa-zimbabwe',
+    title: 'WhatsApp Is Quietly Becoming Africa\'s Operating System for Commerce',
+    date: '2026-05-10T08:00:00+02:00',
+    keywords: 'WhatsApp Business, AI commerce, fintech Africa, KYC automation, rural banking Zimbabwe, WhatsApp chatbot, financial inclusion',
+  },
+  {
+    slug: 'chatcash-basa-ai-zimbabwe-virtual-assistants-sme',
+    title: 'Meet ChatCash & Basa AI: The Zimbabwean Startups Building AI for African SMEs',
+    date: '2026-05-08T08:00:00+02:00',
+    keywords: 'ChatCash, Basa AI, Zimbabwe AI startup, virtual assistant Africa, SME AI, Shona AI, multilingual chatbot',
+  },
+  {
+    slug: 'cassava-nvidia-ai-datacenter-africa-strive-masiyiwa',
+    title: 'Strive Masiyiwa\'s Billion-Dollar AI Bet: Inside the Cassava–Nvidia African Datacenter Rollout',
+    date: '2026-05-05T08:00:00+02:00',
+    keywords: 'Strive Masiyiwa, Cassava Technologies, Nvidia, AI datacenter Africa, SADC AI, Pan-African AI infrastructure',
+  },
+  {
+    slug: 'agentic-ai-africa-digital-economy-governance-laws',
+    title: 'The Next AI Wave Isn\'t ChatGPT — It\'s Agentic AI. And Africa\'s Governments Are Already Writing the Rules',
+    date: '2026-05-02T08:00:00+02:00',
+    keywords: 'agentic AI, Nigeria Digital Economy Bill, South Africa POPIA, AI regulation Africa, AI governance Zimbabwe, AI agents business',
+  },
   {
     slug: 'econet-ai-launch-zimbabwe-new-era-artificial-intelligence',
     title: 'Econet Launches AI in Zimbabwe — And Nothing Will Ever Be the Same Again',

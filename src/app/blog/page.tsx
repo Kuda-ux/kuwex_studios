@@ -20,6 +20,56 @@ const featuredPost = {
 
 const blogPosts = [
   {
+    slug: "econet-cassava-cloud-computing-factory-zimbabwe-gpu",
+    title: "Zimbabwe Just Got Its Own AI Cloud Factory — Inside the Econet & Cassava GPU Launch",
+    excerpt: "Econet AI, Cassava Technologies, Nvidia and Microsoft just flipped the switch on Southern Africa's first GPU cloud platform. A developer in Harare can now train serious AI without leaving the continent.",
+    image: "https://images.unsplash.com/photo-1591405351990-4726e331f141?w=600&h=400&fit=crop",
+    author: "Kuda",
+    date: "May 12, 2026",
+    readTime: "9 min read",
+    category: "AI & Tech"
+  },
+  {
+    slug: "whatsapp-ai-commerce-fintech-revolution-africa-zimbabwe",
+    title: "WhatsApp Is Quietly Becoming Africa's Operating System for Commerce",
+    excerpt: "AI chatbots inside WhatsApp are onboarding rural Zimbabweans in 90 seconds and cutting bank costs by 70%. Why your SME must move now.",
+    image: "https://images.unsplash.com/photo-1611605698335-8b1569810432?w=600&h=400&fit=crop",
+    author: "Weston",
+    date: "May 10, 2026",
+    readTime: "9 min read",
+    category: "Fintech & AI"
+  },
+  {
+    slug: "chatcash-basa-ai-zimbabwe-virtual-assistants-sme",
+    title: "Meet ChatCash & Basa AI: Zimbabwean Startups Building AI for African SMEs",
+    excerpt: "Two local startups are quietly solving what Silicon Valley still can't — affordable, multilingual virtual assistants built for the realities of African small business.",
+    image: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=600&h=400&fit=crop",
+    author: "Weston",
+    date: "May 8, 2026",
+    readTime: "8 min read",
+    category: "AI & SMEs"
+  },
+  {
+    slug: "cassava-nvidia-ai-datacenter-africa-strive-masiyiwa",
+    title: "Strive Masiyiwa's Billion-Dollar AI Bet: Cassava–Nvidia African Datacenter Rollout",
+    excerpt: "Cassava Technologies and Nvidia are wiring Africa with GPU datacenters from Cape Town to Cairo. Why Africa is about to become AI's cheapest training ground.",
+    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&h=400&fit=crop",
+    author: "Kuda",
+    date: "May 5, 2026",
+    readTime: "9 min read",
+    category: "AI Infrastructure"
+  },
+  {
+    slug: "agentic-ai-africa-digital-economy-governance-laws",
+    title: "The Next AI Wave Isn't ChatGPT — It's 'Agentic AI'. And Africa's Governments Are Writing the Rules",
+    excerpt: "Forget chatbots. Agentic AI takes actions for you — and Nigeria and South Africa already have laws ready. What Zimbabwean businesses must do next.",
+    image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600&h=400&fit=crop",
+    author: "Kuda",
+    date: "May 2, 2026",
+    readTime: "10 min read",
+    category: "AI & Policy"
+  },
+  {
     slug: "zimbabwe-ai-economy-business-lead-or-left-behind",
     title: "Zimbabwe Is Entering the AI Economy: Will Your Business Lead or Be Left Behind?",
     excerpt: "The Zimbabwe National AI Strategy (2026–2030) is here. Artificial intelligence is no longer a Western luxury — it's becoming the backbone of Zimbabwe's economic future.",
