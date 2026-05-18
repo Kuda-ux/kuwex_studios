@@ -20,6 +20,5 @@ export default function robots(): MetadataRoute.Robots {
             `${BASE_URL}/sitemap.xml`,
             `${BASE_URL}/news-sitemap.xml`,
         ],
-        host: BASE_URL,
     }
 }

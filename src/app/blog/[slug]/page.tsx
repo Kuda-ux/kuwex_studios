@@ -1,9 +1,10 @@
 "use client";
 
+import type { ReactNode } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
-import { Calendar, Clock, ArrowLeft, User, Share2, Linkedin, Facebook, Twitter, ArrowRight, Tag } from "lucide-react";
+import { Calendar, Clock, ArrowLeft, User, Share2, Linkedin, Facebook, Twitter, ArrowRight, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useParams } from "next/navigation";
@@ -723,30 +724,196 @@ const blogPosts: Record<string, BlogPost> = {
   }
 };
 
+// Parse inline markdown within a single line of text:
+//   **bold**   ->  <strong>
+//   *italic*   ->  <em>
+//   [text](url) -> <a>
+//   `code`     -> <code>
+function parseInline(text: string): ReactNode[] {
+  const nodes: ReactNode[] = [];
+  const regex = /(\*\*[^*\n]+?\*\*)|(\[[^\]]+\]\([^)]+\))|(`[^`\n]+?`)|(\*[^*\n\s][^*\n]*?\*)/g;
+  let lastIdx = 0;
+  let match: RegExpExecArray | null;
+  let key = 0;
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIdx) {
+      nodes.push(text.slice(lastIdx, match.index));
+    }
+    const token = match[0];
+    if (token.startsWith("**")) {
+      nodes.push(
+        <strong key={`b${key++}`} className="text-white font-semibold">
+          {token.slice(2, -2)}
+        </strong>
+      );
+    } else if (token.startsWith("[")) {
+      const m = /\[([^\]]+)\]\(([^)]+)\)/.exec(token);
+      if (m) {
+        const external = /^https?:\/\//.test(m[2]);
+        nodes.push(
+          <a
+            key={`l${key++}`}
+            href={m[2]}
+            className="text-kuwex-cyan hover:underline font-medium"
+            target={external ? "_blank" : undefined}
+            rel={external ? "noopener noreferrer" : undefined}
+          >
+            {m[1]}
+          </a>
+        );
+      }
+    } else if (token.startsWith("`")) {
+      nodes.push(
+        <code key={`c${key++}`} className="bg-[#16181C] px-1.5 py-0.5 rounded text-kuwex-cyan text-[0.9em] font-mono">
+          {token.slice(1, -1)}
+        </code>
+      );
+    } else if (token.startsWith("*")) {
+      nodes.push(
+        <em key={`i${key++}`} className="italic text-gray-300">
+          {token.slice(1, -1)}
+        </em>
+      );
+    }
+    lastIdx = match.index + token.length;
+  }
+  if (lastIdx < text.length) nodes.push(text.slice(lastIdx));
+  return nodes.length ? nodes : [text];
+}
+
 function renderContent(content: string[]) {
   return content.map((block, i) => {
+    // H2
     if (block.startsWith("## ")) {
-      return <h2 key={i} className="text-2xl md:text-3xl font-bold text-white mt-12 mb-4">{block.replace("## ", "")}</h2>;
+      return (
+        <h2 key={i} className="text-2xl md:text-3xl font-bold text-white mt-12 mb-4 leading-tight">
+          {parseInline(block.replace("## ", "").split("\n")[0])}
+        </h2>
+      );
     }
+    // H3 (heading on first line, optional body on subsequent lines)
     if (block.startsWith("### ")) {
-      return <h3 key={i} className="text-xl font-bold text-white mt-8 mb-3">{block.replace("### ", "").split("\n")[0]}<span className="block text-gray-400 text-base font-normal mt-2 leading-relaxed whitespace-pre-line">{block.split("\n").slice(1).join("\n")}</span></h3>;
+      const lines = block.split("\n");
+      const heading = lines[0].replace("### ", "");
+      const body = lines.slice(1).filter(Boolean);
+      return (
+        <div key={i}>
+          <h3 className="text-xl md:text-2xl font-bold text-white mt-10 mb-3 leading-tight">
+            {parseInline(heading)}
+          </h3>
+          {body.map((line, j) => (
+            <p key={j} className="text-gray-300 text-[15px] leading-relaxed mb-3">
+              {parseInline(line)}
+            </p>
+          ))}
+        </div>
+      );
     }
-    // Handle paragraphs with bold and list items
-    const parts = block.split("\n").filter(Boolean);
+    // H4
+    if (block.startsWith("#### ")) {
+      return (
+        <h4 key={i} className="text-lg md:text-xl font-bold text-white mt-8 mb-2">
+          {parseInline(block.replace("#### ", "").split("\n")[0])}
+        </h4>
+      );
+    }
+    // Horizontal rule
+    if (block.trim() === "---") {
+      return <hr key={i} className="border-[#2F3336]/60 my-10" />;
+    }
+    // Block quote
+    if (block.startsWith("> ")) {
+      return (
+        <blockquote
+          key={i}
+          className="border-l-4 border-kuwex-cyan pl-5 py-2 my-6 italic text-gray-300 text-lg"
+        >
+          {parseInline(block.replace(/^>\s?/gm, ""))}
+        </blockquote>
+      );
+    }
+
+    // Multi-line paragraph block: split into lines and classify each
+    const lines = block.split("\n").filter(Boolean);
     return (
-      <div key={i} className="mb-4">
-        {parts.map((line, j) => {
+      <div key={i} className="mb-6">
+        {lines.map((line, j) => {
+          const trimmed = line.trim();
+
+          // Standalone bold-only line e.g. "**1. Intelligent Automation**" or "**For SMEs:**"
+          // -> render as sub-heading
+          const boldOnly = /^\*\*([^*]+)\*\*[:：]?$/.exec(trimmed);
+          if (boldOnly) {
+            return (
+              <h4
+                key={j}
+                className="text-base md:text-lg font-bold text-white mt-6 mb-2"
+              >
+                {boldOnly[1]}
+              </h4>
+            );
+          }
+
+          // Bullet with bold leader: "- **Foo** rest..."
           if (line.startsWith("- **")) {
             const boldEnd = line.indexOf("**", 4);
-            const boldText = line.substring(4, boldEnd);
-            const rest = line.substring(boldEnd + 2);
-            return <div key={j} className="flex gap-2 mb-2 text-gray-300 text-[15px] leading-relaxed"><span className="text-kuwex-cyan mt-1.5 flex-shrink-0">•</span><span><strong className="text-white">{boldText}</strong>{rest}</span></div>;
+            if (boldEnd > 4) {
+              const boldText = line.substring(4, boldEnd);
+              const rest = line.substring(boldEnd + 2);
+              return (
+                <div
+                  key={j}
+                  className="flex gap-3 mb-2 text-gray-300 text-[15px] leading-relaxed"
+                >
+                  <span className="text-kuwex-cyan mt-1.5 flex-shrink-0">•</span>
+                  <span>
+                    <strong className="text-white">{boldText}</strong>
+                    {parseInline(rest)}
+                  </span>
+                </div>
+              );
+            }
           }
-          if (/^\d+\.\s\*\*/.test(line)) {
-            const match = line.match(/^\d+\.\s\*\*(.+?)\*\*\s*[-—]?\s*(.*)/);
-            if (match) return <div key={j} className="flex gap-2 mb-2 text-gray-300 text-[15px] leading-relaxed"><span className="text-kuwex-cyan font-bold flex-shrink-0">{line.match(/^\d+/)?.[0]}.</span><span><strong className="text-white">{match[1]}</strong> — {match[2]}</span></div>;
+
+          // Plain bullet: "- text"
+          if (/^-\s+/.test(line)) {
+            return (
+              <div
+                key={j}
+                className="flex gap-3 mb-2 text-gray-300 text-[15px] leading-relaxed"
+              >
+                <span className="text-kuwex-cyan mt-1.5 flex-shrink-0">•</span>
+                <span>{parseInline(line.replace(/^-\s+/, ""))}</span>
+              </div>
+            );
           }
-          return <p key={j} className="text-gray-400 text-[15px] leading-relaxed mb-2">{line}</p>;
+
+          // Numbered: "1. **Title** — description" or "1. text"
+          if (/^\d+\.\s/.test(line)) {
+            const number = line.match(/^(\d+)\./)?.[1];
+            const rest = line.replace(/^\d+\.\s/, "");
+            return (
+              <div
+                key={j}
+                className="flex gap-3 mb-2 text-gray-300 text-[15px] leading-relaxed"
+              >
+                <span className="text-kuwex-cyan font-bold flex-shrink-0 min-w-[1.5rem]">
+                  {number}.
+                </span>
+                <span>{parseInline(rest)}</span>
+              </div>
+            );
+          }
+
+          // Default: paragraph with inline markdown
+          return (
+            <p
+              key={j}
+              className="text-gray-300 text-[15px] md:text-[16px] leading-[1.75] mb-4"
+            >
+              {parseInline(line)}
+            </p>
+          );
         })}
       </div>
     );
@@ -822,17 +989,65 @@ export default function BlogPostPage() {
           {/* Share */}
           <div className="border-t border-[#2F3336]/40 mt-16 pt-8">
             <p className="text-sm text-gray-500 mb-4 flex items-center gap-2"><Share2 size={16} /> Share this article</p>
-            <div className="flex gap-3">
-              <a href={`https://www.facebook.com/sharer/sharer.php?u=https://kuwexstudios.co.zw/blog/${post.slug}`} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-[#16181C] border border-[#2F3336]/60 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:border-kuwex-cyan/30 transition-all duration-300">
+            <div className="flex flex-wrap gap-3">
+              <a
+                href={`https://wa.me/?text=${encodeURIComponent(`${post.title} — https://kuwexstudios.co.zw/blog/${post.slug}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Share on WhatsApp"
+                className="w-10 h-10 bg-[#16181C] border border-[#2F3336]/60 rounded-full flex items-center justify-center text-gray-400 hover:text-green-400 hover:border-green-400/40 transition-all duration-300"
+              >
+                <MessageCircle size={18} />
+              </a>
+              <a
+                href={`https://www.facebook.com/sharer/sharer.php?u=https://kuwexstudios.co.zw/blog/${post.slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Share on Facebook"
+                className="w-10 h-10 bg-[#16181C] border border-[#2F3336]/60 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:border-kuwex-cyan/30 transition-all duration-300"
+              >
                 <Facebook size={18} />
               </a>
-              <a href={`https://twitter.com/intent/tweet?url=https://kuwexstudios.co.zw/blog/${post.slug}&text=${encodeURIComponent(post.title)}`} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-[#16181C] border border-[#2F3336]/60 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:border-kuwex-cyan/30 transition-all duration-300">
+              <a
+                href={`https://twitter.com/intent/tweet?url=https://kuwexstudios.co.zw/blog/${post.slug}&text=${encodeURIComponent(post.title)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Share on Twitter"
+                className="w-10 h-10 bg-[#16181C] border border-[#2F3336]/60 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:border-kuwex-cyan/30 transition-all duration-300"
+              >
                 <Twitter size={18} />
               </a>
-              <a href={`https://www.linkedin.com/sharing/share-offsite/?url=https://kuwexstudios.co.zw/blog/${post.slug}`} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-[#16181C] border border-[#2F3336]/60 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:border-kuwex-cyan/30 transition-all duration-300">
+              <a
+                href={`https://www.linkedin.com/sharing/share-offsite/?url=https://kuwexstudios.co.zw/blog/${post.slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Share on LinkedIn"
+                className="w-10 h-10 bg-[#16181C] border border-[#2F3336]/60 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:border-kuwex-cyan/30 transition-all duration-300"
+              >
                 <Linkedin size={18} />
               </a>
             </div>
+
+            {/* WhatsApp Channel CTA */}
+            <a
+              href="https://whatsapp.com/channel/0029VbCdvLa7DAX7JE0qWH2X"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-8 flex items-center justify-between gap-4 p-4 sm:p-5 bg-gradient-to-r from-green-500/10 to-emerald-500/5 border border-green-500/20 rounded-2xl hover:border-green-400/40 transition-all group"
+            >
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-green-500/20 flex items-center justify-center flex-shrink-0">
+                  <MessageCircle size={22} className="text-green-400" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm sm:text-base font-bold text-white">Follow Us on WhatsApp</p>
+                  <p className="text-xs sm:text-sm text-gray-400 truncate">Get every new article + Zimbabwe tech news first</p>
+                </div>
+              </div>
+              <span className="text-green-400 font-semibold text-sm group-hover:translate-x-1 transition-transform flex-shrink-0 hidden sm:inline-flex items-center gap-1">
+                Join <ArrowRight size={14} />
+              </span>
+            </a>
           </div>
         </div>
       </section>
