@@ -215,6 +215,7 @@ export default function BlogPostLayout({
   if (!meta) return <>{children}</>;
 
   const postUrl = `${baseUrl}/blog/${params.slug}`;
+  const imageUrl = meta.image.startsWith("/") ? `${baseUrl}${meta.image}` : meta.image;
 
   // Article JSON-LD for Google rich results, Google News, and AI engines
   const articleSchema = {
