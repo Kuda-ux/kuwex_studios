@@ -8,6 +8,7 @@ import { Calendar, Clock, ArrowLeft, User, Share2, Linkedin, Facebook, Twitter, 
 import Link from "next/link";
 import Image from "next/image";
 import { useParams } from "next/navigation";
+import { blogPostsMeta } from "@/lib/blog-meta";
 
 interface BlogPost {
   slug: string;
@@ -1379,7 +1380,7 @@ export default function BlogPostPage() {
       <section className="px-4 pb-12">
         <div className="container mx-auto max-w-4xl">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="relative aspect-[2/1] rounded-2xl overflow-hidden">
-            <Image src={post.image} alt={post.title} fill className="object-cover" priority />
+            <Image src={blogPostsMeta[post.slug]?.image ?? post.image} alt={post.title} fill className="object-cover" priority />
             <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
           </motion.div>
         </div>
@@ -1467,7 +1468,7 @@ export default function BlogPostPage() {
               {relatedPosts.map((rp, i) => (
                 <Link key={i} href={`/blog/${rp.slug}`} className="x-card-vibrant rounded-2xl overflow-hidden group block">
                   <div className="relative h-40">
-                    <Image src={rp.image} alt={rp.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <Image src={blogPostsMeta[rp.slug]?.image ?? rp.image} alt={rp.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
                     <div className="absolute top-3 left-3">
                       <span className="bg-black/60 backdrop-blur-xl text-white text-xs font-medium px-2.5 py-1 rounded-full border border-white/10">{rp.category}</span>
                     </div>
