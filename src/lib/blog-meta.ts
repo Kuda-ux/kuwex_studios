@@ -15,6 +15,7 @@ export interface BlogPostMeta {
   description: string;
   keywords: string[];
   image: string;
+  ogImage?: string;        // JPEG/PNG absolute URL override for OG/Twitter/JSON-LD (WebP not reliable on WhatsApp)
   author: string;
   date: string;            // datePublished (YYYY-MM-DD)
   dateModified: string;    // freshness signal
@@ -59,6 +60,7 @@ export const blogPostsMeta: Record<string, BlogPostMeta> = {
       "Steward Bank WhatsApp", "ZWG WhatsApp payments", "SME WhatsApp Zimbabwe",
     ],
     image: "/blog/whatsapp-business-ai-commerce.webp",
+    ogImage: "https://images.unsplash.com/photo-1611605698335-8b1569810432?w=1200&h=630&fit=crop",
     author: "Weston",
     date: "2026-05-10",
     dateModified: FRESHNESS_DATE,
@@ -117,6 +119,7 @@ export const blogPostsMeta: Record<string, BlogPostMeta> = {
       "AI for business Zimbabwe", "agentic AI use cases",
     ],
     image: "/blog/zimbabwe-ai-flag-future.png",
+    ogImage: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=630&fit=crop",
     author: "Kuda",
     date: "2026-05-02",
     dateModified: FRESHNESS_DATE,
@@ -298,6 +301,7 @@ export const blogPostsMeta: Record<string, BlogPostMeta> = {
       "AI jobs Zimbabwe",
     ],
     image: "/blog/zimbabwe-ai-flag-future.png",
+    ogImage: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=630&fit=crop",
     author: "Kuda",
     date: "2026-04-14",
     dateModified: FRESHNESS_DATE,

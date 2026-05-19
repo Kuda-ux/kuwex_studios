@@ -149,7 +149,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const meta = postMeta[params.slug];
   const baseUrl = "https://kuwexstudios.co.zw";
   const postUrl = `${baseUrl}/blog/${params.slug}`;
-  const imageUrl = meta ? (meta.image.startsWith("/") ? `${baseUrl}${meta.image}` : meta.image) : `${baseUrl}/logo.jpg`;
+  const rawImage = meta ? (meta.ogImage ?? meta.image) : "/logo.jpg";
+  const imageUrl = rawImage.startsWith("/") ? `${baseUrl}${rawImage}` : rawImage;
 
   if (!meta) {
     return {
@@ -215,7 +216,8 @@ export default function BlogPostLayout({
   if (!meta) return <>{children}</>;
 
   const postUrl = `${baseUrl}/blog/${params.slug}`;
-  const imageUrl = meta.image.startsWith("/") ? `${baseUrl}${meta.image}` : meta.image;
+  const rawImage = meta.ogImage ?? meta.image;
+  const imageUrl = rawImage.startsWith("/") ? `${baseUrl}${rawImage}` : rawImage;
 
   // Article JSON-LD for Google rich results, Google News, and AI engines
   const articleSchema = {
