@@ -149,6 +149,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const meta = postMeta[params.slug];
   const baseUrl = "https://kuwexstudios.co.zw";
   const postUrl = `${baseUrl}/blog/${params.slug}`;
+  const imageUrl = meta ? (meta.image.startsWith("/") ? `${baseUrl}${meta.image}` : meta.image) : `${baseUrl}/logo.jpg`;
 
   if (!meta) {
     return {
@@ -158,7 +159,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
         description: "Latest insights on digital marketing, web design, SEO, and technology in Zimbabwe.",
         url: `${baseUrl}/blog`,
         siteName: "KuWeX Studios",
-        images: [{ url: `${baseUrl}/logo.jpg`, width: 800, height: 600, alt: "KuWeX Studios" }],
+        images: [{ url: imageUrl, width: 800, height: 600, alt: "KuWeX Studios" }],
         type: "website",
       },
     };
@@ -180,7 +181,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       authors: [meta.author],
       images: [
         {
-          url: meta.image,
+          url: imageUrl,
           width: 1200,
           height: 630,
           alt: meta.title,
@@ -191,7 +192,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       card: "summary_large_image",
       title: meta.title,
       description: meta.description,
-      images: [meta.image],
+      images: [imageUrl],
       creator: "@kuwexstudios",
       site: "@kuwexstudios",
     },
@@ -227,7 +228,7 @@ export default function BlogPostLayout({
     "description": meta.description,
     "image": {
       "@type": "ImageObject",
-      "url": meta.image,
+      "url": imageUrl,
       "width": 1200,
       "height": 630,
     },
