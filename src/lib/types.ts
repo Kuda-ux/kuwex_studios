@@ -168,6 +168,26 @@ export interface CompanySettings {
   updated_at: string;
 }
 
+export interface BlogPost {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  image: string;
+  og_image?: string;
+  author: string;
+  author_role: string;
+  post_date: string;
+  read_time: string;
+  category: string;
+  content: string[];
+  related_slugs: string[];
+  keywords: string[];
+  status: 'draft' | 'published';
+  created_at: string;
+  updated_at: string;
+}
+
 // Table name type — used for generic API routes
 export type TableName =
   | 'projects'
@@ -180,7 +200,8 @@ export type TableName =
   | 'tasks'
   | 'documents'
   | 'social_posts'
-  | 'company_settings';
+  | 'company_settings'
+  | 'blog_posts';
 
 // JSON columns for each table — need serialize/deserialize on the server
 export const JSON_COLUMNS: Record<TableName, string[]> = {
@@ -195,6 +216,7 @@ export const JSON_COLUMNS: Record<TableName, string[]> = {
   documents: [],
   social_posts: ['platforms'],
   company_settings: [],
+  blog_posts: ['content', 'related_slugs', 'keywords'],
 };
 
 export const VALID_TABLES = Object.keys(JSON_COLUMNS) as TableName[];

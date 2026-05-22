@@ -170,6 +170,25 @@ const SCHEMA = [
     created_at TEXT NOT NULL,
     updated_at TEXT NOT NULL
   )`,
+  `CREATE TABLE IF NOT EXISTS blog_posts (
+    id TEXT PRIMARY KEY,
+    slug TEXT UNIQUE NOT NULL,
+    title TEXT NOT NULL,
+    excerpt TEXT,
+    image TEXT,
+    og_image TEXT,
+    author TEXT DEFAULT 'Kuda',
+    author_role TEXT DEFAULT 'Lead Developer, KuWeX Studios',
+    post_date TEXT NOT NULL,
+    read_time TEXT DEFAULT '5 min read',
+    category TEXT DEFAULT 'AI & Tech',
+    content TEXT DEFAULT '[]',
+    related_slugs TEXT DEFAULT '[]',
+    keywords TEXT DEFAULT '[]',
+    status TEXT DEFAULT 'draft',
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+  )`,
 ];
 
 export async function ensureSchema() {

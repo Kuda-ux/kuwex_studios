@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { blogPostsMeta } from "@/lib/blog-meta";
+import { getDb, ensureSchema } from "@/lib/turso";
 
 const postMeta = blogPostsMeta;
 
@@ -145,7 +146,27 @@ const _legacyDeleted = {
 } as const;
 void _legacyDeleted;
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+async function getDynamicPost(slug: string) {
+  try {
+    await ensureSchema();
+    const db = getDb();
+    const result = await db.execute({ sql: 'SELECT * FROM blog_posts WHERE slug = ? AND status = ? LIMIT 1', args: [slug, 'published'] });
+    if (!result.rows.length) return null;
+    const r = result.rows[0] as Record<string, unknown>;
+    const parseArr = (v: unknown): string[] => { try { return JSON.parse(v as string); } catch { return []; } };
+    return {
+      title: String(r.title || ''),
+      description: String(r.excerpt || ''),
+      image: String(r.image || ''),
+      og_image: String(r.og_image || r.image || ''),
+      author: String(r.author || 'Kuda'),
+      post_date: String(r.post_date || ''),
+      keywords: parseArr(r.keywords) as string[],
+    };
+  } catch { return null; }
+}
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const meta = postMeta[params.slug];
   const baseUrl = "https://kuwexstudios.co.zw";
   const postUrl = `${baseUrl}/blog/${params.slug}`;
@@ -153,6 +174,36 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const imageUrl = rawImage.startsWith("/") ? `${baseUrl}${rawImage}` : rawImage;
 
   if (!meta) {
+    const dynamic = await getDynamicPost(params.slug);
+    if (dynamic) {
+      const rawImg = dynamic.og_image || dynamic.image || '/logo.jpg';
+      const dynImg = rawImg.startsWith('/') ? `${baseUrl}${rawImg}` : rawImg;
+      return {
+        title: `${dynamic.title} | KuWeX Studios`,
+        description: dynamic.description,
+        keywords: dynamic.keywords,
+        authors: [{ name: dynamic.author, url: baseUrl }],
+        openGraph: {
+          title: dynamic.title,
+          description: dynamic.description,
+          url: postUrl,
+          siteName: 'KuWeX Studios',
+          type: 'article',
+          publishedTime: dynamic.post_date,
+          authors: [dynamic.author],
+          images: [{ url: dynImg, width: 1200, height: 630, alt: dynamic.title }],
+        },
+        twitter: {
+          card: 'summary_large_image',
+          title: dynamic.title,
+          description: dynamic.description,
+          images: [dynImg],
+          creator: '@kuwexstudios',
+          site: '@kuwexstudios',
+        },
+        alternates: { canonical: postUrl },
+      };
+    }
     return {
       title: "Blog | KuWeX Studios",
       openGraph: {

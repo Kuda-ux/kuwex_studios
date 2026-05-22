@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { jwtVerify } from 'jose';
 
 // Known spam/malicious bot user agents
 // NOTE: AI bots (GPTBot, ClaudeBot, PerplexityBot, etc.) are ALLOWED
@@ -28,11 +29,29 @@ const rateLimit = new Map<string, { count: number; timestamp: number }>();
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
 const RATE_LIMIT_MAX = 100; // max requests per minute per IP
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const response = NextResponse.next();
   const userAgent = request.headers.get('user-agent') || '';
   const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+
+  // --- DASHBOARD AUTH GUARD ---
+  if (pathname.startsWith('/dashboard') && !pathname.startsWith('/dashboard/login')) {
+    const token = request.cookies.get('auth-token')?.value;
+    if (!token) {
+      return NextResponse.redirect(new URL('/dashboard/login', request.url));
+    }
+    try {
+      const secret = new TextEncoder().encode(
+        process.env.JWT_SECRET || 'kuwex-studios-dev-secret-min-32-chars!!'
+      );
+      await jwtVerify(token, secret);
+    } catch {
+      const redirect = NextResponse.redirect(new URL('/dashboard/login', request.url));
+      redirect.cookies.set('auth-token', '', { maxAge: 0, path: '/' });
+      return redirect;
+    }
+  }
 
   // --- BLOCK MALICIOUS BOTS ---
   const isBlockedBot = BLOCKED_BOTS.some(bot => 
@@ -83,7 +102,7 @@ export function middleware(request: NextRequest) {
     pathname.includes('.php') ||
     pathname.includes('wp-content') ||
     pathname.includes('wp-includes') ||
-    pathname.includes('/admin') && !pathname.startsWith('/dashboard')
+    (pathname.includes('/admin') && !pathname.startsWith('/dashboard'))
   ) {
     return new NextResponse('Not Found', { status: 404 });
   }

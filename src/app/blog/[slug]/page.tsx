@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
@@ -1327,11 +1328,54 @@ function renderContent(content: string[]) {
   });
 }
 
+function formatDate(iso: string) {
+  try { return new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); }
+  catch { return iso; }
+}
+
 export default function BlogPostPage() {
   const { slug } = useParams();
-  const post = blogPosts[slug as string];
+  const staticPost = blogPosts[slug as string];
+  const [dynamicPost, setDynamicPost] = useState<BlogPost | null>(null);
+  const [loadingDynamic, setLoadingDynamic] = useState(!staticPost);
+  const [notFound, setNotFound] = useState(false);
 
-  if (!post) {
+  useEffect(() => {
+    if (staticPost) return;
+    setLoadingDynamic(true);
+    fetch(`/api/blog?slug=${slug}`)
+      .then(r => r.json())
+      .then(d => {
+        if (d.post) {
+          const p = d.post;
+          setDynamicPost({
+            slug: p.slug, title: p.title, excerpt: p.excerpt, image: p.image,
+            author: p.author, authorRole: p.author_role,
+            date: formatDate(p.post_date), readTime: p.read_time,
+            category: p.category, content: p.content, relatedSlugs: p.related_slugs,
+          });
+        } else { setNotFound(true); }
+      })
+      .catch(() => setNotFound(true))
+      .finally(() => setLoadingDynamic(false));
+  }, [slug, staticPost]);
+
+  if (loadingDynamic) {
+    return (
+      <main className="min-h-screen bg-black text-white">
+        <Navbar />
+        <div className="pt-40 pb-20 text-center">
+          <div className="w-8 h-8 border-2 border-kuwex-cyan/30 border-t-kuwex-cyan rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-500">Loading article...</p>
+        </div>
+        <Footer />
+      </main>
+    );
+  }
+
+  const post = staticPost || dynamicPost;
+
+  if (!post || notFound) {
     return (
       <main className="min-h-screen bg-black text-white">
         <Navbar />

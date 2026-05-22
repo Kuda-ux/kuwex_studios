@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
@@ -203,7 +204,35 @@ const blogPosts = [
 
 const categories = ["All", "AI & Digital Transformation", "Digital Strategy", "SEO", "Web Design", "Branding", "Cybersecurity", "Google Ads"];
 
+function formatDate(iso: string) {
+  try { return new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); }
+  catch { return iso; }
+}
+
 export default function Blog() {
+  const [dynamicPosts, setDynamicPosts] = useState<typeof blogPosts>([]);
+
+  useEffect(() => {
+    fetch('/api/blog')
+      .then(r => r.json())
+      .then(d => {
+        const posts = (d.posts || []).map((p: Record<string, unknown>) => ({
+          slug: String(p.slug),
+          title: String(p.title),
+          excerpt: String(p.excerpt),
+          image: String(p.image),
+          author: String(p.author),
+          date: formatDate(String(p.post_date)),
+          readTime: String(p.read_time),
+          category: String(p.category),
+        }));
+        setDynamicPosts(posts);
+      })
+      .catch(() => {});
+  }, []);
+
+  const allPosts = [...dynamicPosts, ...blogPosts];
+
   return (
     <main className="min-h-screen bg-black text-white">
       <Navbar />
@@ -326,7 +355,7 @@ export default function Blog() {
       <section className="pb-24 px-4">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {blogPosts.map((post, i) => (
+            {allPosts.map((post, i) => (
               <motion.article
                 key={i}
                 initial={{ opacity: 0, y: 20 }}

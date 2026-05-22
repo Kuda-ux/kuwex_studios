@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDashboardNotifications } from "@/hooks/useDashboardNotifications";
 import {
@@ -23,6 +23,7 @@ import {
   Search,
   ChevronDown,
   LogOut,
+  PenSquare,
 } from "lucide-react";
 
 const navigation = [
@@ -33,6 +34,7 @@ const navigation = [
   { name: "Invoices", href: "/dashboard/invoices", icon: Receipt },
   { name: "Tenders", href: "/dashboard/tenders", icon: Briefcase },
   { name: "Marketing", href: "/dashboard/marketing", icon: Megaphone },
+  { name: "Blog Manager", href: "/dashboard/blog", icon: PenSquare },
   { name: "Blog Share Hub", href: "/dashboard/social", icon: Share2 },
   { name: "HR & Team", href: "/dashboard/hr", icon: UserCog },
   { name: "Documents", href: "/dashboard/documents", icon: FolderOpen },
@@ -49,6 +51,15 @@ export default function DashboardLayout({
   const [profileOpen, setProfileOpen] = useState(false);
   const pathname = usePathname();
   const notifications = useDashboardNotifications();
+  const router = useRouter();
+
+  async function handleLogout() {
+    await fetch("/api/auth/logout", { method: "POST" });
+    router.push("/dashboard/login");
+    router.refresh();
+  }
+
+  if (pathname === "/dashboard/login") return <>{children}</>;
 
   return (
     <div className="min-h-screen bg-[#0A0A0A]">
@@ -238,13 +249,13 @@ export default function DashboardLayout({
                           <Settings size={16} />
                           Settings
                         </Link>
-                        <Link
-                          href="/"
-                          className="flex items-center gap-3 px-4 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-[#1a1a1a]"
+                        <button
+                          onClick={handleLogout}
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-[#1a1a1a] w-full text-left"
                         >
                           <LogOut size={16} />
                           Sign out
-                        </Link>
+                        </button>
                       </div>
                     </motion.div>
                   )}
