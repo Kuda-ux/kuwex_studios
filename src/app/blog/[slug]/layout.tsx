@@ -146,6 +146,10 @@ const _legacyDeleted = {
 } as const;
 void _legacyDeleted;
 
+export function generateStaticParams() {
+  return Object.keys(blogPostsMeta).map((slug) => ({ slug }));
+}
+
 async function getDynamicPost(slug: string) {
   try {
     await ensureSchema();
