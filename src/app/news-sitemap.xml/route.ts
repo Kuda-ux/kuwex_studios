@@ -32,7 +32,25 @@ interface NewsPost {
 }
 
 const newsPosts: NewsPost[] = [
-  // May 2026 — Africa AI series (newest first)
+  // May 2026 — Digital Strategy & AI Readiness series
+  {
+    slug: 'ai-rewards-digitally-prepared-businesses-zimbabwe',
+    title: 'AI Will Reward Businesses That Are Already Digitally Prepared — Is Yours Ready?',
+    date: '2026-05-30T09:00:00+02:00',
+    keywords: 'AI ready business Zimbabwe, AI search, Google AI Overview, digital presence AI, ChatGPT business, Zimbabwe AI strategy, KuWeX Studios',
+  },
+  {
+    slug: 'every-sector-zimbabwe-needs-digital-transformation',
+    title: 'Every Sector in Zimbabwe Needs Digital Transformation — Not Just Tech Companies',
+    date: '2026-05-29T09:00:00+02:00',
+    keywords: 'digital transformation Zimbabwe, schools online Zimbabwe, clinic booking system, lodge website Zimbabwe, NGO digital presence, KuWeX Studios',
+  },
+  {
+    slug: 'social-media-alone-not-digital-strategy-zimbabwe',
+    title: 'Social Media Alone Is Not a Digital Strategy — Zimbabwe Businesses, Take Note',
+    date: '2026-05-27T09:00:00+02:00',
+    keywords: 'digital strategy Zimbabwe, website vs social media, digital ecosystem Zimbabwe, WhatsApp marketing, SEO Zimbabwe, KuWeX Studios',
+  },
   {
     slug: 'econet-cassava-cloud-computing-factory-zimbabwe-gpu',
     title: 'Zimbabwe Just Got Its Own AI Cloud Factory — Inside the Econet & Cassava GPU Launch',
