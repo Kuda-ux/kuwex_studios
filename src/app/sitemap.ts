@@ -1,6 +1,26 @@
 import { MetadataRoute } from 'next'
+import { getDb, ensureSchema } from '@/lib/turso'
 
-export default function sitemap(): MetadataRoute.Sitemap {
+async function getDynamicSitemapPosts(): Promise<MetadataRoute.Sitemap> {
+  try {
+    await ensureSchema();
+    const db = getDb();
+    const result = await db.execute({
+      sql: `SELECT slug, updated_at FROM blog_posts WHERE status = 'published' ORDER BY updated_at DESC`,
+      args: [],
+    });
+    return result.rows.map((r) => ({
+      url: `https://kuwexstudios.co.zw/blog/${String(r.slug)}`,
+      lastModified: String(r.updated_at || new Date().toISOString()),
+      changeFrequency: 'weekly' as const,
+      priority: 0.85,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://kuwexstudios.co.zw'
   const now = new Date().toISOString()
   
@@ -78,5 +98,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/help`, lastModified: now, changeFrequency: 'monthly', priority: 0.5 },
   ]
 
-  return routes
+  const dynamicPosts = await getDynamicSitemapPosts();
+  const staticSlugs = new Set(routes.map((r) => r.url));
+  const merged = [...routes, ...dynamicPosts.filter((r) => !staticSlugs.has(r.url))];
+
+  return merged
 }

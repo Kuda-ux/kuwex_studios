@@ -1,4 +1,29 @@
-const blogPosts = [
+import { getDb, ensureSchema } from '@/lib/turso';
+
+interface RssPost {
+  slug: string; title: string; excerpt: string;
+  image: string; author: string; date: string; category: string;
+}
+
+async function getDynamicRssPosts(): Promise<RssPost[]> {
+  try {
+    await ensureSchema();
+    const db = getDb();
+    const result = await db.execute({
+      sql: `SELECT slug, title, excerpt, image, author, post_date, category FROM blog_posts WHERE status = 'published' ORDER BY post_date DESC LIMIT 50`,
+      args: [],
+    });
+    return result.rows.map((r) => ({
+      slug: String(r.slug), title: String(r.title), excerpt: String(r.excerpt),
+      image: String(r.image || ''), author: String(r.author || 'KuWeX Studios'),
+      date: String(r.post_date), category: String(r.category || 'Digital Marketing'),
+    }));
+  } catch {
+    return [];
+  }
+}
+
+const blogPosts: RssPost[] = [
   { slug: "econet-ai-launch-zimbabwe-new-era-artificial-intelligence", title: "Econet Launches AI in Zimbabwe — And Nothing Will Ever Be the Same Again", excerpt: "Econet Wireless has officially launched Econet AI, marking a defining moment in Zimbabwe's technological history. With ICT Minister Tatenda Mavetera present, this isn't just a product launch — it's the birth of a new economic era.", image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&h=630&fit=crop", author: "Kuda", date: "April 17, 2026", category: "AI & Digital Transformation" },
   { slug: "zimbabwe-ai-economy-business-lead-or-left-behind", title: "Zimbabwe Is Entering the AI Economy: Will Your Business Lead or Be Left Behind?", excerpt: "The Zimbabwe National AI Strategy (2026-2030) is here. AI is becoming the backbone of Zimbabwe's economic future.", image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=630&fit=crop", author: "Kuda", date: "April 14, 2026", category: "AI & Digital Transformation" },
   { slug: "why-every-zimbabwean-sme-needs-digital-presence-2026", title: "Why Every Zimbabwean SME Needs a Serious Digital Presence in 2026", excerpt: "The market has shifted. Your customers search Google before they visit your shop.", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=630&fit=crop", author: "Kuda", date: "April 12, 2026", category: "Digital Strategy" },
@@ -32,7 +57,12 @@ function escapeXml(value: string): string {
 export async function GET() {
   const baseUrl = 'https://kuwexstudios.co.zw';
 
-  const rssItems = blogPosts.map((post) => `
+  const dynamic = await getDynamicRssPosts();
+  const staticSlugs = new Set(blogPosts.map((p) => p.slug));
+  const allPosts = [...dynamic.filter((p) => !staticSlugs.has(p.slug)), ...blogPosts]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+  const rssItems = allPosts.map((post) => `
     <item>
       <title><![CDATA[${post.title}]]></title>
       <link>${baseUrl}/blog/${post.slug}</link>

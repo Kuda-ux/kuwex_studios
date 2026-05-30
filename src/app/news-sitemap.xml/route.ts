@@ -1,7 +1,28 @@
 // Google News sitemap - only articles published in last 48 hours qualify
 // but we include 30 days to maximize coverage for news aggregators
 
+import { getDb, ensureSchema } from '@/lib/turso';
+
 const SITE_URL = 'https://kuwexstudios.co.zw';
+
+async function getDynamicNewsPosts(): Promise<NewsPost[]> {
+  try {
+    await ensureSchema();
+    const db = getDb();
+    const cutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    const result = await db.execute({
+      sql: `SELECT slug, title, post_date, keywords FROM blog_posts WHERE status = 'published' AND post_date >= ? ORDER BY post_date DESC LIMIT 50`,
+      args: [cutoff],
+    });
+    return result.rows.map((r) => {
+      let kw = '';
+      try { kw = (JSON.parse(r.keywords as string) as string[]).join(', '); } catch { kw = String(r.keywords ?? ''); }
+      return { slug: String(r.slug), title: String(r.title), date: String(r.post_date), keywords: kw };
+    });
+  } catch {
+    return [];
+  }
+}
 
 interface NewsPost {
   slug: string;
@@ -81,7 +102,12 @@ const newsPosts: NewsPost[] = [
 ];
 
 export async function GET() {
-  const newsItems = newsPosts
+  const dynamic = await getDynamicNewsPosts();
+  const staticSlugs = new Set(newsPosts.map((p) => p.slug));
+  const merged = [...dynamic.filter((p) => !staticSlugs.has(p.slug)), ...newsPosts]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+  const newsItems = merged
     .map(
       (post) => `
     <url>
