@@ -195,7 +195,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
           type: 'article',
           publishedTime: dynamic.post_date,
           authors: [dynamic.author],
-          images: [{ url: dynImg, width: 1200, height: 630, alt: dynamic.title }],
+          images: [{ url: dynImg, width: 1200, height: 630, alt: dynamic.title, type: 'image/jpeg' }],
         },
         twitter: {
           card: 'summary_large_image',
@@ -241,6 +241,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
           width: 1200,
           height: 630,
           alt: meta.title,
+          type: 'image/jpeg',
         },
       ],
     },
