@@ -9,17 +9,47 @@ import Link from "next/link";
 import Image from "next/image";
 
 const featuredPost = {
-  slug: "econet-ai-launch-zimbabwe-new-era-artificial-intelligence",
-  title: "Econet Launches AI in Zimbabwe — And Nothing Will Ever Be the Same Again",
-  excerpt: "Econet Wireless has officially launched Econet AI, marking a defining moment in Zimbabwe's technological history. With ICT Minister Tatenda Mavetera present, this isn't just a product launch — it's the birth of a new economic era aligned with Zimbabwe's National AI Strategy and NDS2.",
-  image: "/blog/econet-ai-launch-mavetera.jpg",
+  slug: "ai-rewards-digitally-prepared-businesses-zimbabwe",
+  title: "AI Will Reward Businesses That Are Already Digitally Prepared — Is Yours Ready?",
+  excerpt: "AI is quietly changing how customers find, compare, and choose businesses in Zimbabwe. It doesn't knock on doors or run ads. It scans your digital presence and decides whether to recommend you. Here's exactly what it's looking for — and how to make sure you're in the conversation.",
+  image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=630&fit=crop",
   author: "Kuda",
-  date: "April 17, 2026",
-  readTime: "16 min read",
-  category: "AI & Digital Transformation"
+  date: "May 30, 2026",
+  readTime: "12 min read",
+  category: "AI & Future"
 };
 
 const blogPosts = [
+  {
+    slug: "every-sector-zimbabwe-needs-digital-transformation",
+    title: "Every Sector in Zimbabwe Needs Digital Transformation — Not Just Tech Companies",
+    excerpt: "Schools, clinics, lodges, retailers, churches, NGOs — every sector in Zimbabwe is losing time and money to paper systems. Here's the sector-by-sector digital fix.",
+    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=400&fit=crop",
+    author: "Kuda",
+    date: "May 29, 2026",
+    readTime: "11 min read",
+    category: "Digital Transformation"
+  },
+  {
+    slug: "social-media-alone-not-digital-strategy-zimbabwe",
+    title: "Social Media Alone Is Not a Digital Strategy — Zimbabwe Businesses, Take Note",
+    excerpt: "Posting on Facebook every day is not a strategy. A real digital ecosystem connects your website, WhatsApp, SEO, Google profile, and analytics into one growth system.",
+    image: "https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=600&h=400&fit=crop",
+    author: "Weston",
+    date: "May 27, 2026",
+    readTime: "10 min read",
+    category: "Digital Strategy"
+  },
+  {
+    slug: "econet-ai-launch-zimbabwe-new-era-artificial-intelligence",
+    title: "Econet Launches AI in Zimbabwe — And Nothing Will Ever Be the Same Again",
+    excerpt: "Econet Wireless has officially launched Econet AI, marking a defining moment in Zimbabwe's technological history. This isn't just a product launch — it's the birth of a new economic era.",
+    image: "/blog/econet-ai-launch-mavetera.jpg",
+    author: "Kuda",
+    date: "April 17, 2026",
+    readTime: "16 min read",
+    category: "AI & Digital Transformation"
+  },
   {
     slug: "econet-cassava-cloud-computing-factory-zimbabwe-gpu",
     title: "Zimbabwe Just Got Its Own AI Cloud Factory — Inside the Econet & Cassava GPU Launch",
