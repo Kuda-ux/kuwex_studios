@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Portfolio — Our Work & Impact | KuWeX Studios Zimbabwe",
+  title: "Portfolio — 11 Live Projects | KuWeX Studios Zimbabwe",
   description:
-    "Explore real projects by KuWeX Studios — Zimbabwe's top digital agency. See live websites we've built for tourism, hospitality, construction, engineering, and tech businesses. Real work, real results.",
+    "Explore 11 real projects by KuWeX Studios — Zimbabwe's leading digital agency. Live websites for solar companies, lodges, colleges, NGOs, construction, health & wellness, and more. Real work, real results.",
   keywords: [
     "KuWeX Studios portfolio",
     "web design portfolio Zimbabwe",
@@ -13,11 +13,14 @@ export const metadata: Metadata = {
     "best websites Zimbabwe",
     "KuWeX projects",
     "web development Zimbabwe portfolio",
+    "branding Zimbabwe",
+    "SEO Zimbabwe",
+    "digital marketing Zimbabwe",
   ],
   openGraph: {
-    title: "Our Work & Impact — KuWeX Studios Portfolio",
+    title: "11 Live Projects — KuWeX Studios Portfolio",
     description:
-      "See the real websites and digital brands KuWeX Studios has built for businesses across Zimbabwe. Tourism, hospitality, construction, engineering, tech — real projects, live results.",
+      "Solar companies, luxury lodges, beauty colleges, NGOs, construction firms — see how KuWeX Studios has transformed businesses across Zimbabwe with world-class digital solutions.",
     url: "https://kuwexstudios.co.zw/portfolio",
     type: "website",
     images: [

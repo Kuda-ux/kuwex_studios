@@ -1,130 +1,235 @@
-"use client";
+﻿"use client";
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { motion, useInView } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import {
   ArrowRight,
   ExternalLink,
   Globe,
-  Zap,
-  Clock,
-  ChevronRight,
   Star,
-  TrendingUp,
-  Target,
-  CheckCircle2,
   Quote,
   Smartphone,
   Monitor,
   Sparkles,
+  Palette,
+  Search,
+  MessageSquare,
+  BarChart3,
+  Filter,
+  Zap,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
+const categories = [
+  { id: "all", label: "All Projects" },
+  { id: "hospitality", label: "Hospitality" },
+  { id: "energy", label: "Energy" },
+  { id: "education", label: "Education" },
+  { id: "construction", label: "Construction" },
+  { id: "ngo", label: "NGO & Community" },
+  { id: "services", label: "Services" },
+  { id: "health", label: "Health & Wellness" },
+];
+
 const projects = [
   {
-    name: "Kwedu Experience",
-    industry: "Tourism / Hospitality",
-    url: "https://kwedu-experience.vercel.app/",
-    description: "A modern tourism website designed to showcase village experiences, culture, and attract both local and international visitors.",
-    impact: ["Improved digital presence", "Strong storytelling for tourism brand", "Mobile-optimized for travellers"],
-    color: "#00E5FF",
-    icon: "🏕️",
-    screenshot: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=500&fit=crop",
-  },
-  {
-    name: "Metro Antelope Lodge",
-    industry: "Hospitality",
-    url: "https://www.metroantelopelodge.co.zw/",
-    description: "A professional lodge website designed to attract bookings and present accommodation services clearly.",
-    impact: ["Increased trust and brand visibility", "Clean booking-focused layout", "Higher conversion on enquiries"],
-    color: "#0085FF",
-    icon: "🏨",
-    screenshot: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=500&fit=crop",
-  },
-  {
-    name: "Fountain Blue Pool Repairs",
-    industry: "Services / Construction",
-    url: "https://www.fountainpoolrepairs.co.zw/",
-    description: "A service-based website showcasing pool repair solutions with strong visuals and client trust positioning.",
-    impact: ["Better service presentation", "Increased customer enquiries", "Professional brand positioning"],
-    color: "#00D4AA",
-    icon: "🏊",
-    screenshot: "https://images.unsplash.com/photo-1572331165267-854da2b021b1?w=800&h=500&fit=crop",
+    name: "Kupuona Integral Engineers",
+    industry: "Energy & Engineering",
+    category: "energy",
+    url: "https://www.kupuonazim.co.zw/",
+    description: "Full-service energy company website covering solar systems, generator installations, and electrical services. Positioned as Zimbabwe's trusted energy partner with clear CTAs and lead capture.",
+    services: ["Web Design", "SEO", "Lead Generation"],
+    color: "#00C47A",
+    screenshot: "/portfolio/kupuona-engineers.png",
   },
   {
     name: "Matopo Africa Construction",
     industry: "Construction",
+    category: "construction",
     url: "https://www.matopoafricaconstruction.co.zw/",
-    description: "A corporate construction website highlighting projects, services, and professionalism.",
-    impact: ["Strong brand positioning", "Corporate credibility established", "Lead generation structure"],
-    color: "#FF6B35",
-    icon: "🏗️",
-    screenshot: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=500&fit=crop",
+    description: "Corporate construction and aluminium solutions website — homes, commercial structures, windows, pergolas, shower cubicles and more. Built to command trust and convert enquiries.",
+    services: ["Web Design", "Branding", "SEO"],
+    color: "#00E5FF",
+    screenshot: "/portfolio/matopo-construction.png",
   },
   {
-    name: "Kupona Integrated Engineering",
-    industry: "Engineering / Energy",
-    url: "https://www.kupuonazim.co.zw/",
-    description: "A technical services website covering solar, generators, and engineering solutions across Zimbabwe.",
-    impact: ["Multi-service clarity achieved", "Lead generation structure built", "Technical authority established"],
-    color: "#FFD700",
-    icon: "⚡",
-    screenshot: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&h=500&fit=crop",
+    name: "Bluefin Energy",
+    industry: "Solar Energy",
+    category: "energy",
+    url: "#",
+    description: "Bold solar energy platform serving 500+ Zimbabwe homes and businesses. High-converting landing pages for residential and commercial solar packages with real project proof.",
+    services: ["Web Design", "Digital Marketing"],
+    color: "#0085FF",
+    screenshot: "/portfolio/bluefin-energy.png",
   },
   {
-    name: "Sui Generis IT Solutions",
-    industry: "Technology / E-commerce",
-    url: "https://suigeneriszim.co.zw/",
-    description: "A tech-focused website supporting product sales and financing systems for laptops and electronics.",
-    impact: ["Online product visibility", "Customer acquisition system", "E-commerce ready platform"],
+    name: "Springboard Beauty College",
+    industry: "Beauty & Education",
+    category: "education",
+    url: "#",
+    description: "Zimbabwe's premier beauty academy — elegant branding, course showcase, certifications, gallery, and a streamlined admissions pipeline to attract the next generation of professionals.",
+    services: ["Web Design", "Branding"],
+    color: "#E91E8C",
+    screenshot: "/portfolio/springboard-beauty.png",
+  },
+  {
+    name: "Springboard College",
+    industry: "Professional Training",
+    category: "education",
+    url: "https://springboardedu.co.zw",
+    description: "ABMA & ICM-aligned training institution for Aviation, Hospitality, Culinary Arts, Beauty, and Business programmes. A world-class site built to attract serious students.",
+    services: ["Web Design", "SEO", "Content Strategy"],
+    color: "#F59E0B",
+    screenshot: "/portfolio/springboard-college.png",
+  },
+  {
+    name: "Mutasa Youth Forum",
+    industry: "NGO & Community",
+    category: "ngo",
+    url: "#",
+    description: "A powerful community empowerment website for Manicaland's youth — programs, gallery, impact metrics, partner visibility, and donation facilitation. Digital presence for real change.",
+    services: ["Web Design", "Digital Presence"],
+    color: "#F97316",
+    screenshot: "/portfolio/mutasa-youth-forum.png",
+  },
+  {
+    name: "Fountain Blue Pools",
+    industry: "Pool Construction & Services",
+    category: "services",
+    url: "https://www.fountainpoolrepairs.co.zw/",
+    description: "Premium pool construction, repairs, fibreglass relining, and pump solutions. A professional digital brand that replaced word-of-mouth with direct Google-driven enquiries.",
+    services: ["Web Design", "Lead Generation"],
+    color: "#06B6D4",
+    screenshot: "/portfolio/fountain-blue-pools.png",
+  },
+  {
+    name: "Metro Antelope Lodge",
+    industry: "Hospitality",
+    category: "hospitality",
+    url: "https://www.metroantelopelodge.co.zw/",
+    description: "Zimbabwe's hidden gem at Antelope Dam near Matobo Hills UNESCO World Heritage Site. Rooms, thatched cottages, lake views — booking-focused and built to convert travellers.",
+    services: ["Web Design", "Branding", "SEO"],
+    color: "#3B82F6",
+    screenshot: "/portfolio/matobo-lodge.png",
+  },
+  {
+    name: "Rock Perfect Fisheries ZW",
+    industry: "Agriculture & Aquaculture",
+    category: "services",
+    url: "#",
+    description: "High-converting fish farming platform helping Zimbabwean entrepreneurs build profitable fish farms — complete pond construction, fingerlings, training, and start-to-harvest solutions.",
+    services: ["Web Design", "Digital Marketing"],
+    color: "#EF4444",
+    screenshot: "/portfolio/rock-perfect-fisheries.png",
+  },
+  {
+    name: "Victoria Falls Mental Health",
+    industry: "Health & Wellness",
+    category: "health",
+    url: "https://vicfallsmentalhealth.co.zw",
+    description: "Zimbabwe's premier mental health and wellness retreat. Mind. Body. Soul. A serene, trust-centred website for psychotherapy, wellness retreats, and corporate wellbeing. 500+ lives touched.",
+    services: ["Web Design", "Branding", "Content Strategy"],
     color: "#A855F7",
-    icon: "💻",
-    screenshot: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=800&h=500&fit=crop",
+    screenshot: "/portfolio/vicfalls-mental-health.png",
+  },
+  {
+    name: "Tribe Lodge",
+    industry: "Hospitality",
+    category: "hospitality",
+    url: "#",
+    description: "Luxury boutique lodge in Bulawayo — eight individually styled presidential suites, curated African tours, and warm hospitality. A place where comfort meets culture.",
+    services: ["Web Design", "Branding"],
+    color: "#D97706",
+    screenshot: "/portfolio/tribe-lodge.png",
   },
 ];
 
-const caseStudies = [
+const deliverables = [
   {
-    project: "Metro Antelope Lodge",
-    problem: "Metro Antelope Lodge had zero online presence. Potential guests couldn't find them, had no way to view rooms, and relied on word-of-mouth. They were losing bookings to competitors with modern websites.",
-    solution: "KuWeX Studios designed a premium hospitality website with stunning room galleries, a clear booking flow, Google Maps integration, and SEO-optimized pages targeting 'lodge accommodation Harare' keywords.",
-    results: ["Professional online presence in under 2 weeks", "Direct enquiry system reducing reliance on 3rd parties", "Google-indexed within days of launch", "Mobile-first design capturing travellers on the go"],
+    icon: Monitor,
+    title: "Website Design & Development",
+    desc: "Custom websites that load fast, rank on Google, and convert visitors into clients. Built for every Zimbabwe industry from scratch.",
+    color: "#00E5FF",
   },
   {
-    project: "Kupona Integrated Engineering",
-    problem: "Kupona offered solar installations, generator services, and electrical engineering — but had no way to present these clearly online. Clients didn't understand their full range, leading to missed revenue.",
-    solution: "We built a structured multi-service website with dedicated pages for each service line, clear CTAs, project showcases, and a WhatsApp-integrated lead capture system for Zimbabwe's mobile-first market.",
-    results: ["All services clearly presented with dedicated pages", "WhatsApp enquiry integration driving direct leads", "Search visibility for 'solar installation Zimbabwe'", "Professional positioning against larger competitors"],
+    icon: Palette,
+    title: "Brand Identity & Logo Design",
+    desc: "Complete visual identity — logos, colour systems, typography, and brand guidelines that command respect and instant recognition.",
+    color: "#0085FF",
+  },
+  {
+    icon: Search,
+    title: "SEO & Google Visibility",
+    desc: "We optimise your site to rank where your customers search — local SEO, technical SEO, keyword strategy, and structured content.",
+    color: "#A855F7",
+  },
+  {
+    icon: MessageSquare,
+    title: "WhatsApp & Social Integration",
+    desc: "Connect WhatsApp, Facebook, Instagram, and enquiry forms into one seamless digital growth system that never sleeps.",
+    color: "#25D366",
+  },
+  {
+    icon: BarChart3,
+    title: "Digital Marketing Strategy",
+    desc: "Campaigns, content calendars, Google Ads, and analytics dashboards. A connected strategy that turns online attention into revenue.",
+    color: "#F59E0B",
+  },
+  {
+    icon: Smartphone,
+    title: "Mobile-First Development",
+    desc: "70%+ of your customers browse on phones. Every site we build is pixel-perfect on mobile — fast, sharp, and smooth.",
+    color: "#EF4444",
   },
 ];
 
 const testimonials = [
-  { name: "Takudzwa M.", role: "Owner, Metro Antelope Lodge", text: "KuWeX Studios delivered beyond our expectations. The website looks world-class and we started receiving enquiries within the first week. Professional, fast, and they truly understood our vision.", rating: 5 },
-  { name: "Farai C.", role: "Director, Matopo Africa Construction", text: "We needed a website that screamed professionalism and credibility. KuWeX nailed it. Our clients now see us differently — as the premium construction company we are. The ROI has been incredible.", rating: 5 },
-  { name: "Tinashe R.", role: "Founder, Sui Generis IT", text: "Fast, reliable, and the end product was amazing. KuWeX Studios understands what Zimbabwe businesses need — not just a pretty website, but a system that actually brings in customers.", rating: 5 },
-  { name: "Grace N.", role: "Manager, Fountain Blue Pool Repairs", text: "Before KuWeX, we relied purely on referrals. Now customers find us on Google, see our work, and call us directly. The website paid for itself within the first month. These guys are the real deal.", rating: 5 },
+  {
+    name: "Takudzwa M.",
+    role: "Owner, Metro Antelope Lodge",
+    text: "KuWeX Studios delivered beyond our expectations. The website looks world-class and we started receiving enquiries within the first week. Professional, fast, and they truly understood our vision.",
+    rating: 5,
+  },
+  {
+    name: "Farai C.",
+    role: "Director, Matopo Africa Construction",
+    text: "We needed a website that screamed professionalism and credibility. KuWeX nailed it. Our clients now see us differently — as the premium construction company we are. The ROI has been incredible.",
+    rating: 5,
+  },
+  {
+    name: "Tinashe R.",
+    role: "Founder, Sui Generis IT",
+    text: "Fast, reliable, and the end product was amazing. KuWeX Studios understands what Zimbabwe businesses need — not just a pretty website, but a system that actually brings in customers.",
+    rating: 5,
+  },
+  {
+    name: "Grace N.",
+    role: "Manager, Fountain Blue Pools",
+    text: "Before KuWeX, we relied purely on referrals. Now customers find us on Google, see our work, and call us directly. The website paid for itself within the first month. These guys are the real deal.",
+    rating: 5,
+  },
 ];
 
-const statItems = [
-  { value: "6+", label: "Live Projects", icon: Globe },
-  { value: "5+", label: "Industries Served", icon: Target },
-  { value: "2–5", label: "Day Delivery", icon: Clock },
-  { value: "100%", label: "Client Satisfaction", icon: Star },
+const stats = [
+  { value: "11+", label: "Projects Delivered" },
+  { value: "8+", label: "Industries Served" },
+  { value: "100%", label: "Client Satisfaction" },
+  { value: "2–5", label: "Day Delivery" },
 ];
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] } },
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] } },
 };
 
-const stagger = { visible: { transition: { staggerChildren: 0.1 } } };
+const stagger = { visible: { transition: { staggerChildren: 0.08 } } };
 
 function AnimatedSection({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const isInView = useInView(ref, { once: true, margin: "-60px" });
   return (
     <motion.div ref={ref} initial="hidden" animate={isInView ? "visible" : "hidden"} variants={stagger} className={className}>
       {children}
@@ -132,96 +237,164 @@ function AnimatedSection({ children, className = "" }: { children: React.ReactNo
   );
 }
 
+function ServiceTag({ label, color }: { label: string; color: string }) {
+  return (
+    <span
+      className="inline-flex items-center text-[11px] font-semibold px-2.5 py-1 rounded-full border"
+      style={{ color, borderColor: `${color}40`, backgroundColor: `${color}12` }}
+    >
+      {label}
+    </span>
+  );
+}
+
 function ProjectCard({ project }: { project: typeof projects[0] }) {
   const [hovered, setHovered] = useState(false);
+  const hasLink = project.url !== "#";
   return (
     <motion.div
       variants={fadeUp}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="group relative bg-gradient-to-br from-[#111] to-[#0A0A0A] rounded-2xl border border-[#2F3336]/50 overflow-hidden hover:border-kuwex-cyan/30 transition-all duration-500"
+      className="group relative bg-gradient-to-br from-[#111] to-[#0A0A0A] rounded-2xl border border-[#2F3336]/50 overflow-hidden hover:border-kuwex-cyan/25 transition-all duration-500 flex flex-col"
     >
-      <div className="relative h-56 sm:h-64 overflow-hidden">
-        <Image src={project.screenshot} alt={`${project.name} — Website by KuWeX Studios`} fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-        <div className="absolute top-4 left-4 flex items-center gap-2">
-          <span className="text-2xl">{project.icon}</span>
-          <span className="text-xs font-bold px-3 py-1.5 rounded-full backdrop-blur-md border" style={{ backgroundColor: `${project.color}15`, borderColor: `${project.color}30`, color: project.color }}>{project.industry}</span>
+      <div className="relative h-52 sm:h-56 overflow-hidden flex-shrink-0">
+        <Image
+          src={project.screenshot}
+          alt={`${project.name} — Website by KuWeX Studios`}
+          fill
+          className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+        <div className="absolute top-3 left-3">
+          <span
+            className="text-[11px] font-bold px-3 py-1.5 rounded-full backdrop-blur-md border"
+            style={{ backgroundColor: `${project.color}18`, borderColor: `${project.color}35`, color: project.color }}
+          >
+            {project.industry}
+          </span>
         </div>
-        <motion.a href={project.url} target="_blank" rel="noopener noreferrer" className="absolute top-4 right-4 p-2.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-kuwex-cyan hover:text-black hover:border-kuwex-cyan transition-all duration-300" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
-          <ExternalLink size={16} />
-        </motion.a>
-        <div className="absolute bottom-4 left-4 right-4">
-          <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">{project.name}</h3>
+        {hasLink && (
+          <motion.a
+            href={project.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute top-3 right-3 p-2 rounded-full bg-black/40 backdrop-blur-md border border-white/15 text-white hover:bg-kuwex-cyan hover:text-black hover:border-kuwex-cyan transition-all duration-300"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <ExternalLink size={13} />
+          </motion.a>
+        )}
+        <div className="absolute bottom-3 left-3 right-10">
+          <h3 className="text-base font-bold text-white leading-tight drop-shadow-lg">{project.name}</h3>
         </div>
       </div>
-      <div className="p-6">
-        <p className="text-gray-400 text-sm leading-relaxed mb-5">{project.description}</p>
-        <div className="space-y-2.5 mb-6">
-          {project.impact.map((point, i) => (
-            <div key={i} className="flex items-start gap-2.5">
-              <CheckCircle2 size={15} className="mt-0.5 flex-shrink-0" style={{ color: project.color }} />
-              <span className="text-gray-300 text-sm">{point}</span>
-            </div>
+      <div className="p-5 flex flex-col flex-1">
+        <p className="text-gray-400 text-sm leading-relaxed mb-4 flex-1">{project.description}</p>
+        <div className="flex flex-wrap gap-2 mb-4">
+          {project.services.map((s) => (
+            <ServiceTag key={s} label={s} color={project.color} />
           ))}
         </div>
-        <a href={project.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold transition-all duration-300 group/btn" style={{ color: project.color }}>
-          View Live Site <ArrowRight size={14} className="transition-transform duration-300 group-hover/btn:translate-x-1" />
-        </a>
+        {hasLink ? (
+          <a
+            href={project.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold transition-all duration-300 group/btn"
+            style={{ color: project.color }}
+          >
+            View Live Site <ArrowRight size={13} className="transition-transform duration-300 group-hover/btn:translate-x-1" />
+          </a>
+        ) : (
+          <span className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-600">
+            <Globe size={13} /> Project Showcase
+          </span>
+        )}
       </div>
-      <motion.div className="absolute bottom-0 left-0 h-[2px]" style={{ backgroundColor: project.color }} initial={{ width: "0%" }} animate={{ width: hovered ? "100%" : "0%" }} transition={{ duration: 0.4 }} />
+      <motion.div
+        className="absolute bottom-0 left-0 h-[2px]"
+        style={{ backgroundColor: project.color }}
+        initial={{ width: "0%" }}
+        animate={{ width: hovered ? "100%" : "0%" }}
+        transition={{ duration: 0.4 }}
+      />
     </motion.div>
   );
 }
 
 export default function PortfolioPage() {
+  const [activeCategory, setActiveCategory] = useState("all");
+  const filtered = activeCategory === "all" ? projects : projects.filter((p) => p.category === activeCategory);
+
   return (
     <main className="min-h-screen bg-black text-white overflow-x-hidden">
       <Navbar />
 
       {/* ===== HERO ===== */}
       <section className="relative pt-32 sm:pt-40 pb-20 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(0,229,255,0.06),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_80%,rgba(0,133,255,0.04),transparent_50%)]" />
-        <div className="absolute top-20 left-10 w-72 h-72 bg-kuwex-cyan/5 rounded-full blur-[100px]" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-kuwex-blue/5 rounded-full blur-[120px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(0,229,255,0.07),transparent_55%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_75%_70%,rgba(0,133,255,0.05),transparent_55%)]" />
+        <div className="absolute top-20 left-10 w-80 h-80 bg-kuwex-cyan/5 rounded-full blur-[120px]" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-kuwex-blue/5 rounded-full blur-[130px]" />
         <div className="container mx-auto max-w-6xl relative z-10 text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="inline-flex items-center gap-2 bg-gradient-to-r from-kuwex-cyan/10 to-kuwex-blue/10 border border-kuwex-cyan/20 rounded-full px-5 py-2 mb-8">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.1 }}
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-kuwex-cyan/10 to-kuwex-blue/10 border border-kuwex-cyan/20 rounded-full px-5 py-2 mb-8"
+            >
               <Sparkles size={14} className="text-kuwex-cyan" />
-              <span className="text-kuwex-cyan text-sm font-medium">Our Work &amp; Impact</span>
+              <span className="text-kuwex-cyan text-sm font-medium">11 Live Projects · 8 Industries</span>
             </motion.div>
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 leading-[1.1]">
-              Real Work.{" "}
-              <span className="bg-gradient-to-r from-kuwex-cyan via-kuwex-blue to-kuwex-cyan bg-clip-text text-transparent">Real Results.</span>
-              <br />Real Impact.
+              The Work Speaks.
+              <br />
+              <span className="bg-gradient-to-r from-kuwex-cyan via-kuwex-blue to-kuwex-cyan bg-clip-text text-transparent">
+                The Results Prove It.
+              </span>
             </h1>
             <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-              Explore how KuWeX Studios transforms businesses into powerful digital brands that generate real results across Zimbabwe and beyond.
+              From solar companies to luxury lodges, beauty colleges to NGOs — this is what KuWeX Studios has built for Zimbabwe.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a href="#projects" className="group inline-flex items-center gap-2 bg-gradient-to-r from-kuwex-cyan to-kuwex-blue text-black font-bold px-8 py-4 rounded-full text-sm hover:shadow-[0_0_30px_rgba(0,229,255,0.3)] transition-all duration-300">
-                View Our Work <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+              <a
+                href="#projects"
+                className="group inline-flex items-center gap-2 bg-gradient-to-r from-kuwex-cyan to-kuwex-blue text-black font-bold px-8 py-4 rounded-full text-sm hover:shadow-[0_0_30px_rgba(0,229,255,0.3)] transition-all duration-300"
+              >
+                Explore Our Work <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </a>
-              <Link href="/contact" className="group inline-flex items-center gap-2 border border-[#2F3336] hover:border-kuwex-cyan/50 bg-white/[0.03] text-white font-bold px-8 py-4 rounded-full text-sm hover:bg-white/[0.06] transition-all duration-300">
-                Start Your Project <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+              <Link
+                href="/contact"
+                className="group inline-flex items-center gap-2 border border-[#2F3336] hover:border-kuwex-cyan/50 bg-white/[0.03] text-white font-bold px-8 py-4 rounded-full text-sm hover:bg-white/[0.06] transition-all duration-300"
+              >
+                Start Your Project <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* ===== TRUST BAR ===== */}
+      {/* ===== STATS BAR ===== */}
       <section className="relative py-6 border-y border-[#2F3336]/50 bg-[#080808]">
         <div className="container mx-auto max-w-6xl px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-0">
-            {statItems.map((s, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="flex items-center justify-center gap-3 md:border-r last:border-r-0 border-[#2F3336]/50">
-                <div className="p-2 rounded-lg bg-kuwex-cyan/10"><s.icon size={18} className="text-kuwex-cyan" /></div>
-                <div>
-                  <div className="text-xl font-bold text-white">{s.value}</div>
-                  <div className="text-xs text-gray-500 font-medium">{s.label}</div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {stats.map((s, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="flex flex-col items-center text-center md:border-r md:last:border-r-0 border-[#2F3336]/50 py-2"
+              >
+                <div className="text-2xl font-black bg-gradient-to-r from-kuwex-cyan to-kuwex-blue bg-clip-text text-transparent">
+                  {s.value}
                 </div>
+                <div className="text-xs text-gray-500 font-medium mt-0.5">{s.label}</div>
               </motion.div>
             ))}
           </div>
@@ -230,149 +403,162 @@ export default function PortfolioPage() {
 
       {/* ===== PROJECTS GRID ===== */}
       <section id="projects" className="py-20 sm:py-28 px-4 relative">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(0,229,255,0.02),transparent_70%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_30%,rgba(0,229,255,0.02),transparent_65%)]" />
         <div className="container mx-auto max-w-6xl relative z-10">
-          <AnimatedSection className="text-center mb-16">
+          <AnimatedSection className="text-center mb-12">
             <motion.div variants={fadeUp}>
-              <span className="text-kuwex-cyan text-sm font-bold tracking-widest uppercase mb-4 block">Portfolio</span>
+              <span className="text-kuwex-cyan text-sm font-bold tracking-widest uppercase mb-4 block">
+                Portfolio
+              </span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-5">
-                Projects That <span className="bg-gradient-to-r from-kuwex-cyan to-kuwex-blue bg-clip-text text-transparent">Speak for Themselves</span>
+                Projects That{" "}
+                <span className="bg-gradient-to-r from-kuwex-cyan to-kuwex-blue bg-clip-text text-transparent">
+                  Change Businesses
+                </span>
               </h2>
-              <p className="text-gray-400 text-lg max-w-2xl mx-auto">Every project is a partnership. Every website is a growth engine. Here&apos;s what we&apos;ve built for Zimbabwe businesses.</p>
+              <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+                Real websites. Real clients. Real Zimbabwe industries.
+              </p>
+            </motion.div>
+          </AnimatedSection>
+
+          {/* Category Filter */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex flex-wrap items-center justify-center gap-2.5 mb-12"
+          >
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 border ${
+                  activeCategory === cat.id
+                    ? "bg-gradient-to-r from-kuwex-cyan to-kuwex-blue text-black border-transparent shadow-[0_0_20px_rgba(0,229,255,0.2)]"
+                    : "border-[#2F3336]/60 text-gray-400 hover:border-kuwex-cyan/40 hover:text-white bg-[#0A0A0A]"
+                }`}
+              >
+                {cat.id === "all" && <Filter size={12} />}
+                {cat.label}
+              </button>
+            ))}
+          </motion.div>
+
+          {/* Grid */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeCategory}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+              {filtered.map((p) => (
+                <ProjectCard key={p.name} project={p} />
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </section>
+
+      {/* ===== WHAT WE DELIVER ===== */}
+      <section className="py-20 sm:py-28 px-4 bg-[#080808] border-y border-[#2F3336]/50">
+        <div className="container mx-auto max-w-6xl">
+          <AnimatedSection className="text-center mb-14">
+            <motion.div variants={fadeUp}>
+              <span className="text-kuwex-cyan text-sm font-bold tracking-widest uppercase mb-4 block">
+                What We Do
+              </span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-5">
+                More Than Websites —{" "}
+                <span className="bg-gradient-to-r from-kuwex-cyan to-kuwex-blue bg-clip-text text-transparent">
+                  Complete Digital Solutions
+                </span>
+              </h2>
+              <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+                Every project above involved more than just code. Here&apos;s the full range of what KuWeX Studios delivers.
+              </p>
             </motion.div>
           </AnimatedSection>
           <AnimatedSection>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {projects.map((p) => (<ProjectCard key={p.name} project={p} />))}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {deliverables.map((item, i) => (
+                <motion.div
+                  key={i}
+                  variants={fadeUp}
+                  className="relative bg-gradient-to-br from-[#111] to-[#0A0A0A] rounded-2xl border border-[#2F3336]/50 p-6 hover:border-kuwex-cyan/25 transition-all duration-500 group overflow-hidden"
+                >
+                  <div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    style={{ background: `radial-gradient(ellipse at 0% 0%, ${item.color}07, transparent 70%)` }}
+                  />
+                  <div className="relative z-10">
+                    <div
+                      className="w-11 h-11 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
+                      style={{ backgroundColor: `${item.color}15` }}
+                    >
+                      <item.icon size={20} style={{ color: item.color }} />
+                    </div>
+                    <h3 className="text-white font-bold text-base mb-2">{item.title}</h3>
+                    <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </AnimatedSection>
-        </div>
-      </section>
-
-      {/* ===== VISUAL SHOWCASE ===== */}
-      <section className="py-20 sm:py-24 px-4 bg-gradient-to-b from-[#080808] to-black relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_30%,rgba(0,133,255,0.04),transparent_50%)]" />
-        <div className="container mx-auto max-w-6xl relative z-10">
-          <AnimatedSection className="text-center mb-16">
+          <AnimatedSection className="text-center mt-12">
             <motion.div variants={fadeUp}>
-              <span className="text-kuwex-cyan text-sm font-bold tracking-widest uppercase mb-4 block">Design Excellence</span>
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-5">
-                Built for <span className="bg-gradient-to-r from-kuwex-cyan to-kuwex-blue bg-clip-text text-transparent">Every Screen</span>
-              </h2>
-              <p className="text-gray-400 text-lg max-w-xl mx-auto">Every website we build is fully responsive — pixel-perfect on desktop, tablet, and mobile.</p>
+              <Link
+                href="/services"
+                className="group inline-flex items-center gap-2 bg-gradient-to-r from-kuwex-cyan to-kuwex-blue text-black font-bold px-8 py-4 rounded-full text-sm hover:shadow-[0_0_30px_rgba(0,229,255,0.3)] transition-all duration-300"
+              >
+                View All Services <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
             </motion.div>
           </AnimatedSection>
-          <AnimatedSection>
-            <motion.div variants={fadeUp} className="relative">
-              <div className="relative mx-auto max-w-4xl">
-                <div className="bg-[#1A1A1A] rounded-xl border border-[#2F3336]/60 overflow-hidden shadow-2xl shadow-black/50">
-                  <div className="flex items-center gap-2 px-4 py-3 bg-[#111] border-b border-[#2F3336]/60">
-                    <div className="flex gap-1.5">
-                      <div className="w-3 h-3 rounded-full bg-red-500/80" />
-                      <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-                      <div className="w-3 h-3 rounded-full bg-green-500/80" />
-                    </div>
-                    <div className="flex-1 mx-4">
-                      <div className="bg-[#0A0A0A] rounded-md px-4 py-1.5 text-xs text-gray-500 flex items-center gap-2">
-                        <Globe size={12} /> metroantelopelodge.co.zw
-                      </div>
-                    </div>
-                  </div>
-                  <div className="relative h-[300px] sm:h-[400px] md:h-[450px]">
-                    <Image src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&h=700&fit=crop" alt="Metro Antelope Lodge — Desktop View" fill className="object-cover" />
-                  </div>
-                </div>
-                <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="absolute -bottom-8 -right-4 sm:right-8 w-[140px] sm:w-[180px]">
-                  <div className="bg-[#1A1A1A] rounded-[20px] border-2 border-[#2F3336] overflow-hidden shadow-2xl shadow-black/80">
-                    <div className="h-6 bg-[#111] flex items-center justify-center"><div className="w-16 h-2.5 bg-[#0A0A0A] rounded-full" /></div>
-                    <div className="relative h-[240px] sm:h-[300px]">
-                      <Image src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=700&fit=crop" alt="Metro Antelope Lodge — Mobile View" fill className="object-cover" />
-                    </div>
-                    <div className="h-4 bg-[#111]" />
-                  </div>
-                </motion.div>
-              </div>
-              <div className="flex items-center justify-center gap-8 mt-16">
-                <div className="flex items-center gap-2 text-gray-500 text-sm"><Monitor size={16} className="text-kuwex-cyan" /> Desktop Optimized</div>
-                <div className="flex items-center gap-2 text-gray-500 text-sm"><Smartphone size={16} className="text-kuwex-cyan" /> Mobile First</div>
-                <div className="flex items-center gap-2 text-gray-500 text-sm"><Zap size={16} className="text-kuwex-cyan" /> Fast Loading</div>
-              </div>
-            </motion.div>
-          </AnimatedSection>
-        </div>
-      </section>
-
-      {/* ===== CASE STUDIES ===== */}
-      <section className="py-20 sm:py-28 px-4 relative">
-        <div className="container mx-auto max-w-6xl">
-          <AnimatedSection className="text-center mb-16">
-            <motion.div variants={fadeUp}>
-              <span className="text-kuwex-cyan text-sm font-bold tracking-widest uppercase mb-4 block">Case Studies</span>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-5">
-                The <span className="bg-gradient-to-r from-kuwex-cyan to-kuwex-blue bg-clip-text text-transparent">Full Story</span> Behind the Work
-              </h2>
-              <p className="text-gray-400 text-lg max-w-2xl mx-auto">Real problems. Strategic solutions. Measurable results.</p>
-            </motion.div>
-          </AnimatedSection>
-          <div className="space-y-8">
-            {caseStudies.map((study, i) => (
-              <AnimatedSection key={i}>
-                <motion.div variants={fadeUp} className="bg-gradient-to-br from-[#111] to-[#0A0A0A] rounded-2xl border border-[#2F3336]/50 overflow-hidden">
-                  <div className="px-6 sm:px-8 py-5 border-b border-[#2F3336]/50 flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-kuwex-cyan/20 to-kuwex-blue/20 flex items-center justify-center">
-                      <TrendingUp size={18} className="text-kuwex-cyan" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-white text-lg">{study.project}</h3>
-                      <span className="text-gray-500 text-xs">Case Study</span>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[#2F3336]/50">
-                    <div className="p-6 sm:p-8">
-                      <div className="flex items-center gap-2 mb-4"><div className="w-2 h-2 rounded-full bg-red-500" /><span className="text-red-400 text-xs font-bold uppercase tracking-wider">The Problem</span></div>
-                      <p className="text-gray-400 text-sm leading-relaxed">{study.problem}</p>
-                    </div>
-                    <div className="p-6 sm:p-8">
-                      <div className="flex items-center gap-2 mb-4"><div className="w-2 h-2 rounded-full bg-kuwex-cyan" /><span className="text-kuwex-cyan text-xs font-bold uppercase tracking-wider">Our Solution</span></div>
-                      <p className="text-gray-400 text-sm leading-relaxed">{study.solution}</p>
-                    </div>
-                    <div className="p-6 sm:p-8">
-                      <div className="flex items-center gap-2 mb-4"><div className="w-2 h-2 rounded-full bg-green-500" /><span className="text-green-400 text-xs font-bold uppercase tracking-wider">The Results</span></div>
-                      <div className="space-y-3">
-                        {study.results.map((r, j) => (
-                          <div key={j} className="flex items-start gap-2"><CheckCircle2 size={14} className="text-green-400 mt-0.5 flex-shrink-0" /><span className="text-gray-300 text-sm">{r}</span></div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              </AnimatedSection>
-            ))}
-          </div>
         </div>
       </section>
 
       {/* ===== TESTIMONIALS ===== */}
-      <section className="py-20 sm:py-28 px-4 bg-gradient-to-b from-black to-[#080808] relative">
+      <section className="py-20 sm:py-28 px-4 relative">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(0,229,255,0.03),transparent_60%)]" />
         <div className="container mx-auto max-w-6xl relative z-10">
-          <AnimatedSection className="text-center mb-16">
+          <AnimatedSection className="text-center mb-14">
             <motion.div variants={fadeUp}>
-              <span className="text-kuwex-cyan text-sm font-bold tracking-widest uppercase mb-4 block">Client Voices</span>
+              <span className="text-kuwex-cyan text-sm font-bold tracking-widest uppercase mb-4 block">
+                Client Voices
+              </span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-5">
-                What Our Clients <span className="bg-gradient-to-r from-kuwex-cyan to-kuwex-blue bg-clip-text text-transparent">Say About Us</span>
+                What Our Clients{" "}
+                <span className="bg-gradient-to-r from-kuwex-cyan to-kuwex-blue bg-clip-text text-transparent">
+                  Say About Us
+                </span>
               </h2>
             </motion.div>
           </AnimatedSection>
           <AnimatedSection>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {testimonials.map((t, i) => (
-                <motion.div key={i} variants={fadeUp} className="relative bg-gradient-to-br from-[#111] to-[#0A0A0A] rounded-2xl border border-[#2F3336]/50 p-6 sm:p-8 hover:border-kuwex-cyan/20 transition-all duration-500">
-                  <Quote size={32} className="text-kuwex-cyan/20 mb-4" />
-                  <div className="flex gap-1 mb-4">{Array.from({ length: t.rating }).map((_, j) => (<Star key={j} size={14} className="text-yellow-500 fill-yellow-500" />))}</div>
-                  <p className="text-gray-300 text-sm sm:text-base leading-relaxed mb-6 italic">&ldquo;{t.text}&rdquo;</p>
+                <motion.div
+                  key={i}
+                  variants={fadeUp}
+                  className="bg-gradient-to-br from-[#111] to-[#0A0A0A] rounded-2xl border border-[#2F3336]/50 p-6 sm:p-8 hover:border-kuwex-cyan/20 transition-all duration-500"
+                >
+                  <Quote size={28} className="text-kuwex-cyan/20 mb-4" />
+                  <div className="flex gap-1 mb-4">
+                    {Array.from({ length: t.rating }).map((_, j) => (
+                      <Star key={j} size={13} className="text-yellow-500 fill-yellow-500" />
+                    ))}
+                  </div>
+                  <p className="text-gray-300 text-sm sm:text-base leading-relaxed mb-6 italic">
+                    &ldquo;{t.text}&rdquo;
+                  </p>
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-kuwex-cyan/30 to-kuwex-blue/30 flex items-center justify-center text-white font-bold text-sm">{t.name.charAt(0)}</div>
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-kuwex-cyan/30 to-kuwex-blue/30 flex items-center justify-center text-white font-bold text-sm">
+                      {t.name.charAt(0)}
+                    </div>
                     <div>
                       <div className="text-white font-semibold text-sm">{t.name}</div>
                       <div className="text-gray-500 text-xs">{t.role}</div>
@@ -385,52 +571,34 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      {/* ===== PROCESS ===== */}
-      <section className="py-20 sm:py-24 px-4 relative">
-        <div className="container mx-auto max-w-6xl">
-          <AnimatedSection className="text-center mb-16">
-            <motion.div variants={fadeUp}>
-              <span className="text-kuwex-cyan text-sm font-bold tracking-widest uppercase mb-4 block">Our Process</span>
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-5">
-                How We <span className="bg-gradient-to-r from-kuwex-cyan to-kuwex-blue bg-clip-text text-transparent">Deliver Excellence</span>
-              </h2>
-            </motion.div>
-          </AnimatedSection>
-          <AnimatedSection>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[
-                { step: "01", title: "Discovery", desc: "We understand your business, goals, and target audience deeply before writing a single line of code.", icon: Target },
-                { step: "02", title: "Design", desc: "Premium UI/UX design tailored to your brand — modern, clean, and conversion-focused.", icon: Sparkles },
-                { step: "03", title: "Build", desc: "Fast development using Next.js and modern tech. Your website is built to perform at the highest level.", icon: Zap },
-                { step: "04", title: "Launch & Grow", desc: "We deploy, optimize for SEO, and set up analytics. Then we help you grow with ongoing support.", icon: TrendingUp },
-              ].map((item, i) => (
-                <motion.div key={i} variants={fadeUp} className="relative bg-[#111] rounded-2xl border border-[#2F3336]/50 p-6 hover:border-kuwex-cyan/30 transition-all duration-500 group">
-                  <span className="text-5xl font-black text-kuwex-cyan/[0.07] absolute top-4 right-4 select-none">{item.step}</span>
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-kuwex-cyan/15 to-kuwex-blue/15 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
-                    <item.icon size={22} className="text-kuwex-cyan" />
-                  </div>
-                  <h3 className="text-white font-bold text-lg mb-2">{item.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
-                </motion.div>
-              ))}
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
-
       {/* ===== INDUSTRIES ===== */}
-      <section className="py-16 px-4 bg-[#080808] border-y border-[#2F3336]/50">
+      <section className="py-14 px-4 bg-[#080808] border-y border-[#2F3336]/50">
         <div className="container mx-auto max-w-6xl">
-          <AnimatedSection className="text-center mb-10">
+          <AnimatedSection className="text-center mb-8">
             <motion.div variants={fadeUp}>
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">Industries We&apos;ve Transformed</h2>
-              <p className="text-gray-500 text-sm">From hospitality to engineering — we build for every sector.</p>
+              <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">Industries We&apos;ve Transformed</h2>
+              <p className="text-gray-500 text-sm">No sector is off-limits. If your business needs to grow, we build for it.</p>
             </motion.div>
           </AnimatedSection>
           <AnimatedSection>
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              {["Tourism & Hospitality", "Construction", "Engineering & Energy", "Technology & E-commerce", "Services & Maintenance", "Corporate & Professional"].map((ind, i) => (
-                <motion.div key={i} variants={fadeUp} className="px-5 py-2.5 rounded-full border border-[#2F3336]/60 bg-[#111] text-gray-400 text-sm font-medium hover:border-kuwex-cyan/30 hover:text-kuwex-cyan transition-all duration-300">
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              {[
+                "Tourism & Hospitality",
+                "Construction & Aluminium",
+                "Solar & Energy",
+                "Professional Training",
+                "Beauty & Wellness",
+                "NGO & Community",
+                "Agriculture & Aquaculture",
+                "Health & Mental Wellness",
+                "Technology & E-commerce",
+                "Pool & Home Services",
+              ].map((ind, i) => (
+                <motion.div
+                  key={i}
+                  variants={fadeUp}
+                  className="px-4 py-2 rounded-full border border-[#2F3336]/60 bg-[#111] text-gray-400 text-sm font-medium hover:border-kuwex-cyan/35 hover:text-kuwex-cyan transition-all duration-300 cursor-default"
+                >
                   {ind}
                 </motion.div>
               ))}
@@ -441,25 +609,37 @@ export default function PortfolioPage() {
 
       {/* ===== FINAL CTA ===== */}
       <section className="py-24 sm:py-32 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(0,229,255,0.08),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(0,229,255,0.08),transparent_55%)]" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-kuwex-cyan/5 rounded-full blur-[150px]" />
         <div className="container mx-auto max-w-3xl text-center relative z-10">
           <AnimatedSection>
             <motion.div variants={fadeUp}>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-6 leading-tight">
-                Let&apos;s Build Something{" "}
-                <span className="bg-gradient-to-r from-kuwex-cyan to-kuwex-blue bg-clip-text text-transparent">Powerful</span>{" "}
-                Together
+                Your Business Deserves to Be{" "}
+                <span className="bg-gradient-to-r from-kuwex-cyan to-kuwex-blue bg-clip-text text-transparent">
+                  on This Page
+                </span>
               </h2>
               <p className="text-gray-400 text-lg mb-10 max-w-xl mx-auto">
-                Ready to transform your business with a world-class digital presence? Let&apos;s talk about what we can build for you.
+                Join the growing list of Zimbabwe businesses that KuWeX Studios has transformed. Let&apos;s build
+                something powerful together.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link href="/contact" className="group inline-flex items-center gap-2 bg-gradient-to-r from-kuwex-cyan to-kuwex-blue text-black font-bold px-8 py-4 rounded-full text-sm hover:shadow-[0_0_30px_rgba(0,229,255,0.3)] transition-all duration-300">
-                  Get Your Website <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                <Link
+                  href="/contact"
+                  className="group inline-flex items-center gap-2 bg-gradient-to-r from-kuwex-cyan to-kuwex-blue text-black font-bold px-8 py-4 rounded-full text-sm hover:shadow-[0_0_30px_rgba(0,229,255,0.3)] transition-all duration-300"
+                >
+                  Start Your Project <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
-                <a href="https://wa.me/263719066891?text=Hi%20KuWeX%20Studios%2C%20I%27d%20like%20to%20discuss%20a%20project" target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20BD5A] text-white font-bold px-8 py-4 rounded-full text-sm transition-all duration-300 hover:shadow-[0_0_30px_rgba(37,211,102,0.3)]">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                <a
+                  href="https://wa.me/263719066891?text=Hi%20KuWeX%20Studios%2C%20I%27d%20like%20to%20discuss%20a%20project"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20BD5A] text-white font-bold px-8 py-4 rounded-full text-sm transition-all duration-300 hover:shadow-[0_0_30px_rgba(37,211,102,0.3)]"
+                >
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                  </svg>
                   WhatsApp Now
                 </a>
               </div>
