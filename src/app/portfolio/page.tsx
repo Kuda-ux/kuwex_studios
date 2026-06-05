@@ -19,6 +19,12 @@ import {
   BarChart3,
   Filter,
   Zap,
+  PenTool,
+  Layers,
+  Layout,
+  FileText,
+  Share2,
+  Printer,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -59,7 +65,7 @@ const projects = [
     name: "Bluefin Energy",
     industry: "Solar Energy",
     category: "energy",
-    url: "#",
+    url: "https://www.bluefin.co.zw/",
     description: "Bold solar energy platform serving 500+ Zimbabwe homes and businesses. High-converting landing pages for residential and commercial solar packages with real project proof.",
     services: ["Web Design", "Digital Marketing"],
     color: "#0085FF",
@@ -69,7 +75,7 @@ const projects = [
     name: "Springboard Beauty College",
     industry: "Beauty & Education",
     category: "education",
-    url: "#",
+    url: "https://www.springboardbeauty.co.zw/",
     description: "Zimbabwe's premier beauty academy — elegant branding, course showcase, certifications, gallery, and a streamlined admissions pipeline to attract the next generation of professionals.",
     services: ["Web Design", "Branding"],
     color: "#E91E8C",
@@ -79,7 +85,7 @@ const projects = [
     name: "Springboard College",
     industry: "Professional Training",
     category: "education",
-    url: "https://springboardedu.co.zw",
+    url: "https://www.springboardedu.co.zw/",
     description: "ABMA & ICM-aligned training institution for Aviation, Hospitality, Culinary Arts, Beauty, and Business programmes. A world-class site built to attract serious students.",
     services: ["Web Design", "SEO", "Content Strategy"],
     color: "#F59E0B",
@@ -89,7 +95,7 @@ const projects = [
     name: "Mutasa Youth Forum",
     industry: "NGO & Community",
     category: "ngo",
-    url: "#",
+    url: "https://www.mutasayouthforum.co.zw/",
     description: "A powerful community empowerment website for Manicaland's youth — programs, gallery, impact metrics, partner visibility, and donation facilitation. Digital presence for real change.",
     services: ["Web Design", "Digital Presence"],
     color: "#F97316",
@@ -119,7 +125,7 @@ const projects = [
     name: "Rock Perfect Fisheries ZW",
     industry: "Agriculture & Aquaculture",
     category: "services",
-    url: "#",
+    url: "https://www.rockperfectfisheries.co.zw/",
     description: "High-converting fish farming platform helping Zimbabwean entrepreneurs build profitable fish farms — complete pond construction, fingerlings, training, and start-to-harvest solutions.",
     services: ["Web Design", "Digital Marketing"],
     color: "#EF4444",
@@ -129,7 +135,7 @@ const projects = [
     name: "Victoria Falls Mental Health",
     industry: "Health & Wellness",
     category: "health",
-    url: "https://vicfallsmentalhealth.co.zw",
+    url: "https://www.vicfallsmentalhealth.co.zw/",
     description: "Zimbabwe's premier mental health and wellness retreat. Mind. Body. Soul. A serene, trust-centred website for psychotherapy, wellness retreats, and corporate wellbeing. 500+ lives touched.",
     services: ["Web Design", "Branding", "Content Strategy"],
     color: "#A855F7",
@@ -139,11 +145,68 @@ const projects = [
     name: "Tribe Lodge",
     industry: "Hospitality",
     category: "hospitality",
-    url: "#",
+    url: "https://www.thetribelodge.co.zw/",
     description: "Luxury boutique lodge in Bulawayo — eight individually styled presidential suites, curated African tours, and warm hospitality. A place where comfort meets culture.",
     services: ["Web Design", "Branding"],
     color: "#D97706",
     screenshot: "/portfolio/tribe-lodge.png",
+  },
+];
+
+const brandingProjects = [
+  {
+    title: "Logo Design & Mark Systems",
+    desc: "Unique, scalable logos built to work on everything from a business card to a billboard. Every mark tells the story of the brand.",
+    icon: PenTool,
+    gradient: "from-[#00E5FF]/20 via-[#0085FF]/10 to-transparent",
+    accent: "#00E5FF",
+    tags: ["Logomark", "Wordmark", "Icon System"],
+    image: "/portfolio/branding/logos.jpg",
+  },
+  {
+    title: "Brand Identity Systems",
+    desc: "Complete visual identity packages — colour palettes, typography, brand voice, logo usage rules, and brand guidelines documents.",
+    icon: Layers,
+    gradient: "from-[#A855F7]/20 via-[#0085FF]/10 to-transparent",
+    accent: "#A855F7",
+    tags: ["Color System", "Typography", "Brand Guide"],
+    image: "/portfolio/branding/identity.jpg",
+  },
+  {
+    title: "Business Stationery & Print",
+    desc: "Business cards, letterheads, envelopes, company profiles, and presentation folders — print materials that command professional respect.",
+    icon: Printer,
+    gradient: "from-[#F59E0B]/20 via-[#EF4444]/10 to-transparent",
+    accent: "#F59E0B",
+    tags: ["Business Cards", "Letterheads", "Company Profile"],
+    image: "/portfolio/branding/stationery.jpg",
+  },
+  {
+    title: "Social Media Branding Kits",
+    desc: "Custom-designed post templates, story designs, highlight covers, and profile setups — so your social media looks as professional as your website.",
+    icon: Share2,
+    gradient: "from-[#E91E8C]/20 via-[#A855F7]/10 to-transparent",
+    accent: "#E91E8C",
+    tags: ["Post Templates", "Story Designs", "Profile Setup"],
+    image: "/portfolio/branding/social.jpg",
+  },
+  {
+    title: "Signage & Vehicle Branding",
+    desc: "Shop fascias, banners, vehicle wraps, and outdoor signage. We bring your brand into the physical world with bold, eye-catching designs.",
+    icon: Layout,
+    gradient: "from-[#00C47A]/20 via-[#06B6D4]/10 to-transparent",
+    accent: "#00C47A",
+    tags: ["Signage", "Vehicle Wraps", "Banners"],
+    image: "/portfolio/branding/signage.jpg",
+  },
+  {
+    title: "Marketing Materials & Flyers",
+    desc: "Brochures, flyers, posters, roll-up banners, and event materials that communicate your offer clearly and convert attention into action.",
+    icon: FileText,
+    gradient: "from-[#EF4444]/20 via-[#F59E0B]/10 to-transparent",
+    accent: "#EF4444",
+    tags: ["Flyers", "Brochures", "Event Materials"],
+    image: "/portfolio/branding/marketing.jpg",
   },
 ];
 
@@ -250,7 +313,6 @@ function ServiceTag({ label, color }: { label: string; color: string }) {
 
 function ProjectCard({ project }: { project: typeof projects[0] }) {
   const [hovered, setHovered] = useState(false);
-  const hasLink = project.url !== "#";
   return (
     <motion.div
       variants={fadeUp}
@@ -275,18 +337,16 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
             {project.industry}
           </span>
         </div>
-        {hasLink && (
-          <motion.a
-            href={project.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="absolute top-3 right-3 p-2 rounded-full bg-black/40 backdrop-blur-md border border-white/15 text-white hover:bg-kuwex-cyan hover:text-black hover:border-kuwex-cyan transition-all duration-300"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <ExternalLink size={13} />
-          </motion.a>
-        )}
+        <motion.a
+          href={project.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute top-3 right-3 p-2 rounded-full bg-black/40 backdrop-blur-md border border-white/15 text-white hover:bg-kuwex-cyan hover:text-black hover:border-kuwex-cyan transition-all duration-300"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <ExternalLink size={13} />
+        </motion.a>
         <div className="absolute bottom-3 left-3 right-10">
           <h3 className="text-base font-bold text-white leading-tight drop-shadow-lg">{project.name}</h3>
         </div>
@@ -298,21 +358,15 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
             <ServiceTag key={s} label={s} color={project.color} />
           ))}
         </div>
-        {hasLink ? (
-          <a
-            href={project.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold transition-all duration-300 group/btn"
-            style={{ color: project.color }}
-          >
-            View Live Site <ArrowRight size={13} className="transition-transform duration-300 group-hover/btn:translate-x-1" />
-          </a>
-        ) : (
-          <span className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-600">
-            <Globe size={13} /> Project Showcase
-          </span>
-        )}
+        <a
+          href={project.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 text-sm font-semibold transition-all duration-300 group/btn"
+          style={{ color: project.color }}
+        >
+          View Live Site <ArrowRight size={13} className="transition-transform duration-300 group-hover/btn:translate-x-1" />
+        </a>
       </div>
       <motion.div
         className="absolute bottom-0 left-0 h-[2px]"
@@ -321,6 +375,49 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
         animate={{ width: hovered ? "100%" : "0%" }}
         transition={{ duration: 0.4 }}
       />
+    </motion.div>
+  );
+}
+
+function BrandingCard({ item, index }: { item: typeof brandingProjects[0]; index: number }) {
+  const hasImage = false;
+  return (
+    <motion.div
+      variants={fadeUp}
+      className="group relative bg-gradient-to-br from-[#111] to-[#0A0A0A] rounded-2xl border border-[#2F3336]/50 overflow-hidden hover:border-kuwex-cyan/25 transition-all duration-500"
+    >
+      {hasImage ? (
+        <div className="relative h-52 overflow-hidden">
+          <Image src={item.image} alt={item.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 50vw" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+        </div>
+      ) : (
+        <div className={`relative h-44 bg-gradient-to-br ${item.gradient} flex items-center justify-center overflow-hidden`}>
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(255,255,255,0.03),transparent_70%)]" />
+          <div
+            className="w-16 h-16 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500"
+            style={{ backgroundColor: `${item.accent}20`, border: `1px solid ${item.accent}30` }}
+          >
+            <item.icon size={28} style={{ color: item.accent }} />
+          </div>
+          <div className="absolute top-3 right-3 text-[10px] font-bold px-2.5 py-1 rounded-full border"
+            style={{ color: item.accent, borderColor: `${item.accent}40`, backgroundColor: `${item.accent}15` }}>
+            BRANDING
+          </div>
+        </div>
+      )}
+      <div className="p-5">
+        <h3 className="text-white font-bold text-base mb-2">{item.title}</h3>
+        <p className="text-gray-400 text-sm leading-relaxed mb-4">{item.desc}</p>
+        <div className="flex flex-wrap gap-2">
+          {item.tags.map((tag) => (
+            <span key={tag} className="text-[11px] font-semibold px-2.5 py-1 rounded-full border"
+              style={{ color: item.accent, borderColor: `${item.accent}35`, backgroundColor: `${item.accent}10` }}>
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
     </motion.div>
   );
 }
@@ -401,19 +498,19 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      {/* ===== PROJECTS GRID ===== */}
+      {/* ===== WEB PROJECTS GRID ===== */}
       <section id="projects" className="py-20 sm:py-28 px-4 relative">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_30%,rgba(0,229,255,0.02),transparent_65%)]" />
         <div className="container mx-auto max-w-6xl relative z-10">
           <AnimatedSection className="text-center mb-12">
             <motion.div variants={fadeUp}>
               <span className="text-kuwex-cyan text-sm font-bold tracking-widest uppercase mb-4 block">
-                Portfolio
+                Web Projects
               </span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-5">
-                Projects That{" "}
+                Websites That{" "}
                 <span className="bg-gradient-to-r from-kuwex-cyan to-kuwex-blue bg-clip-text text-transparent">
-                  Change Businesses
+                  Drive Real Business
                 </span>
               </h2>
               <p className="text-gray-400 text-lg max-w-2xl mx-auto">
@@ -445,7 +542,6 @@ export default function PortfolioPage() {
             ))}
           </motion.div>
 
-          {/* Grid */}
           <AnimatePresence mode="wait">
             <motion.div
               key={activeCategory}
@@ -460,6 +556,81 @@ export default function PortfolioPage() {
               ))}
             </motion.div>
           </AnimatePresence>
+        </div>
+      </section>
+
+      {/* ===== BRANDING & DESIGN SECTION ===== */}
+      <section id="branding" className="py-20 sm:py-28 px-4 bg-gradient-to-b from-[#080808] to-black border-t border-[#2F3336]/50 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_30%,rgba(168,85,247,0.05),transparent_55%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_70%,rgba(0,229,255,0.03),transparent_55%)]" />
+        <div className="container mx-auto max-w-6xl relative z-10">
+          <AnimatedSection className="text-center mb-14">
+            <motion.div variants={fadeUp}>
+              <span className="text-kuwex-cyan text-sm font-bold tracking-widest uppercase mb-4 block">
+                Branding & Design
+              </span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-5">
+                We Don&apos;t Just Build Websites —{" "}
+                <br className="hidden sm:block" />
+                <span className="bg-gradient-to-r from-[#A855F7] via-kuwex-cyan to-kuwex-blue bg-clip-text text-transparent">
+                  We Build Brands
+                </span>
+              </h2>
+              <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+                From logo design to full brand identity, stationery, signage, and social media kits — KuWeX Studios creates complete brand systems
+                that make Zimbabwe businesses look world-class everywhere.
+              </p>
+            </motion.div>
+          </AnimatedSection>
+
+          <AnimatedSection>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              {brandingProjects.map((item, i) => (
+                <BrandingCard key={i} item={item} index={i} />
+              ))}
+            </div>
+          </AnimatedSection>
+
+          {/* Branding CTA strip */}
+          <AnimatedSection>
+            <motion.div
+              variants={fadeUp}
+              className="relative bg-gradient-to-r from-[#A855F7]/10 via-kuwex-cyan/5 to-kuwex-blue/10 border border-kuwex-cyan/20 rounded-2xl p-8 sm:p-10 text-center overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(0,229,255,0.04),transparent_70%)]" />
+              <div className="relative z-10">
+                <div className="inline-flex items-center gap-2 bg-kuwex-cyan/10 border border-kuwex-cyan/20 rounded-full px-4 py-1.5 mb-5">
+                  <Palette size={13} className="text-kuwex-cyan" />
+                  <span className="text-kuwex-cyan text-xs font-bold tracking-wide uppercase">Brand Identity Work</span>
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3">
+                  Need a Brand That Actually Stands Out?
+                </h3>
+                <p className="text-gray-400 text-base max-w-xl mx-auto mb-7">
+                  We&apos;ve built brand identities for businesses across every industry in Zimbabwe. Let&apos;s create yours — from logo to launch.
+                </p>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                  <Link
+                    href="/contact"
+                    className="group inline-flex items-center gap-2 bg-gradient-to-r from-kuwex-cyan to-kuwex-blue text-black font-bold px-7 py-3.5 rounded-full text-sm hover:shadow-[0_0_30px_rgba(0,229,255,0.3)] transition-all duration-300"
+                  >
+                    Get a Brand Quote <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                  <a
+                    href="https://wa.me/263719066891?text=Hi%20KuWeX%20Studios%2C%20I%27d%20like%20to%20discuss%20a%20branding%20project"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 border border-[#2F3336] hover:border-green-500/50 bg-white/[0.03] text-white font-bold px-7 py-3.5 rounded-full text-sm hover:bg-green-500/5 transition-all duration-300"
+                  >
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" className="text-[#25D366]">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                    </svg>
+                    Chat on WhatsApp
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatedSection>
         </div>
       </section>
 
