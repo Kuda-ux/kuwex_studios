@@ -82,15 +82,7 @@ export const metadata: Metadata = {
     shortcut: '/logo.jpg',
   },
   alternates: {
-    canonical: SITE_URL,
-    languages: {
-      'en': SITE_URL,
-      'en-ZW': SITE_URL,
-      'en-ZA': SITE_URL,
-      'en-US': SITE_URL,
-      'en-GB': SITE_URL,
-      'x-default': SITE_URL,
-    },
+    canonical: './',
     types: {
       'application/rss+xml': `${SITE_URL}/rss.xml`,
     },
