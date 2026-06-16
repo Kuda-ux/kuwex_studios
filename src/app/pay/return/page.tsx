@@ -39,7 +39,7 @@ function PayReturnInner() {
       return;
     }
     try {
-      const res = await fetch(`/api/paynow/status?ref=${encodeURIComponent(ref)}`, {
+      const res = await fetch(`/api/smileandpay/status?ref=${encodeURIComponent(ref)}`, {
         cache: "no-store",
       });
       const j = await res.json();
@@ -148,7 +148,7 @@ function PayReturnInner() {
                 Confirming Your Payment
               </h1>
               <p className="text-gray-400 mb-8">
-                We&apos;re awaiting confirmation from Paynow. This page refreshes automatically.
+                We&apos;re awaiting confirmation from Smile&amp;Pay. This page refreshes automatically.
               </p>
               {data && <DetailsBlock data={data} />}
               <button

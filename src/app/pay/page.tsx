@@ -57,7 +57,7 @@ export default function PayPage() {
 
     setSubmitting(true);
     try {
-      const res = await fetch("/api/paynow/initiate", {
+      const res = await fetch("/api/smileandpay/initiate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -71,7 +71,7 @@ export default function PayPage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Could not start payment.");
-      window.location.href = data.browserUrl;
+      window.location.href = data.paymentUrl;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not start payment.");
       setSubmitting(false);
@@ -92,7 +92,7 @@ export default function PayPage() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-kuwex-cyan/30 bg-kuwex-cyan/5 text-kuwex-cyan text-xs font-semibold uppercase tracking-wider mb-5">
             <Lock size={12} />
-            Secure Payment via Paynow
+            Secure Payment via Smile&Pay (ZB Bank)
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">
             Pay for Your{" "}
@@ -101,8 +101,8 @@ export default function PayPage() {
             </span>
           </h1>
           <p className="text-gray-400 max-w-xl mx-auto">
-            Pay securely with EcoCash, OneMoney, Visa, or Mastercard. You&apos;ll be redirected to
-            Paynow&apos;s encrypted gateway to complete your transaction.
+            Pay securely with EcoCash, InnBucks, OneMoney, Visa, Mastercard, and more. You&apos;ll be redirected to
+            ZB Bank&apos;s secure Smile&amp;Pay gateway to complete your transaction.
           </p>
         </motion.div>
 
@@ -230,7 +230,7 @@ export default function PayPage() {
               {submitting ? (
                 <>
                   <Loader2 className="animate-spin" size={18} />
-                  Redirecting to Paynow...
+                  Redirecting to Smile&Pay...
                 </>
               ) : (
                 <>
@@ -242,7 +242,7 @@ export default function PayPage() {
 
             <p className="text-center text-xs text-gray-500 flex items-center justify-center gap-1.5">
               <Lock size={11} />
-              You&apos;ll be redirected to paynow.co.zw to complete payment
+              You&apos;ll be redirected to ZB Bank&apos;s Smile&amp;Pay gateway
             </p>
           </motion.form>
 
@@ -263,13 +263,19 @@ export default function PayPage() {
                   <Smartphone size={16} className="text-green-400" /> EcoCash
                 </li>
                 <li className="flex items-center gap-3 text-gray-300">
+                  <Smartphone size={16} className="text-orange-400" /> InnBucks
+                </li>
+                <li className="flex items-center gap-3 text-gray-300">
                   <Smartphone size={16} className="text-yellow-400" /> OneMoney
                 </li>
                 <li className="flex items-center gap-3 text-gray-300">
                   <CreditCard size={16} className="text-blue-400" /> Visa / Mastercard
                 </li>
                 <li className="flex items-center gap-3 text-gray-300">
-                  <CreditCard size={16} className="text-purple-400" /> Zimswitch
+                  <CreditCard size={16} className="text-purple-400" /> ZimSwitch
+                </li>
+                <li className="flex items-center gap-3 text-gray-300">
+                  <Smartphone size={16} className="text-cyan-400" /> SmileCash
                 </li>
               </ul>
             </div>
@@ -282,11 +288,11 @@ export default function PayPage() {
               <ul className="space-y-2.5 text-xs text-gray-400">
                 <li className="flex items-start gap-2">
                   <CheckCircle2 size={13} className="text-green-400 flex-shrink-0 mt-0.5" />
-                  <span>Payments processed by Paynow Zimbabwe (RBZ-licensed).</span>
+                  <span>Payments processed by ZB Bank via Smile&amp;Pay (RBZ-licensed).</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 size={13} className="text-green-400 flex-shrink-0 mt-0.5" />
-                  <span>End-to-end encrypted via paynow.co.zw.</span>
+                  <span>PCI-DSS compliant with end-to-end encryption.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 size={13} className="text-green-400 flex-shrink-0 mt-0.5" />
