@@ -39,7 +39,7 @@ export default function Privacy() {
             transition={{ delay: 0.1 }}
             className="text-gray-400 text-xl max-w-3xl mx-auto leading-relaxed"
           >
-            Last updated: December 2024
+            Last updated: June 2026
           </motion.p>
         </div>
       </section>
@@ -87,12 +87,30 @@ export default function Privacy() {
                 We do not sell, trade, or rent your personal information to third parties. We may share your information with trusted service providers who assist us in operating our website and conducting our business, provided they agree to keep this information confidential.
               </p>
 
-              <h2 className="text-2xl font-bold text-white mb-4">5. Data Security</h2>
+              <h2 className="text-2xl font-bold text-white mb-4">5. Advertising &amp; Google AdSense</h2>
+              <p className="text-gray-400 mb-4 leading-relaxed">
+                We use Google AdSense, a third-party advertising service provided by Google LLC, to display advertisements on our website. Google AdSense uses cookies and similar technologies to serve ads based on your prior visits to our website and other websites on the Internet.
+              </p>
+              <ul className="text-gray-400 mb-4 space-y-2 list-disc list-inside">
+                <li><strong className="text-white">Personalised Ads:</strong> Google may use information about your visits to this and other websites to provide personalised advertisements about goods and services that may interest you.</li>
+                <li><strong className="text-white">DoubleClick Cookie:</strong> Google&apos;s use of the DoubleClick cookie enables it and its partners to serve ads based on your browsing patterns.</li>
+                <li><strong className="text-white">Third-Party Vendors:</strong> Third-party vendors, including Google, use cookies to serve ads based on your prior visits to this website or other websites.</li>
+                <li><strong className="text-white">Data Collection:</strong> Google may collect data such as your IP address, browser type, device identifiers, pages visited, and interactions with advertisements to deliver and measure ad effectiveness.</li>
+              </ul>
+              <p className="text-gray-400 mb-8 leading-relaxed">
+                You may opt out of personalised advertising by visiting{" "}
+                <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" className="text-kuwex-cyan hover:underline">Google Ads Settings</a>. Alternatively, you can opt out of third-party vendor cookies for personalised advertising by visiting{" "}
+                <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer" className="text-kuwex-cyan hover:underline">www.aboutads.info/choices</a>{" "}
+                or the{" "}
+                <a href="https://optout.networkadvertising.org/" target="_blank" rel="noopener noreferrer" className="text-kuwex-cyan hover:underline">Network Advertising Initiative opt-out page</a>.
+              </p>
+
+              <h2 className="text-2xl font-bold text-white mb-4">6. Data Security</h2>
               <p className="text-gray-400 mb-8 leading-relaxed">
                 We implement appropriate technical and organizational security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. However, no method of transmission over the Internet is 100% secure, and we cannot guarantee absolute security.
               </p>
 
-              <h2 className="text-2xl font-bold text-white mb-4">6. Your Rights</h2>
+              <h2 className="text-2xl font-bold text-white mb-4">7. Your Rights</h2>
               <p className="text-gray-400 mb-4 leading-relaxed">
                 You have the right to:
               </p>
@@ -104,22 +122,23 @@ export default function Privacy() {
                 <li>Withdraw consent where applicable</li>
               </ul>
 
-              <h2 className="text-2xl font-bold text-white mb-4">7. Cookies</h2>
+              <h2 className="text-2xl font-bold text-white mb-4">8. Cookies</h2>
               <p className="text-gray-400 mb-8 leading-relaxed">
-                Our website may use cookies and similar tracking technologies to enhance your browsing experience. You can set your browser to refuse cookies, but some features of our website may not function properly without them.
+                Our website uses cookies and similar tracking technologies to enhance your browsing experience, analyse traffic, and serve advertisements. This includes cookies set by Google AdSense and Google Analytics. You can set your browser to refuse cookies, but some features of our website may not function properly without them. For full details, see our{" "}
+                <a href="/cookies" className="text-kuwex-cyan hover:underline">Cookie Policy</a>.
               </p>
 
-              <h2 className="text-2xl font-bold text-white mb-4">8. Third-Party Links</h2>
+              <h2 className="text-2xl font-bold text-white mb-4">9. Third-Party Links</h2>
               <p className="text-gray-400 mb-8 leading-relaxed">
                 Our website may contain links to third-party websites. We are not responsible for the privacy practices or content of these external sites. We encourage you to review the privacy policies of any third-party sites you visit.
               </p>
 
-              <h2 className="text-2xl font-bold text-white mb-4">9. Changes to This Policy</h2>
+              <h2 className="text-2xl font-bold text-white mb-4">10. Changes to This Policy</h2>
               <p className="text-gray-400 mb-8 leading-relaxed">
                 We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the &quot;Last updated&quot; date.
               </p>
 
-              <h2 className="text-2xl font-bold text-white mb-4">10. Contact Us</h2>
+              <h2 className="text-2xl font-bold text-white mb-4">11. Contact Us</h2>
               <p className="text-gray-400 leading-relaxed">
                 If you have any questions about this Privacy Policy, please contact us at:
               </p>

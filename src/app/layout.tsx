@@ -228,13 +228,19 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Google AdSense verification */}
+        <meta name="google-adsense-account" content="ca-pub-9834600630177693" />
         {/* DNS Prefetch & Preconnect for speed */}
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+        <link rel="dns-prefetch" href="https://googleads.g.doubleclick.net" />
+        <link rel="dns-prefetch" href="https://tpc.googlesyndication.com" />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -259,6 +265,12 @@ export default function RootLayout({
         <link rel="alternate" type="application/xml" title="KuWeX Studios News Sitemap" href="https://kuwexstudios.co.zw/news-sitemap.xml" />
         {/* llms.txt for AI Answer Engine discovery (ChatGPT, Claude, Perplexity) */}
         <link rel="alternate" type="text/plain" title="LLM Instructions" href="https://kuwexstudios.co.zw/llms.txt" />
+        {/* Google AdSense — auto ads */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9834600630177693"
+          crossOrigin="anonymous"
+        />
       </head>
       <body className={cn("min-h-screen antialiased")} style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>
         <ThemeProvider

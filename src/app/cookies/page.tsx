@@ -39,7 +39,7 @@ export default function Cookies() {
             transition={{ delay: 0.1 }}
             className="text-gray-400 text-xl max-w-3xl mx-auto leading-relaxed"
           >
-            Last updated: December 2024
+            Last updated: June 2026
           </motion.p>
         </div>
       </section>
@@ -82,8 +82,34 @@ export default function Cookies() {
               </p>
 
               <h3 className="text-xl font-semibold text-white mb-3">Functional Cookies</h3>
-              <p className="text-gray-400 mb-8 leading-relaxed">
+              <p className="text-gray-400 mb-6 leading-relaxed">
                 These cookies remember your preferences and choices to provide a more personalized experience.
+              </p>
+
+              <h3 className="text-xl font-semibold text-white mb-3">Advertising Cookies (Google AdSense)</h3>
+              <p className="text-gray-400 mb-4 leading-relaxed">
+                We use Google AdSense to display advertisements on our website. Google and its advertising partners set cookies on your device to:
+              </p>
+              <ul className="text-gray-400 mb-4 space-y-2 list-disc list-inside">
+                <li>Serve ads based on your previous visits to our website and other websites</li>
+                <li>Personalise advertisements to your interests</li>
+                <li>Measure the effectiveness of ad campaigns</li>
+                <li>Limit the number of times you see a particular ad</li>
+              </ul>
+              <p className="text-gray-400 mb-4 leading-relaxed">
+                Key advertising cookies include:
+              </p>
+              <ul className="text-gray-400 mb-4 space-y-2 list-disc list-inside">
+                <li><strong className="text-white">__gads / __gpi:</strong> Set by Google to store and track conversions and ad impressions.</li>
+                <li><strong className="text-white">DoubleClick (IDE / DSID):</strong> Used by Google DoubleClick to serve targeted ads and measure conversion rates.</li>
+                <li><strong className="text-white">NID:</strong> Stores visitor preferences and personalises ads on Google properties.</li>
+                <li><strong className="text-white">ANID:</strong> Used to remember ad settings and deliver personalised advertising.</li>
+              </ul>
+              <p className="text-gray-400 mb-8 leading-relaxed">
+                You can opt out of personalised advertising by visiting{" "}
+                <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" className="text-kuwex-cyan hover:underline">Google Ads Settings</a>{" "}
+                or{" "}
+                <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer" className="text-kuwex-cyan hover:underline">www.aboutads.info/choices</a>.
               </p>
 
               <h2 className="text-2xl font-bold text-white mb-4">4. Managing Cookies</h2>
@@ -92,8 +118,19 @@ export default function Cookies() {
               </p>
 
               <h2 className="text-2xl font-bold text-white mb-4">5. Third-Party Cookies</h2>
+              <p className="text-gray-400 mb-4 leading-relaxed">
+                Some cookies on our website are set by third-party services we use. These include:
+              </p>
+              <ul className="text-gray-400 mb-4 space-y-2 list-disc list-inside">
+                <li><strong className="text-white">Google Analytics:</strong> Collects anonymised data about how visitors use our website to help us improve content and user experience. See{" "}
+                  <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer" className="text-kuwex-cyan hover:underline">Google&apos;s privacy policy</a>.
+                </li>
+                <li><strong className="text-white">Google AdSense:</strong> Serves advertisements and uses cookies to personalise ad content. See{" "}
+                  <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer" className="text-kuwex-cyan hover:underline">how Google uses information from sites that use their services</a>.
+                </li>
+              </ul>
               <p className="text-gray-400 mb-8 leading-relaxed">
-                Some cookies on our website are set by third-party services we use, such as analytics providers. These third parties have their own privacy policies governing the use of cookies.
+                These third parties have their own privacy policies governing the use of cookies. We encourage you to review them.
               </p>
 
               <h2 className="text-2xl font-bold text-white mb-4">6. Updates to This Policy</h2>
