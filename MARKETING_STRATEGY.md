@@ -25,7 +25,7 @@
 
 ---
 
-## 2. BUSINESS DIRECTORY SUBMISSIONS (PRIORITY) 
+## 2. BUSINESS DIRECTORY SUBMISSIONS (PRIORITY)  
 ### Zimbabwe Business Directories
 1. **Zimbabwe Yellow Pages** - https://www.yellowpages.co.zw
    - Category: Web Design, Digital Marketing
