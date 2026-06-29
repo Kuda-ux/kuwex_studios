@@ -12,6 +12,13 @@ Allow: /
 User-agent: Googlebot-News
 Allow: /blog/
 
+# AdsBot checks landing page quality for AdSense — must be allowed
+User-agent: AdsBot-Google
+Allow: /
+
+User-agent: AdsBot-Google-Mobile
+Allow: /
+
 User-agent: Bingbot
 Allow: /
 Crawl-delay: 0
