@@ -211,6 +211,7 @@ const jsonLd = [
 
 import { ThemeProvider } from "./providers";
 import ContactWidget from "@/components/ContactWidget";
+import CookieConsent from "@/components/CookieConsent";
 
 export default function RootLayout({
   children,
@@ -273,6 +274,7 @@ export default function RootLayout({
         >
           {children}
           <ContactWidget />
+          <CookieConsent />
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
