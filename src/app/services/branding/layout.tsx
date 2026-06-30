@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 const BASE = "https://kuwexstudios.co.zw";
 
 export const metadata: Metadata = {
-  title: "Branding & Design Services Zimbabwe | Logo Design & Brand Identity",
+  title: { absolute: "Branding & Design Services Zimbabwe | Logo Design | KuWeX Studios" },
   description: "Build a powerful brand identity. KuWeX Studios offers professional branding services in Zimbabwe — logo design, brand strategy, visual identity, packaging design, and brand guidelines for businesses in Harare.",
   keywords: [
     "branding agency Zimbabwe",

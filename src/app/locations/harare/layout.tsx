@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 const BASE = "https://kuwexstudios.co.zw";
 
 export const metadata: Metadata = {
-  title: "Best Digital Marketing Agency & Web Design in Harare | KuWeX Studios",
+  title: { absolute: "Best Digital Marketing Agency & Web Design in Harare | KuWeX Studios" },
   description: "KuWeX Studios is Harare's top-rated digital marketing agency and web design company. We offer SEO, social media marketing, Google Ads, branding, and custom website development for businesses in Harare, Zimbabwe. Free consultation available.",
   keywords: [
     "digital marketing agency Harare",

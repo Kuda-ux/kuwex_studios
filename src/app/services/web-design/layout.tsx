@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 const BASE = "https://kuwexstudios.co.zw";
 
 export const metadata: Metadata = {
-  title: "Professional Web Design & Development Zimbabwe | Custom Websites from $499",
+  title: { absolute: "Professional Web Design & Development Zimbabwe | KuWeX Studios" },
   description: "Zimbabwe's #1 web design company. We build fast, responsive, SEO-optimized websites for businesses in Harare and across Zimbabwe. Custom web development, e-commerce, and web applications. Get a free quote today.",
   keywords: [
     "web design Zimbabwe",

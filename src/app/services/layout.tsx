@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 const BASE = "https://kuwexstudios.co.zw";
 
 export const metadata: Metadata = {
-  title: "Digital Marketing Services Zimbabwe | Web Design, SEO, Google Ads & Branding",
+  title: { absolute: "Digital Marketing Services Zimbabwe | Web Design, SEO, Google Ads & Branding" },
   description: "Complete digital marketing services for Zimbabwe businesses — custom web design, SEO, social media marketing, Google Ads, and branding from KuWeX Studios. Affordable packages starting from $249. Based in Harare, serving all of Zimbabwe.",
   keywords: [
     "digital marketing services Zimbabwe",

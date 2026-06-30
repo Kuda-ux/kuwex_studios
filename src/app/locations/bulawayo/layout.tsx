@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 const BASE = "https://kuwexstudios.co.zw";
 
 export const metadata: Metadata = {
-  title: "Best Digital Marketing Agency & Web Design in Bulawayo | KuWeX Studios",
+  title: { absolute: "Best Digital Marketing Agency & Web Design in Bulawayo | KuWeX Studios" },
   description: "KuWeX Studios is Bulawayo's go-to digital marketing agency. We deliver SEO, web design, social media marketing, Google Ads, and branding for businesses across Bulawayo and Matabeleland. Get a free quote today.",
   keywords: [
     "digital marketing Bulawayo",

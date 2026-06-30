@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 const BASE = "https://kuwexstudios.co.zw";
 
 export const metadata: Metadata = {
-  title: "Social Media Marketing Zimbabwe | Facebook, Instagram & LinkedIn Management",
+  title: { absolute: "Social Media Marketing Zimbabwe | Facebook & Instagram | KuWeX Studios" },
   description: "Grow your brand on social media. KuWeX Studios offers expert social media marketing services in Zimbabwe — content creation, community management, paid ads, and influencer marketing for businesses in Harare.",
   keywords: [
     "social media marketing Zimbabwe",

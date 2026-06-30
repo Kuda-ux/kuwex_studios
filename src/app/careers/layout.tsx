@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 const BASE = "https://kuwexstudios.co.zw";
 
 export const metadata: Metadata = {
-  title: "Careers at KuWeX Studios | Digital Marketing Jobs in Zimbabwe",
+  title: { absolute: "Careers at KuWeX Studios | Digital Marketing Jobs in Zimbabwe" },
   description: "Join Zimbabwe's most innovative digital marketing agency. KuWeX Studios is hiring web developers, SEO specialists, social media managers, graphic designers, and marketing strategists in Harare. Build your career in tech.",
   keywords: [
     "digital marketing jobs Zimbabwe",

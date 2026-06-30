@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 const BASE = "https://kuwexstudios.co.zw";
 
 export const metadata: Metadata = {
-  title: "Google Ads Management Zimbabwe | PPC Advertising Agency Harare",
+  title: { absolute: "Google Ads Management Zimbabwe | PPC Advertising Agency | KuWeX Studios" },
   description: "Maximize your ROI with Google Ads. KuWeX Studios manages high-performing PPC campaigns for Zimbabwe businesses — Google Search Ads, Display Ads, YouTube Ads, and remarketing. Get leads today.",
   keywords: [
     "Google Ads Zimbabwe",

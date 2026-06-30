@@ -183,7 +183,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       const rawImg = dynamic.og_image || dynamic.image || '/logo.jpg';
       const dynImg = rawImg.startsWith('/') ? `${baseUrl}${rawImg}` : rawImg;
       return {
-        title: `${dynamic.title} | KuWeX Studios`,
+        title: { absolute: `${dynamic.title} | KuWeX Studios` },
         description: dynamic.description,
         keywords: dynamic.keywords,
         authors: [{ name: dynamic.author, url: baseUrl }],
@@ -209,7 +209,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       };
     }
     return {
-      title: "Blog | KuWeX Studios",
+      title: { absolute: "Blog | KuWeX Studios" },
       openGraph: {
         title: "KuWeX Studios Blog",
         description: "Latest insights on digital marketing, web design, SEO, and technology in Zimbabwe.",
@@ -222,7 +222,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 
   return {
-    title: meta.title,
+    title: { absolute: meta.title },
     description: meta.description,
     keywords: meta.keywords,
     authors: [{ name: meta.author, url: baseUrl }],

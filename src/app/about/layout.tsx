@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 const BASE = "https://kuwexstudios.co.zw";
 
 export const metadata: Metadata = {
-  title: "About KuWeX Studios | Zimbabwe's #1 Digital Marketing Agency Team",
+  title: { absolute: "About KuWeX Studios | Zimbabwe's #1 Digital Marketing Agency" },
   description: "Meet the team behind KuWeX Studios — Zimbabwe's most innovative digital marketing and web design agency. Founded by Kuda and Weston in Harare, we have helped 50+ businesses across Zimbabwe grow online.",
   keywords: [
     "about KuWeX Studios",

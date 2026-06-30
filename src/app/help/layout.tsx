@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 const BASE = "https://kuwexstudios.co.zw";
 
 export const metadata: Metadata = {
-  title: "Help Center | KuWeX Studios Zimbabwe — Support & Documentation",
+  title: { absolute: "Help Center | KuWeX Studios Zimbabwe — Support & Documentation" },
   description: "Find answers, guides, and support resources for KuWeX Studios' digital marketing services. Learn how to get started, manage your project, and make the most of your investment.",
   keywords: [
     "KuWeX Studios help",

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Portfolio — 11 Live Projects | KuWeX Studios Zimbabwe",
+  title: { absolute: "Portfolio — 11 Live Projects | KuWeX Studios Zimbabwe" },
   description:
     "Explore 11 real projects by KuWeX Studios — Zimbabwe's leading digital agency. Live websites for solar companies, lodges, colleges, NGOs, construction, health & wellness, and more. Real work, real results.",
   keywords: [

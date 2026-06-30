@@ -107,7 +107,7 @@ const jsonLd = [
     "logo": "https://kuwexstudios.co.zw/logo.jpg",
     "image": "https://kuwexstudios.co.zw/logo.jpg",
     "telephone": "+263719066891",
-    "email": "info@kuwexstudios.co.zw",
+    "email": "projects@kuwex.co",
     "priceRange": "$$",
     "currenciesAccepted": "USD, ZWL",
     "paymentAccepted": "Cash, Bank Transfer, EcoCash, Mobile Money",
@@ -200,7 +200,7 @@ const jsonLd = [
       },
       {
         "@type": "ContactPoint",
-        "email": "info@kuwexstudios.co.zw",
+        "email": "projects@kuwex.co",
         "contactType": "customer service",
         "areaServed": "ZW",
         "availableLanguage": ["en", "sn"]

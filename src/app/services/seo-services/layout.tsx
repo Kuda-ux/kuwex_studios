@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 const BASE = "https://kuwexstudios.co.zw";
 
 export const metadata: Metadata = {
-  title: "SEO Services Zimbabwe | Rank #1 on Google | KuWeX Studios",
+  title: { absolute: "SEO Services Zimbabwe | Rank #1 on Google | KuWeX Studios" },
   description: "Get found on Google. KuWeX Studios offers professional SEO services in Zimbabwe — keyword research, on-page optimization, local SEO, link building, and technical SEO for businesses in Harare and across Zimbabwe.",
   keywords: [
     "SEO services Zimbabwe",
