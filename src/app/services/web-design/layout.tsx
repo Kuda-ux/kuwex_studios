@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+const BASE = "https://kuwexstudios.co.zw";
+
 export const metadata: Metadata = {
   title: "Professional Web Design & Development Zimbabwe | Custom Websites from $499",
   description: "Zimbabwe's #1 web design company. We build fast, responsive, SEO-optimized websites for businesses in Harare and across Zimbabwe. Custom web development, e-commerce, and web applications. Get a free quote today.",
@@ -24,6 +26,35 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${BASE}/services/web-design`,
+    "name": "Web Design & Development Zimbabwe",
+    "serviceType": "Web Design",
+    "description": "Custom, mobile-first websites for Zimbabwe businesses. Fast, SEO-optimised, and built to convert visitors into customers. From business websites to e-commerce and custom web applications.",
+    "url": `${BASE}/services/web-design`,
+    "provider": { "@type": "Organization", "@id": `${BASE}/#organization`, "name": "KuWeX Studios" },
+    "areaServed": { "@type": "Country", "name": "Zimbabwe" },
+    "offers": { "@type": "Offer", "priceRange": "$800 - $5000", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": BASE },
+      { "@type": "ListItem", "position": 2, "name": "Services", "item": `${BASE}/services` },
+      { "@type": "ListItem", "position": 3, "name": "Web Design & Development", "item": `${BASE}/services/web-design` },
+    ],
+  },
+];
+
 export default function WebDesignLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      {children}
+    </>
+  );
 }

@@ -81,6 +81,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/blog/zimbabwe-future-belongs-visible-businesses-online-growth`, lastModified: '2026-03-10', changeFrequency: 'monthly', priority: 0.8 },
 
     // Blog posts - Latest 2026
+    { url: `${baseUrl}/blog/ai-rewards-digitally-prepared-businesses-zimbabwe`, lastModified: '2026-05-31', changeFrequency: 'monthly', priority: 0.9 },
     { url: `${baseUrl}/blog/every-sector-zimbabwe-needs-digital-transformation`, lastModified: '2026-05-29', changeFrequency: 'monthly', priority: 0.9 },
     { url: `${baseUrl}/blog/social-media-alone-not-digital-strategy-zimbabwe`, lastModified: '2026-05-27', changeFrequency: 'monthly', priority: 0.9 },
 

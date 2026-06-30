@@ -82,7 +82,7 @@ export const metadata: Metadata = {
     shortcut: '/logo.jpg',
   },
   alternates: {
-    canonical: './',
+    canonical: SITE_URL,
     types: {
       'application/rss+xml': `${SITE_URL}/rss.xml`,
     },
