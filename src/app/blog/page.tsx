@@ -1,476 +1,64 @@
-"use client";
+import { getDb, ensureSchema } from "@/lib/turso";
+import BlogListingClient, { type PostCard } from "./BlogListingClient";
 
-import { useState, useEffect } from "react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import { motion } from "framer-motion";
-import { Calendar, Clock, ArrowRight, User } from "lucide-react";
-import Link from "next/link";
-import Image from "next/image";
+export const revalidate = 300;
 
-const featuredPost = {
-  slug: "ai-rewards-digitally-prepared-businesses-zimbabwe",
-  title: "AI Will Reward Businesses That Are Already Digitally Prepared — Is Yours Ready?",
-  excerpt: "AI is quietly changing how customers find, compare, and choose businesses in Zimbabwe. It doesn't knock on doors or run ads. It scans your digital presence and decides whether to recommend you. Here's exactly what it's looking for — and how to make sure you're in the conversation.",
-  image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=630&fit=crop",
-  author: "Kuda",
-  date: "May 30, 2026",
-  readTime: "12 min read",
-  category: "AI & Future"
-};
-
-const blogPosts = [
-  {
-    slug: "every-sector-zimbabwe-needs-digital-transformation",
-    title: "Every Sector in Zimbabwe Needs Digital Transformation — Not Just Tech Companies",
-    excerpt: "Schools, clinics, lodges, retailers, churches, NGOs — every sector in Zimbabwe is losing time and money to paper systems. Here's the sector-by-sector digital fix.",
-    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=400&fit=crop",
-    author: "Kuda",
-    date: "May 29, 2026",
-    readTime: "11 min read",
-    category: "Digital Transformation"
-  },
-  {
-    slug: "social-media-alone-not-digital-strategy-zimbabwe",
-    title: "Social Media Alone Is Not a Digital Strategy — Zimbabwe Businesses, Take Note",
-    excerpt: "Posting on Facebook every day is not a strategy. A real digital ecosystem connects your website, WhatsApp, SEO, Google profile, and analytics into one growth system.",
-    image: "https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=600&h=400&fit=crop",
-    author: "Weston",
-    date: "May 27, 2026",
-    readTime: "10 min read",
-    category: "Digital Strategy"
-  },
-  {
-    slug: "econet-ai-launch-zimbabwe-new-era-artificial-intelligence",
-    title: "Econet Launches AI in Zimbabwe — And Nothing Will Ever Be the Same Again",
-    excerpt: "Econet Wireless has officially launched Econet AI, marking a defining moment in Zimbabwe's technological history. This isn't just a product launch — it's the birth of a new economic era.",
-    image: "/blog/econet-ai-launch-mavetera.jpg",
-    author: "Kuda",
-    date: "April 17, 2026",
-    readTime: "16 min read",
-    category: "AI & Digital Transformation"
-  },
-  {
-    slug: "econet-cassava-cloud-computing-factory-zimbabwe-gpu",
-    title: "Zimbabwe Just Got Its Own AI Cloud Factory — Inside the Econet & Cassava GPU Launch",
-    excerpt: "Econet AI, Cassava Technologies, Nvidia and Microsoft just flipped the switch on Southern Africa's first GPU cloud platform. A developer in Harare can now train serious AI without leaving the continent.",
-    image: "/blog/econet-ai-launch-mavetera.jpg",
-    author: "Kuda",
-    date: "May 12, 2026",
-    readTime: "9 min read",
-    category: "AI & Tech"
-  },
-  {
-    slug: "whatsapp-ai-commerce-fintech-revolution-africa-zimbabwe",
-    title: "WhatsApp Is Quietly Becoming Africa's Operating System for Commerce",
-    excerpt: "AI chatbots inside WhatsApp are onboarding rural Zimbabweans in 90 seconds and cutting bank costs by 70%. Why your SME must move now.",
-    image: "/blog/whatsapp-business-ai-commerce.webp",
-    author: "Weston",
-    date: "May 10, 2026",
-    readTime: "9 min read",
-    category: "Fintech & AI"
-  },
-  {
-    slug: "chatcash-basa-ai-zimbabwe-virtual-assistants-sme",
-    title: "Meet ChatCash & Basa AI: Zimbabwean Startups Building AI for African SMEs",
-    excerpt: "Two local startups are quietly solving what Silicon Valley still can't — affordable, multilingual virtual assistants built for the realities of African small business.",
-    image: "/blog/ai-summit-africa-zimbabwe.jpg",
-    author: "Weston",
-    date: "May 8, 2026",
-    readTime: "8 min read",
-    category: "AI & SMEs"
-  },
-  {
-    slug: "cassava-nvidia-ai-datacenter-africa-strive-masiyiwa",
-    title: "Strive Masiyiwa's Billion-Dollar AI Bet: Cassava–Nvidia African Datacenter Rollout",
-    excerpt: "Cassava Technologies and Nvidia are wiring Africa with GPU datacenters from Cape Town to Cairo. Why Africa is about to become AI's cheapest training ground.",
-    image: "/blog/strive-masiyiwa-jensen-huang-nvidia.png",
-    author: "Kuda",
-    date: "May 5, 2026",
-    readTime: "9 min read",
-    category: "AI Infrastructure"
-  },
-  {
-    slug: "agentic-ai-africa-digital-economy-governance-laws",
-    title: "The Next AI Wave Isn't ChatGPT — It's 'Agentic AI'. And Africa's Governments Are Writing the Rules",
-    excerpt: "Forget chatbots. Agentic AI takes actions for you — and Nigeria and South Africa already have laws ready. What Zimbabwean businesses must do next.",
-    image: "/blog/zimbabwe-ai-flag-future.png",
-    author: "Kuda",
-    date: "May 2, 2026",
-    readTime: "10 min read",
-    category: "AI & Policy"
-  },
-  {
-    slug: "zimbabwe-ai-economy-business-lead-or-left-behind",
-    title: "Zimbabwe Is Entering the AI Economy: Will Your Business Lead or Be Left Behind?",
-    excerpt: "The Zimbabwe National AI Strategy (2026–2030) is here. Artificial intelligence is no longer a Western luxury — it's becoming the backbone of Zimbabwe's economic future.",
-    image: "/blog/zimbabwe-ai-flag-future.png",
-    author: "Kuda",
-    date: "April 14, 2026",
-    readTime: "14 min read",
-    category: "AI & Digital Transformation"
-  },
-  {
-    slug: "why-every-zimbabwean-sme-needs-digital-presence-2026",
-    title: "Why Every Zimbabwean SME Needs a Serious Digital Presence in 2026",
-    excerpt: "The market has shifted. Your customers search Google before they visit your shop. If you're invisible online, you're invisible — period.",
-    image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=600&h=400&fit=crop",
-    author: "Kuda",
-    date: "April 12, 2026",
-    readTime: "12 min read",
-    category: "Digital Strategy"
-  },
-  {
-    slug: "hustle-to-brand-zimbabwean-startups-trust-online",
-    title: "From Hustle to Brand: How Zimbabwean Startups Can Build Trust Online Faster",
-    excerpt: "You have the hustle. But trust is what converts browsers into buyers. Here's how Zimbabwean startups can build credibility online — fast.",
-    image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&h=400&fit=crop",
-    author: "Weston",
-    date: "April 10, 2026",
-    readTime: "11 min read",
-    category: "Branding"
-  },
-  {
-    slug: "new-zimbabwean-customer-checks-google-first",
-    title: "The New Zimbabwean Customer Checks Google First — Is Your Business Ready?",
-    excerpt: "Before they call, before they visit, before they buy — they Google you. What are they finding? The answer determines your revenue.",
-    image: "https://images.unsplash.com/photo-1562577309-4932fdd64cd1?w=600&h=400&fit=crop",
-    author: "Kuda",
-    date: "April 8, 2026",
-    readTime: "10 min read",
-    category: "SEO"
-  },
-  {
-    slug: "zimbabwe-national-ai-strategy-ngos-corporates-government",
-    title: "What the Zimbabwe National AI Strategy Means for NGOs, Corporates, and Government",
-    excerpt: "The government has spoken. AI is national priority. Here's what every sector — from NGOs to mining — must do to align with Zimbabwe's AI vision.",
-    image: "/blog/ai-summit-africa-zimbabwe.jpg",
-    author: "Kuda",
-    date: "April 5, 2026",
-    readTime: "13 min read",
-    category: "AI & Digital Transformation"
-  },
-  {
-    slug: "digital-skills-national-power-upskill-team-zimbabwe",
-    title: "Digital Skills Are Becoming National Power: Why Your Team Must Upskill Now",
-    excerpt: "Zimbabwe's ICT policy demands a digitally literate workforce by 2027. Companies that invest in digital skills now will dominate. Those that don't will disappear.",
-    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=400&fit=crop",
-    author: "Weston",
-    date: "April 2, 2026",
-    readTime: "10 min read",
-    category: "Digital Strategy"
-  },
-  {
-    slug: "cybersecurity-data-privacy-trust-zimbabwe-digital-economy",
-    title: "Cybersecurity, Data Privacy, and Trust in Zimbabwe's Digital Economy",
-    excerpt: "Data breaches destroy trust instantly. As Zimbabwe goes digital, cybersecurity isn't IT's problem — it's the CEO's problem. Here's why.",
-    image: "https://images.unsplash.com/photo-1563986768609-322da13575f2?w=600&h=400&fit=crop",
-    author: "Kuda",
-    date: "March 28, 2026",
-    readTime: "12 min read",
-    category: "Cybersecurity"
-  },
-  {
-    slug: "world-class-website-zimbabwean-businesses-compete-globally",
-    title: "How a World-Class Website Can Help Zimbabwean Businesses Compete Globally",
-    excerpt: "Your website is your 24/7 salesperson. In a global economy, a mediocre website doesn't just look bad — it costs you international clients.",
-    image: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=600&h=400&fit=crop",
-    author: "Weston",
-    date: "March 22, 2026",
-    readTime: "11 min read",
-    category: "Web Design"
-  },
-  {
-    slug: "rise-of-smart-zimbabwe-preparing-businesses-digital-economy",
-    title: "The Rise of Smart Zimbabwe: Preparing Businesses for a Digital Economy",
-    excerpt: "Smart cities. Smart agriculture. Smart governance. Zimbabwe's digital transformation is accelerating. Is your business keeping pace?",
-    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop",
-    author: "Kuda",
-    date: "March 16, 2026",
-    readTime: "13 min read",
-    category: "AI & Digital Transformation"
-  },
-  {
-    slug: "zimbabwe-future-belongs-visible-businesses-online-growth",
-    title: "Zimbabwe's Future Belongs to Visible Businesses: Build Your Online Growth Machine",
-    excerpt: "Visibility is the new currency. In Zimbabwe's fast-moving economy, the businesses that get seen are the businesses that win. This is your blueprint.",
-    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&h=400&fit=crop",
-    author: "Weston",
-    date: "March 10, 2026",
-    readTime: "12 min read",
-    category: "Digital Strategy"
-  },
-  {
-    slug: "how-much-does-website-cost-zimbabwe-2026",
-    title: "How Much Does a Website Cost in Zimbabwe? (2026 Complete Guide)",
-    excerpt: "A detailed pricing breakdown for website design in Zimbabwe — from simple business sites to full e-commerce platforms.",
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&h=400&fit=crop",
-    author: "Kuda",
-    date: "March 5, 2026",
-    readTime: "12 min read",
-    category: "Web Design"
-  },
-  {
-    slug: "seo-guide-zimbabwe-small-businesses",
-    title: "SEO Guide for Zimbabwe Small Businesses: Rank #1 on Google in 2026",
-    excerpt: "A step-by-step local SEO guide for SMEs in Harare and beyond.",
-    image: "https://images.unsplash.com/photo-1493421419110-74f4e85ba126?w=600&h=400&fit=crop",
-    author: "Kuda",
-    date: "February 28, 2026",
-    readTime: "15 min read",
-    category: "SEO"
-  },
-  {
-    slug: "google-ads-zimbabwe-beginners-guide",
-    title: "Google Ads Zimbabwe: The Complete Beginner's Guide for 2026",
-    excerpt: "How to set up, manage, and optimize Google Ads campaigns for Zimbabwe businesses.",
-    image: "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&h=400&fit=crop",
-    author: "Kuda",
-    date: "February 22, 2026",
-    readTime: "14 min read",
-    category: "Google Ads"
-  },
+const staticPosts: PostCard[] = [
+  { slug: "every-sector-zimbabwe-needs-digital-transformation", title: "Every Sector in Zimbabwe Needs Digital Transformation — Not Just Tech Companies", excerpt: "Schools, clinics, lodges, retailers, churches, NGOs — every sector in Zimbabwe is losing time and money to paper systems. Here's the sector-by-sector digital fix.", image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=400&fit=crop", author: "Kuda", date: "May 29, 2026", readTime: "11 min read", category: "Digital Transformation" },
+  { slug: "social-media-alone-not-digital-strategy-zimbabwe", title: "Social Media Alone Is Not a Digital Strategy — Zimbabwe Businesses, Take Note", excerpt: "Posting on Facebook every day is not a strategy. A real digital ecosystem connects your website, WhatsApp, SEO, Google profile, and analytics into one growth system.", image: "https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=600&h=400&fit=crop", author: "Weston", date: "May 27, 2026", readTime: "10 min read", category: "Digital Strategy" },
+  { slug: "econet-ai-launch-zimbabwe-new-era-artificial-intelligence", title: "Econet Launches AI in Zimbabwe — And Nothing Will Ever Be the Same Again", excerpt: "Econet Wireless has officially launched Econet AI, marking a defining moment in Zimbabwe's technological history.", image: "/blog/econet-ai-launch-mavetera.jpg", author: "Kuda", date: "April 17, 2026", readTime: "16 min read", category: "AI & Digital Transformation" },
+  { slug: "econet-cassava-cloud-computing-factory-zimbabwe-gpu", title: "Zimbabwe Just Got Its Own AI Cloud Factory — Inside the Econet & Cassava GPU Launch", excerpt: "Econet AI, Cassava Technologies, Nvidia and Microsoft just flipped the switch on Southern Africa's first GPU cloud platform.", image: "/blog/econet-ai-launch-mavetera.jpg", author: "Kuda", date: "May 12, 2026", readTime: "9 min read", category: "AI & Tech" },
+  { slug: "whatsapp-ai-commerce-fintech-revolution-africa-zimbabwe", title: "WhatsApp Is Quietly Becoming Africa's Operating System for Commerce", excerpt: "AI chatbots inside WhatsApp are onboarding rural Zimbabweans in 90 seconds and cutting bank costs by 70%. Why your SME must move now.", image: "/blog/whatsapp-business-ai-commerce.webp", author: "Weston", date: "May 10, 2026", readTime: "9 min read", category: "Fintech & AI" },
+  { slug: "chatcash-basa-ai-zimbabwe-virtual-assistants-sme", title: "Meet ChatCash & Basa AI: Zimbabwean Startups Building AI for African SMEs", excerpt: "Two local startups are quietly solving what Silicon Valley still can't — affordable, multilingual virtual assistants built for African small business.", image: "/blog/ai-summit-africa-zimbabwe.jpg", author: "Weston", date: "May 8, 2026", readTime: "8 min read", category: "AI & SMEs" },
+  { slug: "cassava-nvidia-ai-datacenter-africa-strive-masiyiwa", title: "Strive Masiyiwa's Billion-Dollar AI Bet: Cassava-Nvidia African Datacenter Rollout", excerpt: "Cassava Technologies and Nvidia are wiring Africa with GPU datacenters from Cape Town to Cairo. Why Africa is about to become AI's cheapest training ground.", image: "/blog/strive-masiyiwa-jensen-huang-nvidia.png", author: "Kuda", date: "May 5, 2026", readTime: "9 min read", category: "AI Infrastructure" },
+  { slug: "agentic-ai-africa-digital-economy-governance-laws", title: "The Next AI Wave Is Agentic AI. And Africa's Governments Are Writing the Rules", excerpt: "Forget chatbots. Agentic AI takes actions for you — and Nigeria and South Africa already have laws ready. What Zimbabwean businesses must do next.", image: "/blog/zimbabwe-ai-flag-future.png", author: "Kuda", date: "May 2, 2026", readTime: "10 min read", category: "AI & Policy" },
+  { slug: "zimbabwe-ai-economy-business-lead-or-left-behind", title: "Zimbabwe Is Entering the AI Economy: Will Your Business Lead or Be Left Behind?", excerpt: "The Zimbabwe National AI Strategy is here. Artificial intelligence is no longer a Western luxury — it is becoming the backbone of Zimbabwe's economic future.", image: "/blog/zimbabwe-ai-flag-future.png", author: "Kuda", date: "April 14, 2026", readTime: "14 min read", category: "AI & Digital Transformation" },
+  { slug: "why-every-zimbabwean-sme-needs-digital-presence-2026", title: "Why Every Zimbabwean SME Needs a Serious Digital Presence in 2026", excerpt: "The market has shifted. Your customers search Google before they visit your shop. If you're invisible online, you're invisible — period.", image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=600&h=400&fit=crop", author: "Kuda", date: "April 12, 2026", readTime: "12 min read", category: "Digital Strategy" },
+  { slug: "hustle-to-brand-zimbabwean-startups-trust-online", title: "From Hustle to Brand: How Zimbabwean Startups Can Build Trust Online Faster", excerpt: "You have the hustle. But trust is what converts browsers into buyers. Here's how Zimbabwean startups can build credibility online — fast.", image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&h=400&fit=crop", author: "Weston", date: "April 10, 2026", readTime: "11 min read", category: "Branding" },
+  { slug: "new-zimbabwean-customer-checks-google-first", title: "The New Zimbabwean Customer Checks Google First — Is Your Business Ready?", excerpt: "Before they call, before they visit, before they buy — they Google you. What are they finding? The answer determines your revenue.", image: "https://images.unsplash.com/photo-1562577309-4932fdd64cd1?w=600&h=400&fit=crop", author: "Kuda", date: "April 8, 2026", readTime: "10 min read", category: "SEO" },
+  { slug: "zimbabwe-national-ai-strategy-ngos-corporates-government", title: "What the Zimbabwe National AI Strategy Means for NGOs, Corporates, and Government", excerpt: "The government has spoken. AI is national priority. Here's what every sector must do to align with Zimbabwe's AI vision.", image: "/blog/ai-summit-africa-zimbabwe.jpg", author: "Kuda", date: "April 5, 2026", readTime: "13 min read", category: "AI & Digital Transformation" },
+  { slug: "digital-skills-national-power-upskill-team-zimbabwe", title: "Digital Skills Are Becoming National Power: Why Your Team Must Upskill Now", excerpt: "Zimbabwe's ICT policy demands a digitally literate workforce by 2027. Companies that invest in digital skills now will dominate.", image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=400&fit=crop", author: "Weston", date: "April 2, 2026", readTime: "10 min read", category: "Digital Strategy" },
+  { slug: "cybersecurity-data-privacy-trust-zimbabwe-digital-economy", title: "Cybersecurity, Data Privacy, and Trust in Zimbabwe's Digital Economy", excerpt: "Data breaches destroy trust instantly. As Zimbabwe goes digital, cybersecurity is not IT's problem — it's the CEO's problem.", image: "https://images.unsplash.com/photo-1563986768609-322da13575f2?w=600&h=400&fit=crop", author: "Kuda", date: "March 28, 2026", readTime: "12 min read", category: "Cybersecurity" },
+  { slug: "world-class-website-zimbabwean-businesses-compete-globally", title: "How a World-Class Website Can Help Zimbabwean Businesses Compete Globally", excerpt: "Your website is your 24/7 salesperson. In a global economy, a mediocre website doesn't just look bad — it costs you international clients.", image: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=600&h=400&fit=crop", author: "Weston", date: "March 22, 2026", readTime: "11 min read", category: "Web Design" },
+  { slug: "rise-of-smart-zimbabwe-preparing-businesses-digital-economy", title: "The Rise of Smart Zimbabwe: Preparing Businesses for a Digital Economy", excerpt: "Smart cities. Smart agriculture. Smart governance. Zimbabwe's digital transformation is accelerating. Is your business keeping pace?", image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop", author: "Kuda", date: "March 16, 2026", readTime: "13 min read", category: "AI & Digital Transformation" },
+  { slug: "zimbabwe-future-belongs-visible-businesses-online-growth", title: "Zimbabwe's Future Belongs to Visible Businesses: Build Your Online Growth Machine", excerpt: "Visibility is the new currency. In Zimbabwe's fast-moving economy, the businesses that get seen are the businesses that win.", image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&h=400&fit=crop", author: "Weston", date: "March 10, 2026", readTime: "12 min read", category: "Digital Strategy" },
+  { slug: "how-much-does-website-cost-zimbabwe-2026", title: "How Much Does a Website Cost in Zimbabwe? (2026 Complete Guide)", excerpt: "A detailed pricing breakdown for website design in Zimbabwe — from simple business sites to full e-commerce platforms.", image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&h=400&fit=crop", author: "Kuda", date: "March 5, 2026", readTime: "12 min read", category: "Web Design" },
+  { slug: "seo-guide-zimbabwe-small-businesses", title: "SEO Guide for Zimbabwe Small Businesses: Rank #1 on Google in 2026", excerpt: "A step-by-step local SEO guide for SMEs in Harare and beyond.", image: "https://images.unsplash.com/photo-1493421419110-74f4e85ba126?w=600&h=400&fit=crop", author: "Kuda", date: "February 28, 2026", readTime: "15 min read", category: "SEO" },
+  { slug: "google-ads-zimbabwe-beginners-guide", title: "Google Ads Zimbabwe: The Complete Beginner's Guide for 2026", excerpt: "How to set up, manage, and optimize Google Ads campaigns for Zimbabwe businesses.", image: "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&h=400&fit=crop", author: "Kuda", date: "February 22, 2026", readTime: "14 min read", category: "Google Ads" },
 ];
 
-const categories = ["All", "AI & Digital Transformation", "Digital Strategy", "SEO", "Web Design", "Branding", "Cybersecurity", "Google Ads"];
-
-function formatDate(iso: string) {
-  try { return new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); }
-  catch { return iso; }
+async function fetchDynamicPosts(): Promise<PostCard[]> {
+  try {
+    await ensureSchema();
+    const db = getDb();
+    const result = await db.execute(
+      "SELECT slug, title, excerpt, image, author, post_date, read_time, category FROM blog_posts WHERE status = 'published' ORDER BY post_date DESC"
+    );
+    return result.rows.map(r => ({
+      slug: String(r.slug ?? ''),
+      title: String(r.title ?? ''),
+      excerpt: String(r.excerpt ?? ''),
+      image: String(r.image ?? ''),
+      author: String(r.author ?? 'Kuda'),
+      date: (() => {
+        try {
+          return new Date(String(r.post_date ?? '')).toLocaleDateString('en-US', {
+            year: 'numeric', month: 'long', day: 'numeric',
+          });
+        } catch { return String(r.post_date ?? ''); }
+      })(),
+      readTime: String(r.read_time ?? '5 min read'),
+      category: String(r.category ?? ''),
+    }));
+  } catch {
+    return [];
+  }
 }
 
-export default function Blog() {
-  const [dynamicPosts, setDynamicPosts] = useState<typeof blogPosts>([]);
-
-  useEffect(() => {
-    fetch('/api/blog')
-      .then(r => r.json())
-      .then(d => {
-        const posts = (d.posts || []).map((p: Record<string, unknown>) => ({
-          slug: String(p.slug),
-          title: String(p.title),
-          excerpt: String(p.excerpt),
-          image: String(p.image),
-          author: String(p.author),
-          date: formatDate(String(p.post_date)),
-          readTime: String(p.read_time),
-          category: String(p.category),
-        }));
-        setDynamicPosts(posts);
-      })
-      .catch(() => {});
-  }, []);
-
-  const allPosts = [...dynamicPosts, ...blogPosts];
-
-  return (
-    <main className="min-h-screen bg-black text-white">
-      <Navbar />
-      
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(0,229,255,0.06),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_80%,rgba(0,133,255,0.04),transparent_50%)]" />
-        <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-kuwex-cyan/[0.03] rounded-full blur-[150px]" />
-        
-        <div className="container mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="vibrant-badge mx-auto mb-8"
-          >
-            <span className="w-2 h-2 bg-kuwex-cyan rounded-full animate-pulse" />
-            <span className="text-sm text-gray-400">Insights & Updates</span>
-          </motion.div>
-          
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight"
-          >
-            Our <span className="vibrant-gradient-text">Blog</span>
-          </motion.h1>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-gray-400 text-xl max-w-3xl mx-auto leading-relaxed"
-          >
-            Insights, tutorials, and updates from the KuWeX team. Stay informed about the latest in digital innovation.
-          </motion.p>
-        </div>
-      </section>
-
-      {/* Categories */}
-      <section className="pb-12 px-4">
-        <div className="container mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="flex flex-wrap justify-center gap-3"
-          >
-            {categories.map((category, i) => (
-              <button
-                key={i}
-                className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
-                  i === 0 
-                    ? "bg-gradient-to-r from-[#00E5FF] to-[#0085FF] text-black shadow-[0_0_20px_rgba(0,229,255,0.3)]" 
-                    : "bg-[#16181C]/80 backdrop-blur-sm border border-[#2F3336]/60 text-gray-400 hover:border-kuwex-cyan/30 hover:text-white"
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Featured Post */}
-      <section className="pb-24 px-4">
-        <div className="container mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="x-card-vibrant rounded-3xl overflow-hidden group"
-          >
-            <div className="grid grid-cols-1 lg:grid-cols-2">
-              <div className="relative h-64 lg:h-auto min-h-[300px]">
-                <Image
-                  src={featuredPost.image}
-                  alt={featuredPost.title}
-                  fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-700"
-                />
-                <div className="absolute top-6 left-6">
-                  <span className="bg-gradient-to-r from-[#00E5FF] to-[#0085FF] text-black text-xs font-bold px-3 py-1.5 rounded-full shadow-[0_0_15px_rgba(0,229,255,0.3)]">
-                    Featured
-                  </span>
-                </div>
-              </div>
-              <div className="p-8 lg:p-12 flex flex-col justify-center">
-                <span className="text-kuwex-cyan text-sm font-medium mb-4">{featuredPost.category}</span>
-                <h2 className="text-2xl md:text-3xl font-bold mb-4 text-white group-hover:text-kuwex-cyan transition-colors duration-300">
-                  {featuredPost.title}
-                </h2>
-                <p className="text-gray-400 mb-6 leading-relaxed">{featuredPost.excerpt}</p>
-                <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-6">
-                  <span className="flex items-center gap-2">
-                    <User size={16} />
-                    {featuredPost.author}
-                  </span>
-                  <span className="flex items-center gap-2">
-                    <Calendar size={16} />
-                    {featuredPost.date}
-                  </span>
-                  <span className="flex items-center gap-2">
-                    <Clock size={16} />
-                    {featuredPost.readTime}
-                  </span>
-                </div>
-                <Link 
-                  href={`/blog/${featuredPost.slug}`}
-                  className="group/link inline-flex items-center gap-2 bg-gradient-to-r from-kuwex-cyan/10 to-kuwex-blue/10 border border-kuwex-cyan/20 text-kuwex-cyan hover:from-kuwex-cyan hover:to-kuwex-blue hover:text-black px-6 py-2.5 rounded-full font-semibold text-sm transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,229,255,0.3)] w-fit"
-                >
-                  Read Article <ArrowRight size={16} className="group-hover/link:translate-x-1 transition-transform duration-300" />
-                </Link>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Blog Posts Grid */}
-      <section className="pb-24 px-4">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {allPosts.map((post, i) => (
-              <motion.article
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-              >
-                <Link href={`/blog/${post.slug}`} className="x-card-vibrant rounded-3xl overflow-hidden group block h-full">
-                  <div className="relative h-48">
-                    <Image
-                      src={post.image}
-                      alt={post.title}
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <div className="absolute top-4 left-4">
-                      <span className="bg-black/60 backdrop-blur-xl text-white text-xs font-medium px-3 py-1.5 rounded-full border border-white/10">
-                        {post.category}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-lg font-bold mb-3 text-white group-hover:text-kuwex-cyan transition-colors duration-300 line-clamp-2">
-                      {post.title}
-                    </h3>
-                    <p className="text-gray-500 text-sm mb-4 line-clamp-2">{post.excerpt}</p>
-                    <div className="flex items-center justify-between text-xs text-gray-500">
-                      <span className="flex items-center gap-1">
-                        <User size={14} />
-                        {post.author}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Calendar size={14} />
-                        {post.date}
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              </motion.article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Newsletter CTA */}
-      <section className="py-32 px-4 bg-[#0A0A0A] relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(0,229,255,0.06),transparent_50%)]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-kuwex-cyan/[0.03] rounded-full blur-[150px]" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[1px] bg-gradient-to-r from-transparent via-kuwex-cyan/30 to-transparent" />
-        
-        <div className="container mx-auto text-center relative z-10 max-w-2xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <div className="vibrant-badge mx-auto mb-8">
-              <span className="w-2 h-2 bg-kuwex-cyan rounded-full animate-pulse" />
-              <span className="text-sm text-gray-400">Newsletter</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white tracking-tight">
-              Stay <span className="vibrant-gradient-text">Updated</span>
-            </h2>
-            <p className="text-xl text-gray-400 mb-10 leading-relaxed">
-              Subscribe to our newsletter for the latest insights and updates delivered to your inbox.
-            </p>
-            <form className="flex flex-col sm:flex-row gap-4">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 bg-[#16181C]/80 backdrop-blur-sm border border-[#2F3336]/60 rounded-full px-6 py-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-kuwex-cyan/50 focus:ring-1 focus:ring-kuwex-cyan/30 transition-all duration-300"
-              />
-              <button 
-                type="submit"
-                className="bg-gradient-to-r from-[#00E5FF] to-[#0085FF] text-black px-8 py-4 rounded-full font-bold transition-all duration-300 whitespace-nowrap hover:shadow-[0_0_40px_rgba(0,229,255,0.4)] hover:scale-[1.02]"
-              >
-                Subscribe
-              </button>
-            </form>
-          </motion.div>
-        </div>
-      </section>
-
-      <Footer />
-    </main>
-  );
+export default async function BlogPage() {
+  const dynamicPosts = await fetchDynamicPosts();
+  const dynamicSlugs = new Set(dynamicPosts.map(p => p.slug));
+  const filteredStatic = staticPosts.filter(p => !dynamicSlugs.has(p.slug));
+  const allPosts = [...dynamicPosts, ...filteredStatic];
+  return <BlogListingClient allPosts={allPosts} />;
 }

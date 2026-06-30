@@ -50,7 +50,9 @@ export async function GET(request: NextRequest) {
       const row = Object.fromEntries(
         Object.entries(result.rows[0]).map(([k, v]) => [k, v])
       ) as Record<string, unknown>;
-      return NextResponse.json({ post: parseRow(row) });
+      const res = NextResponse.json({ post: parseRow(row) });
+      if (!isAdmin) res.headers.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=60');
+      return res;
     }
 
     const sql = isAdmin
@@ -60,7 +62,9 @@ export async function GET(request: NextRequest) {
     const posts = result.rows.map(r =>
       parseRow(Object.fromEntries(Object.entries(r).map(([k, v]) => [k, v])) as Record<string, unknown>)
     );
-    return NextResponse.json({ posts });
+    const res = NextResponse.json({ posts });
+    if (!isAdmin) res.headers.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=60');
+    return res;
   } catch (err) {
     console.error('[GET /api/blog]', err);
     return NextResponse.json({ error: 'Server error' }, { status: 500 });

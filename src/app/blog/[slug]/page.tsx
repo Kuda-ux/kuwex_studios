@@ -1,29 +1,8 @@
-"use client";
+import { notFound } from "next/navigation";
+import { getDb, ensureSchema } from "@/lib/turso";
+import BlogPostContent, { type BlogPost } from "./BlogPostContent";
 
-import type { ReactNode } from "react";
-import { useState, useEffect } from "react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import { motion } from "framer-motion";
-import { Calendar, Clock, ArrowLeft, User, Share2, Linkedin, Facebook, Twitter, ArrowRight, MessageCircle } from "lucide-react";
-import Link from "next/link";
-import Image from "next/image";
-import { useParams } from "next/navigation";
-import { blogPostsMeta } from "@/lib/blog-meta";
-
-interface BlogPost {
-  slug: string;
-  title: string;
-  excerpt: string;
-  image: string;
-  author: string;
-  authorRole: string;
-  date: string;
-  readTime: string;
-  category: string;
-  content: string[];
-  relatedSlugs: string[];
-}
+export const revalidate = 3600;
 
 const blogPosts: Record<string, BlogPost> = {
   "econet-ai-launch-zimbabwe-new-era-artificial-intelligence": {
@@ -1260,420 +1239,57 @@ const blogPosts: Record<string, BlogPost> = {
   }
 };
 
-// Parse inline markdown within a single line of text:
-//   **bold**   ->  <strong>
-//   *italic*   ->  <em>
-//   [text](url) -> <a>
-//   `code`     -> <code>
-function parseInline(text: string): ReactNode[] {
-  const nodes: ReactNode[] = [];
-  const regex = /(\*\*[^*\n]+?\*\*)|(\[[^\]]+\]\([^)]+\))|(`[^`\n]+?`)|(\*[^*\n\s][^*\n]*?\*)/g;
-  let lastIdx = 0;
-  let match: RegExpExecArray | null;
-  let key = 0;
-  while ((match = regex.exec(text)) !== null) {
-    if (match.index > lastIdx) {
-      nodes.push(text.slice(lastIdx, match.index));
-    }
-    const token = match[0];
-    if (token.startsWith("**")) {
-      nodes.push(
-        <strong key={`b${key++}`} className="text-white font-semibold">
-          {token.slice(2, -2)}
-        </strong>
-      );
-    } else if (token.startsWith("[")) {
-      const m = /\[([^\]]+)\]\(([^)]+)\)/.exec(token);
-      if (m) {
-        const external = /^https?:\/\//.test(m[2]);
-        nodes.push(
-          <a
-            key={`l${key++}`}
-            href={m[2]}
-            className="text-kuwex-cyan hover:underline font-medium"
-            target={external ? "_blank" : undefined}
-            rel={external ? "noopener noreferrer" : undefined}
-          >
-            {m[1]}
-          </a>
-        );
-      }
-    } else if (token.startsWith("`")) {
-      nodes.push(
-        <code key={`c${key++}`} className="bg-[#16181C] px-1.5 py-0.5 rounded text-kuwex-cyan text-[0.9em] font-mono">
-          {token.slice(1, -1)}
-        </code>
-      );
-    } else if (token.startsWith("*")) {
-      nodes.push(
-        <em key={`i${key++}`} className="italic text-gray-300">
-          {token.slice(1, -1)}
-        </em>
-      );
-    }
-    lastIdx = match.index + token.length;
-  }
-  if (lastIdx < text.length) nodes.push(text.slice(lastIdx));
-  return nodes.length ? nodes : [text];
-}
-
-function renderContent(content: string[]) {
-  return content.map((block, i) => {
-    // H2
-    if (block.startsWith("## ")) {
-      return (
-        <h2 key={i} className="text-2xl md:text-3xl font-bold text-white mt-12 mb-4 leading-tight">
-          {parseInline(block.replace("## ", "").split("\n")[0])}
-        </h2>
-      );
-    }
-    // H3 (heading on first line, optional body on subsequent lines)
-    if (block.startsWith("### ")) {
-      const lines = block.split("\n");
-      const heading = lines[0].replace("### ", "");
-      const body = lines.slice(1).filter(Boolean);
-      return (
-        <div key={i}>
-          <h3 className="text-xl md:text-2xl font-bold text-white mt-10 mb-3 leading-tight">
-            {parseInline(heading)}
-          </h3>
-          {body.map((line, j) => (
-            <p key={j} className="text-gray-300 text-[15px] leading-relaxed mb-3">
-              {parseInline(line)}
-            </p>
-          ))}
-        </div>
-      );
-    }
-    // H4
-    if (block.startsWith("#### ")) {
-      return (
-        <h4 key={i} className="text-lg md:text-xl font-bold text-white mt-8 mb-2">
-          {parseInline(block.replace("#### ", "").split("\n")[0])}
-        </h4>
-      );
-    }
-    // Horizontal rule
-    if (block.trim() === "---") {
-      return <hr key={i} className="border-[#2F3336]/60 my-10" />;
-    }
-    // Block quote
-    if (block.startsWith("> ")) {
-      return (
-        <blockquote
-          key={i}
-          className="border-l-4 border-kuwex-cyan pl-5 py-2 my-6 italic text-gray-300 text-lg"
-        >
-          {parseInline(block.replace(/^>\s?/gm, ""))}
-        </blockquote>
-      );
-    }
-
-    // Multi-line paragraph block: split into lines and classify each
-    const lines = block.split("\n").filter(Boolean);
-    return (
-      <div key={i} className="mb-6">
-        {lines.map((line, j) => {
-          const trimmed = line.trim();
-
-          // Standalone bold-only line e.g. "**1. Intelligent Automation**" or "**For SMEs:**"
-          // -> render as sub-heading
-          const boldOnly = /^\*\*([^*]+)\*\*[:：]?$/.exec(trimmed);
-          if (boldOnly) {
-            return (
-              <h4
-                key={j}
-                className="text-base md:text-lg font-bold text-white mt-6 mb-2"
-              >
-                {boldOnly[1]}
-              </h4>
-            );
-          }
-
-          // Bullet with bold leader: "- **Foo** rest..."
-          if (line.startsWith("- **")) {
-            const boldEnd = line.indexOf("**", 4);
-            if (boldEnd > 4) {
-              const boldText = line.substring(4, boldEnd);
-              const rest = line.substring(boldEnd + 2);
-              return (
-                <div
-                  key={j}
-                  className="flex gap-3 mb-2 text-gray-300 text-[15px] leading-relaxed"
-                >
-                  <span className="text-kuwex-cyan mt-1.5 flex-shrink-0">•</span>
-                  <span>
-                    <strong className="text-white">{boldText}</strong>
-                    {parseInline(rest)}
-                  </span>
-                </div>
-              );
-            }
-          }
-
-          // Plain bullet: "- text"
-          if (/^-\s+/.test(line)) {
-            return (
-              <div
-                key={j}
-                className="flex gap-3 mb-2 text-gray-300 text-[15px] leading-relaxed"
-              >
-                <span className="text-kuwex-cyan mt-1.5 flex-shrink-0">•</span>
-                <span>{parseInline(line.replace(/^-\s+/, ""))}</span>
-              </div>
-            );
-          }
-
-          // Numbered: "1. **Title** — description" or "1. text"
-          if (/^\d+\.\s/.test(line)) {
-            const number = line.match(/^(\d+)\./)?.[1];
-            const rest = line.replace(/^\d+\.\s/, "");
-            return (
-              <div
-                key={j}
-                className="flex gap-3 mb-2 text-gray-300 text-[15px] leading-relaxed"
-              >
-                <span className="text-kuwex-cyan font-bold flex-shrink-0 min-w-[1.5rem]">
-                  {number}.
-                </span>
-                <span>{parseInline(rest)}</span>
-              </div>
-            );
-          }
-
-          // Default: paragraph with inline markdown
-          return (
-            <p
-              key={j}
-              className="text-gray-300 text-[15px] md:text-[16px] leading-[1.75] mb-4"
-            >
-              {parseInline(line)}
-            </p>
-          );
-        })}
-      </div>
-    );
-  });
-}
-
 function formatDate(iso: string) {
   try { return new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); }
   catch { return iso; }
 }
 
-export default function BlogPostPage() {
-  const { slug } = useParams();
-  const staticPost = blogPosts[slug as string];
-  const [dynamicPost, setDynamicPost] = useState<BlogPost | null>(null);
-  const [loadingDynamic, setLoadingDynamic] = useState(!staticPost);
-  const [notFound, setNotFound] = useState(false);
+export async function generateStaticParams() {
+  const slugs = Object.keys(blogPosts);
+  try {
+    await ensureSchema();
+    const db = getDb();
+    const result = await db.execute("SELECT slug FROM blog_posts WHERE status = 'published'");
+    result.rows.forEach(r => { if (r.slug) slugs.push(String(r.slug)); });
+  } catch { /* fall through */ }
+  return Array.from(new Set(slugs)).map(slug => ({ slug }));
+}
 
-  useEffect(() => {
-    if (staticPost) return;
-    setLoadingDynamic(true);
-    fetch(`/api/blog?slug=${slug}`)
-      .then(r => r.json())
-      .then(d => {
-        if (d.post) {
-          const p = d.post;
-          setDynamicPost({
-            slug: p.slug, title: p.title, excerpt: p.excerpt, image: p.image,
-            author: p.author, authorRole: p.author_role,
-            date: formatDate(p.post_date), readTime: p.read_time,
-            category: p.category, content: p.content, relatedSlugs: p.related_slugs,
-          });
-        } else { setNotFound(true); }
-      })
-      .catch(() => setNotFound(true))
-      .finally(() => setLoadingDynamic(false));
-  }, [slug, staticPost]);
-
-  if (loadingDynamic) {
-    return (
-      <main className="min-h-screen bg-black text-white">
-        <Navbar />
-        <div className="pt-40 pb-20 text-center">
-          <div className="w-8 h-8 border-2 border-kuwex-cyan/30 border-t-kuwex-cyan rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-500">Loading article...</p>
-        </div>
-        <Footer />
-      </main>
-    );
+async function getPost(slug: string): Promise<{ post: BlogPost; relatedPosts: BlogPost[] } | null> {
+  const staticPost = blogPosts[slug];
+  if (staticPost) {
+    const relatedPosts = staticPost.relatedSlugs.map(s => blogPosts[s]).filter(Boolean);
+    return { post: staticPost, relatedPosts };
   }
-
-  const post = staticPost || dynamicPost;
-
-  if (!post || notFound) {
-    return (
-      <main className="min-h-screen bg-black text-white">
-        <Navbar />
-        <div className="pt-40 pb-20 text-center">
-          <h1 className="text-4xl font-bold mb-4">Post Not Found</h1>
-          <p className="text-gray-400 mb-8">The article you&apos;re looking for doesn&apos;t exist.</p>
-          <Link href="/blog" className="inline-flex items-center gap-2 bg-gradient-to-r from-kuwex-cyan to-kuwex-blue text-black px-6 py-3 rounded-full font-bold">
-            <ArrowLeft size={16} /> Back to Blog
-          </Link>
-        </div>
-        <Footer />
-      </main>
-    );
+  try {
+    await ensureSchema();
+    const db = getDb();
+    const result = await db.execute({ sql: "SELECT * FROM blog_posts WHERE slug = ? AND status = 'published' LIMIT 1", args: [slug] });
+    if (!result.rows.length) return null;
+    const r = result.rows[0];
+    const post: BlogPost = {
+      slug: String(r.slug ?? ''),
+      title: String(r.title ?? ''),
+      excerpt: String(r.excerpt ?? ''),
+      image: String(r.image ?? ''),
+      author: String(r.author ?? 'Kuda'),
+      authorRole: String(r.author_role ?? 'KuWeX Studios'),
+      date: formatDate(String(r.post_date ?? '')),
+      readTime: String(r.read_time ?? '5 min read'),
+      category: String(r.category ?? ''),
+      content: (() => { try { const c = r.content; return Array.isArray(c) ? c : JSON.parse(String(c ?? '[]')); } catch { return []; } })(),
+      relatedSlugs: (() => { try { const rs = r.related_slugs; return Array.isArray(rs) ? rs : JSON.parse(String(rs ?? '[]')); } catch { return []; } })(),
+    };
+    const relatedPosts = post.relatedSlugs.map(s => blogPosts[s]).filter(Boolean);
+    return { post, relatedPosts };
+  } catch {
+    return null;
   }
+}
 
-  const relatedPosts = post.relatedSlugs.map(s => blogPosts[s]).filter(Boolean);
-
-  return (
-    <main className="min-h-screen bg-black text-white">
-      <Navbar />
-
-      {/* Hero */}
-      <section className="pt-32 pb-8 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(0,229,255,0.04),transparent_50%)]" />
-        <div className="container mx-auto max-w-4xl relative z-10">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <Link href="/blog" className="inline-flex items-center gap-2 text-gray-500 hover:text-kuwex-cyan transition-colors mb-8 text-sm">
-              <ArrowLeft size={16} /> Back to Blog
-            </Link>
-            <div className="flex items-center gap-3 mb-6">
-              <span className="bg-gradient-to-r from-kuwex-cyan/10 to-kuwex-blue/10 border border-kuwex-cyan/20 text-kuwex-cyan text-xs font-bold px-3 py-1.5 rounded-full">
-                {post.category}
-              </span>
-              <span className="text-gray-500 text-sm flex items-center gap-1"><Clock size={14} /> {post.readTime}</span>
-            </div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-6 leading-tight">{post.title}</h1>
-            <div className="flex flex-wrap items-center gap-6 text-sm text-gray-500 mb-8">
-              <span className="flex items-center gap-2"><User size={16} className="text-kuwex-cyan" /> <span><strong className="text-white">{post.author}</strong> · {post.authorRole}</span></span>
-              <span className="flex items-center gap-2"><Calendar size={16} /> {post.date}</span>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Featured Image */}
-      <section className="px-4 pb-12">
-        <div className="container mx-auto max-w-4xl">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="relative aspect-[2/1] rounded-2xl overflow-hidden">
-            <Image src={blogPostsMeta[post.slug]?.image ?? post.image} alt={post.title} fill className="object-cover" priority />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Content */}
-      <section className="px-4 pb-20">
-        <div className="container mx-auto max-w-3xl">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="prose-custom">
-            {renderContent(post.content)}
-          </motion.div>
-
-          {/* Share */}
-          <div className="border-t border-[#2F3336]/40 mt-16 pt-8">
-            <p className="text-sm text-gray-500 mb-4 flex items-center gap-2"><Share2 size={16} /> Share this article</p>
-            <div className="flex flex-wrap gap-3">
-              <a
-                href={`https://wa.me/?text=${encodeURIComponent(`${post.title} — https://kuwexstudios.co.zw/blog/${post.slug}`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Share on WhatsApp"
-                className="w-10 h-10 bg-[#16181C] border border-[#2F3336]/60 rounded-full flex items-center justify-center text-gray-400 hover:text-green-400 hover:border-green-400/40 transition-all duration-300"
-              >
-                <MessageCircle size={18} />
-              </a>
-              <a
-                href={`https://www.facebook.com/sharer/sharer.php?u=https://kuwexstudios.co.zw/blog/${post.slug}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Share on Facebook"
-                className="w-10 h-10 bg-[#16181C] border border-[#2F3336]/60 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:border-kuwex-cyan/30 transition-all duration-300"
-              >
-                <Facebook size={18} />
-              </a>
-              <a
-                href={`https://twitter.com/intent/tweet?url=https://kuwexstudios.co.zw/blog/${post.slug}&text=${encodeURIComponent(post.title)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Share on Twitter"
-                className="w-10 h-10 bg-[#16181C] border border-[#2F3336]/60 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:border-kuwex-cyan/30 transition-all duration-300"
-              >
-                <Twitter size={18} />
-              </a>
-              <a
-                href={`https://www.linkedin.com/sharing/share-offsite/?url=https://kuwexstudios.co.zw/blog/${post.slug}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Share on LinkedIn"
-                className="w-10 h-10 bg-[#16181C] border border-[#2F3336]/60 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:border-kuwex-cyan/30 transition-all duration-300"
-              >
-                <Linkedin size={18} />
-              </a>
-            </div>
-
-            {/* WhatsApp Channel CTA */}
-            <a
-              href="https://whatsapp.com/channel/0029VbCdvLa7DAX7JE0qWH2X"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-8 flex items-center justify-between gap-4 p-4 sm:p-5 bg-gradient-to-r from-green-500/10 to-emerald-500/5 border border-green-500/20 rounded-2xl hover:border-green-400/40 transition-all group"
-            >
-              <div className="flex items-center gap-3 sm:gap-4">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-green-500/20 flex items-center justify-center flex-shrink-0">
-                  <MessageCircle size={22} className="text-green-400" />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-sm sm:text-base font-bold text-white">Follow Us on WhatsApp</p>
-                  <p className="text-xs sm:text-sm text-gray-400 truncate">Get every new article + Zimbabwe tech news first</p>
-                </div>
-              </div>
-              <span className="text-green-400 font-semibold text-sm group-hover:translate-x-1 transition-transform flex-shrink-0 hidden sm:inline-flex items-center gap-1">
-                Join <ArrowRight size={14} />
-              </span>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Related Posts */}
-      {relatedPosts.length > 0 && (
-        <section className="py-20 px-4 bg-[#0A0A0A] border-t border-[#2F3336]/40">
-          <div className="container mx-auto max-w-6xl">
-            <h2 className="text-2xl font-bold mb-8">Related Articles</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {relatedPosts.map((rp, i) => (
-                <Link key={i} href={`/blog/${rp.slug}`} className="x-card-vibrant rounded-2xl overflow-hidden group block">
-                  <div className="relative h-40">
-                    <Image src={blogPostsMeta[rp.slug]?.image ?? rp.image} alt={rp.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
-                    <div className="absolute top-3 left-3">
-                      <span className="bg-black/60 backdrop-blur-xl text-white text-xs font-medium px-2.5 py-1 rounded-full border border-white/10">{rp.category}</span>
-                    </div>
-                  </div>
-                  <div className="p-5">
-                    <h3 className="text-sm font-bold text-white group-hover:text-kuwex-cyan transition-colors line-clamp-2 mb-2">{rp.title}</h3>
-                    <span className="text-xs text-gray-500">{rp.date}</span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* CTA */}
-      <section className="py-20 px-4 relative">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(0,229,255,0.04),transparent_50%)]" />
-        <div className="container mx-auto max-w-3xl text-center relative z-10">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">Need Help With Your <span className="vibrant-gradient-text">Digital Strategy?</span></h2>
-          <p className="text-gray-400 mb-8">KuWeX Studios helps Zimbabwe businesses grow online with expert web design, SEO, and digital marketing.</p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/contact" className="px-8 py-4 bg-gradient-to-r from-kuwex-cyan to-kuwex-blue text-black font-semibold rounded-full hover:shadow-[0_0_30px_rgba(0,229,255,0.3)] transition-all duration-300 flex items-center gap-2">
-              Get Free Consultation <ArrowRight size={18} />
-            </Link>
-            <Link href="/services" className="px-8 py-4 border border-[#2F3336] rounded-full text-white hover:border-kuwex-cyan/50 transition-all duration-300">
-              View Our Services
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <Footer />
-    </main>
-  );
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const result = await getPost(slug);
+  if (!result) notFound();
+  return <BlogPostContent post={result.post} relatedPosts={result.relatedPosts} />;
 }
