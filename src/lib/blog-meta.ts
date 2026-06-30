@@ -25,7 +25,7 @@ export interface BlogPostMeta {
 
 // Today's date used as freshness signal for all posts.
 // Update periodically (or replace with per-post real edit dates).
-const FRESHNESS_DATE = "2026-05-18";
+const FRESHNESS_DATE = "2026-06-30";
 
 export const blogPostsMeta: Record<string, BlogPostMeta> = {
   "econet-cassava-cloud-computing-factory-zimbabwe-gpu": {
