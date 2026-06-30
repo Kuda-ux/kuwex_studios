@@ -89,6 +89,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/blog/how-much-does-website-cost-zimbabwe-2026`, lastModified: '2026-03-05', changeFrequency: 'monthly', priority: 0.75 },
     { url: `${baseUrl}/blog/seo-guide-zimbabwe-small-businesses`, lastModified: '2026-02-28', changeFrequency: 'monthly', priority: 0.75 },
     { url: `${baseUrl}/blog/google-ads-zimbabwe-beginners-guide`, lastModified: '2026-02-22', changeFrequency: 'monthly', priority: 0.75 },
+    { url: `${baseUrl}/blog/best-social-media-platforms-zimbabwe-businesses`, lastModified: '2026-03-18', changeFrequency: 'monthly', priority: 0.75 },
+    { url: `${baseUrl}/blog/web-design-trends-zimbabwe-2026`, lastModified: '2026-03-10', changeFrequency: 'monthly', priority: 0.75 },
+    { url: `${baseUrl}/blog/google-ads-vs-seo-zimbabwe`, lastModified: '2026-03-03', changeFrequency: 'monthly', priority: 0.75 },
+    { url: `${baseUrl}/blog/branding-mistakes-zimbabwe-businesses`, lastModified: '2026-02-24', changeFrequency: 'monthly', priority: 0.75 },
+
+    // Blog posts - June 2026 youth & tech series
+    { url: `${baseUrl}/blog/future-software-developers-zimbabwe-ai-replace-create-new-generation-digital-builders`, lastModified: '2026-06-19', changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${baseUrl}/blog/starlink-wifi-hustles-zimbabwe-internet-economy-young-people`, lastModified: '2026-06-27', changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${baseUrl}/blog/whatsapp-new-shopfront-zimbabwe-businesses-winning-customers-online`, lastModified: '2026-06-27', changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${baseUrl}/blog/scam-message-looks-real-zimbabwe-youth-protect-money-phone-identity`, lastModified: '2026-06-27', changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${baseUrl}/blog/zimbabwe-ai-strategy-2026-2030-students-startups-digital-builders`, lastModified: '2026-06-27', changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${baseUrl}/blog/side-hustle-digital-career-tech-skills-zimbabwean-youth-before-2030`, lastModified: '2026-06-27', changeFrequency: 'weekly', priority: 0.9 },
 
     // ============================================
     // LEGAL & SUPPORT PAGES
