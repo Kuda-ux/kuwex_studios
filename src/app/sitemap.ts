@@ -80,14 +80,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/blog/rise-of-smart-zimbabwe-preparing-businesses-digital-economy`, lastModified: '2026-03-16', changeFrequency: 'monthly', priority: 0.8 },
     { url: `${baseUrl}/blog/zimbabwe-future-belongs-visible-businesses-online-growth`, lastModified: '2026-03-10', changeFrequency: 'monthly', priority: 0.8 },
 
+    // Blog posts - Latest 2026
+    { url: `${baseUrl}/blog/every-sector-zimbabwe-needs-digital-transformation`, lastModified: '2026-05-29', changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${baseUrl}/blog/social-media-alone-not-digital-strategy-zimbabwe`, lastModified: '2026-05-27', changeFrequency: 'monthly', priority: 0.9 },
+
     // Blog posts - Evergreen guides
     { url: `${baseUrl}/blog/how-much-does-website-cost-zimbabwe-2026`, lastModified: '2026-03-05', changeFrequency: 'monthly', priority: 0.75 },
     { url: `${baseUrl}/blog/seo-guide-zimbabwe-small-businesses`, lastModified: '2026-02-28', changeFrequency: 'monthly', priority: 0.75 },
     { url: `${baseUrl}/blog/google-ads-zimbabwe-beginners-guide`, lastModified: '2026-02-22', changeFrequency: 'monthly', priority: 0.75 },
-    { url: `${baseUrl}/blog/best-social-media-platforms-zimbabwe-businesses`, lastModified: '2026-02-15', changeFrequency: 'monthly', priority: 0.75 },
-    { url: `${baseUrl}/blog/web-design-trends-zimbabwe-2026`, lastModified: '2026-02-08', changeFrequency: 'monthly', priority: 0.75 },
-    { url: `${baseUrl}/blog/google-ads-vs-seo-zimbabwe`, lastModified: '2026-02-01', changeFrequency: 'monthly', priority: 0.75 },
-    { url: `${baseUrl}/blog/branding-mistakes-zimbabwe-businesses`, lastModified: '2026-01-25', changeFrequency: 'monthly', priority: 0.75 },
 
     // ============================================
     // LEGAL & SUPPORT PAGES
