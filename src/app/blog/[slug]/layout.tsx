@@ -310,7 +310,7 @@ export default function BlogPostLayout({
       },
     },
     "keywords": meta.keywords.join(", "),
-    "articleSection": "Digital Marketing",
+    "articleSection": meta.category || "Digital Marketing",
     "inLanguage": "en-ZW",
     "isAccessibleForFree": true,
   };
