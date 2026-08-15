@@ -32,6 +32,13 @@ interface NewsPost {
 }
 
 const newsPosts: NewsPost[] = [
+  // August 2026 — Econet & AI series
+  {
+    slug: 'zimbabwe-teaching-machines-econet-gemini-ai-data-economy',
+    title: "Zimbabwe Is Teaching the Machines: Why Econet's AI Push Could Matter Far More Than a Free Gemini Subscription",
+    date: '2026-08-15T09:00:00+02:00',
+    keywords: 'Econet Gemini Zimbabwe, Econet AI Zimbabwe 2026, Google Gemini Zimbabwe, Zimbabwe AI data economy, Zimbabwe National AI Strategy, data annotation Zimbabwe, African AI data, KuWeX Studios',
+  },
   // May 2026 — Digital Strategy & AI Readiness series
   {
     slug: 'ai-rewards-digitally-prepared-businesses-zimbabwe',

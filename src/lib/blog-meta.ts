@@ -681,6 +681,27 @@ export const blogPostsMeta: Record<string, BlogPostMeta> = {
     category: "Tech & Career",
     shareSummary: "A side hustle can help you survive. A digital skill can help you grow. Here are 7 tech skills Zimbabwean youth should learn before 2030.",
   },
+  "zimbabwe-teaching-machines-econet-gemini-ai-data-economy": {
+    title: "Zimbabwe Is Teaching the Machines: Why Econet's AI Push Could Matter Far More Than a Free Gemini Subscription | KuWeX Studios",
+    description:
+      "Econet Zimbabwe is giving away Google Gemini Plus. That is not just a freebie. It is a sign that Zimbabwe is entering the AI data economy. Here is what it means for your business, your career, and your country.",
+    keywords: [
+      "Econet Gemini Zimbabwe", "Econet AI Zimbabwe 2026", "Google Gemini Zimbabwe",
+      "Zimbabwe AI data economy", "Econet Gemini Plus free", "Zimbabwe artificial intelligence",
+      "Econet AI jobs Zimbabwe", "Cassava AiCloud Zimbabwe", "Zimbabwe AI infrastructure",
+      "African AI data", "Zimbabwean languages AI", "Shona AI", "Ndebele AI",
+      "AI jobs Harare", "Econet AI engineers", "Zimbabwe National AI Strategy",
+      "data annotation Zimbabwe", "AI talent Zimbabwe", "Zimbabwe tech future",
+      "KuWeX Studios", "digital transformation Zimbabwe", "AI for SMEs Zimbabwe",
+    ],
+    image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&h=630&fit=crop&fm=jpg&q=85",
+    ogImage: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&h=630&fit=crop&fm=jpg&q=85",
+    author: "Kuda",
+    date: "2026-08-15",
+    dateModified: FRESHNESS_DATE,
+    category: "AI & Technology",
+    shareSummary: "Econet is giving away Google Gemini Plus. But the real story is not the free subscription. It is that Zimbabwe may be teaching the machines. Here is what that means.",
+  },
 };
 
 export const blogSlugs = Object.keys(blogPostsMeta);

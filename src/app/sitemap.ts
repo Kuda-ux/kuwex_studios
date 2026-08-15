@@ -102,6 +102,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/blog/zimbabwe-ai-strategy-2026-2030-students-startups-digital-builders`, lastModified: '2026-06-27', changeFrequency: 'weekly', priority: 0.9 },
     { url: `${baseUrl}/blog/side-hustle-digital-career-tech-skills-zimbabwean-youth-before-2030`, lastModified: '2026-06-27', changeFrequency: 'weekly', priority: 0.9 },
 
+    // Blog posts - August 2026 Econet & AI series
+    { url: `${baseUrl}/blog/zimbabwe-teaching-machines-econet-gemini-ai-data-economy`, lastModified: '2026-08-15', changeFrequency: 'weekly', priority: 0.95 },
+
     // ============================================
     // LEGAL & SUPPORT PAGES
     // ============================================
