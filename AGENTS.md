@@ -65,6 +65,12 @@ Common UI classes from `src/app/globals.css`:
 - `NEXT_PUBLIC_SITE_URL` — canonical production URL (`https://kuwexstudios.co.zw`)
 - `NEXT_PUBLIC_BASE_URL` — optional fallback used in payment routes
 
+### Contact Form (Resend)
+
+- `RESEND_API_KEY` — Resend API key for sending contact form emails
+- `CONTACT_EMAIL` — email to receive form submissions (default `info@kuwexstudios.co.zw`)
+- `FROM_EMAIL` — sender address (default `onboarding@resend.dev`; use verified domain in production)
+
 ### Legacy / Optional (not used in current `src/`)
 
 - `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
@@ -79,7 +85,7 @@ Common UI classes from `src/app/globals.css`:
 - `page.tsx` — Homepage
 - `about/page.tsx` — Mission, vision, values, team
 - `services/page.tsx` — Services overview + sub-pages (`branding/`, `google-ads/`, `seo-services/`, `social-media-marketing/`, `web-design/`)
-- `contact/page.tsx` — Contact form + WhatsApp CTA
+- `contact/page.tsx` — Contact form (sends via Resend, saves to Turso `leads`) + WhatsApp CTA
 - `blog/page.tsx` — Server component; merges Turso + static posts; passes to `BlogListingClient.tsx`
 - `blog/[slug]/page.tsx` — Server component; static `blogPosts` dict + Turso; passes to `BlogPostContent.tsx`
 - `portfolio/page.tsx` — Portfolio showcase
@@ -104,6 +110,7 @@ JWT-protected via `src/middleware.ts`.
 ### API Routes (`src/app/api/`)
 
 - `auth/{login,logout}/` — Dashboard auth
+- `contact/` — Contact form handler (saves to Turso `leads`, sends email via Resend)
 - `blog/` — Public GET (cached) + admin POST/PUT/DELETE
 - `db/[table]/` — Generic CRUD for all Turso tables
 - `smileandpay/{initiate,result,status}/` — Smile & Pay flow
