@@ -3,7 +3,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
-import { ArrowRight, Instagram, Facebook, Youtube, Linkedin, Twitter, Globe, ShoppingBag, Smartphone } from "lucide-react";
+import { ArrowRight, Instagram, Facebook, Youtube, Linkedin, Twitter, Globe, ShoppingBag, Smartphone, Calendar, Clock, User } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -24,6 +24,7 @@ const services = [
   {
     title: "Digital Branding & Creative Design",
     desc: "We craft bold, memorable, and timeless brand identities that command attention in a competitive market.",
+    href: "/services/branding",
     visual: (
       <div className="relative h-52 bg-gradient-to-br from-[#0a1628] via-[#16181C] to-[#0a0a0a] rounded-xl p-5 flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(0,229,255,0.08),transparent_60%)]" />
@@ -43,6 +44,7 @@ const services = [
   {
     title: "Web & Mobile App Development",
     desc: "We build fast, secure, and beautiful digital products using modern frameworks and top-tier UX standards.",
+    href: "/services/web-design",
     visual: (
       <div className="relative h-52 bg-gradient-to-br from-[#0a1628] via-[#16181C] to-[#0a0a0a] rounded-xl p-5 flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(0,133,255,0.08),transparent_60%)]" />
@@ -61,6 +63,7 @@ const services = [
   {
     title: "Digital Marketing",
     desc: "We help businesses grow using data-driven, AI-powered marketing strategies built for conversions and visibility.",
+    href: "/services/seo-services",
     visual: (
       <div className="relative h-52 bg-gradient-to-br from-[#0a1628] via-[#16181C] to-[#0a0a0a] rounded-xl p-5 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_80%,rgba(0,229,255,0.06),transparent_60%)]" />
@@ -111,6 +114,73 @@ const deliverables = [
     stat: "∞",
     statLabel: "Possibilities"
   }
+];
+
+// Recent Blog Posts — direct homepage links for crawl discovery
+const recentBlogPosts = [
+  {
+    slug: "google-ads-zimbabwe-beginners-guide",
+    title: "Google Ads Zimbabwe: Complete Beginner's Guide (2026)",
+    excerpt: "Learn how to set up and optimize Google Ads for your Zimbabwe business. Budgets, targeting, and ROI tracking explained step by step.",
+    image: "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&h=400&fit=crop",
+    author: "Kuda",
+    date: "Mar 25, 2026",
+    category: "Google Ads",
+  },
+  {
+    slug: "how-much-does-website-cost-zimbabwe-2026",
+    title: "How Much Does a Website Cost in Zimbabwe? (2026 Pricing Guide)",
+    excerpt: "Complete website pricing guide for Zimbabwe businesses in 2026. From basic sites to e-commerce — learn what affects cost.",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
+    author: "Kuda",
+    date: "Apr 8, 2026",
+    category: "Web Design",
+  },
+  {
+    slug: "seo-guide-zimbabwe-small-businesses",
+    title: "SEO Guide for Zimbabwe Small Businesses: Rank #1 on Google",
+    excerpt: "Step-by-step SEO guide for Zimbabwe SMEs. Google Business Profile setup, keyword research, and on-page optimization.",
+    image: "https://images.unsplash.com/photo-1562577309-4932fdd64cd1?w=600&h=400&fit=crop",
+    author: "Kuda",
+    date: "Apr 2, 2026",
+    category: "SEO",
+  },
+  {
+    slug: "hustle-to-brand-zimbabwean-startups-trust-online",
+    title: "From Hustle to Brand: Build Trust Online",
+    excerpt: "Zimbabwe startups: hustle alone won't build a business. Trust does. Learn the framework to transform your hustle into a brand.",
+    image: "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&h=400&fit=crop",
+    author: "Weston",
+    date: "Apr 10, 2026",
+    category: "Branding",
+  },
+  {
+    slug: "new-zimbabwean-customer-checks-google-first",
+    title: "Zimbabwean Customers Check Google First",
+    excerpt: "93% of online experiences start with Google. Is your Zimbabwe business showing up? Learn why Google visibility is your #1 revenue driver.",
+    image: "https://images.unsplash.com/photo-1562577309-4932fdd64cd1?w=600&h=400&fit=crop",
+    author: "Kuda",
+    date: "Apr 8, 2026",
+    category: "Digital Strategy",
+  },
+  {
+    slug: "web-design-trends-zimbabwe-2026",
+    title: "10 Web Design Trends Zimbabwe Businesses Must Adopt in 2026",
+    excerpt: "From dark mode to AI personalization — the web design trends shaping Zimbabwe's digital landscape.",
+    image: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=600&h=400&fit=crop",
+    author: "Weston",
+    date: "Mar 10, 2026",
+    category: "Web Design",
+  },
+  {
+    slug: "zimbabwe-future-belongs-visible-businesses-online-growth",
+    title: "Zimbabwe's Future Belongs to Visible Businesses",
+    excerpt: "The businesses that will dominate Zimbabwe's next decade are the ones investing in online visibility today. Here's why and how to start.",
+    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop",
+    author: "Kuda",
+    date: "Mar 10, 2026",
+    category: "Digital Strategy",
+  },
 ];
 
 const websiteSchema = {
@@ -368,7 +438,7 @@ export default function Home() {
                   <p className="text-gray-400 text-sm leading-relaxed mb-6">{service.desc}</p>
                   <div className="flex justify-end">
                     <Link
-                      href="/services"
+                      href={service.href}
                       className="w-10 h-10 rounded-full bg-[#2F3336]/80 group-hover:bg-gradient-to-r group-hover:from-kuwex-cyan group-hover:to-kuwex-blue group-hover:text-black flex items-center justify-center transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(0,229,255,0.3)]"
                     >
                       <ArrowRight size={18} />
@@ -377,6 +447,14 @@ export default function Home() {
                 </div>
               </motion.div>
             ))}
+          </div>
+
+          <div className="flex flex-wrap gap-3 mt-10">
+            <Link href="/services/web-design" className="px-4 py-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300">Web Design Zimbabwe</Link>
+            <Link href="/services/seo-services" className="px-4 py-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300">SEO Services Zimbabwe</Link>
+            <Link href="/services/social-media-marketing" className="px-4 py-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300">Social Media Marketing</Link>
+            <Link href="/services/google-ads" className="px-4 py-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300">Google Ads Zimbabwe</Link>
+            <Link href="/services/branding" className="px-4 py-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300">Branding & Design</Link>
           </div>
         </div>
       </section>
@@ -444,6 +522,75 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Recent Blog Posts */}
+      <section className="py-28 bg-black relative">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_70%,rgba(0,229,255,0.04),transparent_50%)]" />
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-16"
+          >
+            <div className="vibrant-badge mb-6">
+              <span className="w-2 h-2 bg-kuwex-cyan rounded-full" />
+              <span className="text-sm text-gray-400">Latest Insights</span>
+            </div>
+            <h2 className="section-heading mb-4">
+              From our <span className="vibrant-gradient-text">blog</span>
+            </h2>
+            <p className="text-gray-400 text-lg max-w-2xl">
+              Expert insights on digital marketing, web design, and technology for Zimbabwe businesses.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+            {recentBlogPosts.map((post, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+              >
+                <Link href={`/blog/${post.slug}`} className="x-card-vibrant rounded-2xl overflow-hidden group block h-full">
+                  <div className="relative h-44">
+                    <Image
+                      src={post.image}
+                      alt={post.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className="absolute top-4 left-4">
+                      <span className="bg-black/60 backdrop-blur-xl text-white text-xs font-medium px-3 py-1.5 rounded-full border border-white/10">{post.category}</span>
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-lg font-bold mb-3 text-white group-hover:text-kuwex-cyan transition-colors duration-300 line-clamp-2">{post.title}</h3>
+                    <p className="text-gray-500 text-sm mb-4 line-clamp-2">{post.excerpt}</p>
+                    <div className="flex items-center justify-between text-xs text-gray-500">
+                      <span className="flex items-center gap-1"><User size={14} />{post.author}</span>
+                      <span className="flex items-center gap-1"><Calendar size={14} />{post.date}</span>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 border border-[#2F3336] text-white px-8 py-3.5 rounded-full font-bold hover:bg-white/5 hover:border-kuwex-cyan/30 transition-all duration-300"
+            >
+              View All Articles <ArrowRight size={18} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-32 bg-black relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(0,229,255,0.06),transparent_50%)]" />
@@ -481,6 +628,11 @@ export default function Home() {
                 Explore Services
               </Link>
             </div>
+            <p className="text-xs text-gray-600 mt-8">
+              <Link href="/privacy" className="hover:text-gray-400 transition-colors">Privacy Policy</Link>
+              {" · "}
+              <Link href="/terms" className="hover:text-gray-400 transition-colors">Terms of Service</Link>
+            </p>
           </motion.div>
         </div>
       </section>
