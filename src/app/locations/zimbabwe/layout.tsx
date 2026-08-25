@@ -35,7 +35,7 @@ const jsonLd = [
     "description": "Zimbabwe's #1 digital marketing agency and web design company. Serving businesses nationwide — Harare, Bulawayo, Gweru, Mutare, Victoria Falls, and beyond.",
     "url": `${BASE}/locations/zimbabwe`,
     "telephone": "+263719066891",
-    "email": "projects@kuwex.co",
+    "email": "info@kuwexstudios.co.zw",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Harare",

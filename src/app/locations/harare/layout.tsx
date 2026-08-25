@@ -35,7 +35,7 @@ const jsonLd = [
     "description": "Harare's top-rated digital marketing agency and web design company. SEO, social media, Google Ads, branding, and custom web development for businesses in Harare, Zimbabwe.",
     "url": `${BASE}/locations/harare`,
     "telephone": "+263719066891",
-    "email": "projects@kuwex.co",
+    "email": "info@kuwexstudios.co.zw",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Harare",

@@ -4,7 +4,7 @@ const BASE = "https://kuwexstudios.co.zw";
 
 export const metadata: Metadata = {
   title: { absolute: "Contact KuWeX Studios | Free Digital Marketing Quote — Zimbabwe" },
-  description: "Contact KuWeX Studios for a free digital marketing consultation. Call or WhatsApp +263 719 066 891, email projects@kuwex.co. Based in Harare, serving businesses across Zimbabwe. Free quote within 48 hours.",
+  description: "Contact KuWeX Studios for a free digital marketing consultation. Call or WhatsApp +263 719 066 891, email info@kuwexstudios.co.zw. Based in Harare, serving businesses across Zimbabwe. Free quote within 48 hours.",
   keywords: [
     "contact KuWeX Studios",
     "digital marketing quote Zimbabwe",
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "Contact KuWeX Studios | Free Digital Marketing Quote Zimbabwe",
-    description: "Get a free digital marketing quote from Zimbabwe's leading agency. WhatsApp +263 719 066 891 or email projects@kuwex.co. Response within 48 hours.",
+    description: "Get a free digital marketing quote from Zimbabwe's leading agency. WhatsApp +263 719 066 891 or email info@kuwexstudios.co.zw. Response within 48 hours.",
     url: `${BASE}/contact`,
     type: "website",
     images: [{ url: `${BASE}/logo.jpg`, width: 1200, height: 630, alt: "Contact KuWeX Studios Zimbabwe" }],
@@ -47,7 +47,7 @@ const contactSchema = [
       "@id": `${BASE}/#localbusiness`,
       "name": "KuWeX Studios",
       "telephone": "+263719066891",
-      "email": "projects@kuwex.co",
+      "email": "info@kuwexstudios.co.zw",
       "url": BASE,
       "address": {
         "@type": "PostalAddress",

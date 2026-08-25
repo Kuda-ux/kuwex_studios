@@ -33,7 +33,7 @@ const jsonLd = [
     "description": "Professional digital marketing and web design services for businesses in Bulawayo, Zimbabwe. Web design, SEO, social media, Google Ads, and branding for Matabeleland businesses.",
     "url": `${BASE}/locations/bulawayo`,
     "telephone": "+263719066891",
-    "email": "projects@kuwex.co",
+    "email": "info@kuwexstudios.co.zw",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Bulawayo",

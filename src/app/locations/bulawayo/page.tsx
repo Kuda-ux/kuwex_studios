@@ -251,7 +251,7 @@ export default function BulawayoPage() {
             <div className="flex flex-col items-center gap-2">
               <Mail size={20} className="text-kuwex-cyan" />
               <p className="text-gray-400 text-sm">Email Us</p>
-              <a href="mailto:projects@kuwex.co" className="text-white font-semibold hover:text-kuwex-cyan transition-colors">projects@kuwex.co</a>
+              <a href="mailto:info@kuwexstudios.co.zw" className="text-white font-semibold hover:text-kuwex-cyan transition-colors">info@kuwexstudios.co.zw</a>
             </div>
             <div className="flex flex-col items-center gap-2">
               <Building2 size={20} className="text-kuwex-cyan" />
