@@ -43,6 +43,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/services/applied-ai`, lastModified: now, changeFrequency: 'weekly', priority: 0.95 },
     
     // ============================================
+    // INTERACTIVE TOOLS - lead generation & viral content
+    // ============================================
+    { url: `${baseUrl}/ai-readiness-quiz`, lastModified: now, changeFrequency: 'monthly', priority: 0.85 },
+    { url: `${baseUrl}/roi-calculator`, lastModified: now, changeFrequency: 'monthly', priority: 0.85 },
+    { url: `${baseUrl}/testimonials`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
+    
+    // ============================================
     // LOCATION PAGES - critical for local SEO
     // ============================================
     { url: `${baseUrl}/locations/harare`, lastModified: now, changeFrequency: 'monthly', priority: 0.9 },

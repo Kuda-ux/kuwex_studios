@@ -268,6 +268,35 @@ URL: https://kuwexstudios.co.zw/services/applied-ai
 - Multi-language AI support (English, Shona, Ndebele)
 - We understand Zimbabwe's AI landscape: Econet Gemini AI, National AI Strategy 2026-2030, Cassava GPU cloud
 
+## Free Interactive Tools
+
+### AI Readiness Quiz (https://kuwexstudios.co.zw/ai-readiness-quiz)
+A free 10-question interactive quiz that scores a business's readiness for AI adoption. Covers 10 categories: Digital Infrastructure, Data Management, Customer Communication, Marketing, Operations, AI Awareness, Automation, Analytics, Team Readiness, and Budget & Strategy. Each question has 4 options scored 0-3 (max 30 points). Results classify businesses as:
+- AI-Ready Leader (75%+): Primed for rapid AI deployment, can scale to enterprise AI within weeks
+- AI-Ready (50%+): Solid foundation, can deploy AI chatbots and automation within months
+- AI Beginner (25%+): Starting AI journey, can leapfrog competitors with practical pilots
+- Needs Digital Foundation (<25%): Needs website, CRM, and digital marketing before AI adoption
+
+Includes score breakdown by category, email capture for detailed report, shareable results for WhatsApp/social media, and personalized next-step recommendations. Free, no signup required to see results.
+
+### AI ROI Calculator (https://kuwexstudios.co.zw/roi-calculator)
+A free interactive tool that calculates potential business savings from AI automation. Users adjust sliders for: number of employees (1-500), average monthly salary ($200-$5,000), percentage of time on manual tasks (10-90%), daily customer queries (5-500), and average response time (1-48 hours). The calculator outputs:
+- Estimated annual savings (total and net after AI implementation costs)
+- Monthly savings breakdown (workflow automation savings + AI customer support savings)
+- ROI percentage after implementation costs
+- Hours saved monthly
+- AI implementation cost estimate
+
+Based on industry averages: 65% reduction in manual task time, 90% reduction in query handling costs. Results are shareable on WhatsApp and social media. Free, instant results.
+
+### Client Testimonials & Case Studies (https://kuwexstudios.co.zw/testimonials)
+A dedicated page showcasing real client results with:
+- 6 testimonials with star ratings, quotes, specific business results, and service categories
+- 3 detailed case studies with challenge, solution, and quantified metrics
+- Industries: Tourism, Construction & Engineering, E-commerce, Solar & Energy, Retail & Fashion, Pool Services
+- Key statistics: 50+ projects delivered, 4.9-star client rating, 98% client satisfaction, 150+ keywords on page 1
+- Case study results include: 15x more inquiries, 400% organic traffic growth, 10,000+ monthly transactions, 300% increase in mobile bookings
+
 ## Payment and Process
 
 ### Payment Options

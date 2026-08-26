@@ -434,16 +434,30 @@ export default function AppliedAIPage() {
             <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">
               Get a free AI readiness audit. We&apos;ll identify your top 3 automation opportunities and show you exactly how AI can cut costs and boost revenue.
             </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+              <Link
+                href="/ai-readiness-quiz"
+                className="px-8 py-4 bg-gradient-to-r from-kuwex-cyan to-kuwex-blue text-black font-semibold rounded-full hover:shadow-[0_0_30px_rgba(0,229,255,0.3)] transition-all duration-300 hover:scale-[1.02] flex items-center gap-2"
+              >
+                Take Free AI Quiz <ArrowRight size={18} />
+              </Link>
+              <Link
+                href="/roi-calculator"
+                className="px-8 py-4 border border-[#2F3336] rounded-full text-white hover:border-kuwex-cyan/50 transition-all duration-300 flex items-center gap-2"
+              >
+                Calculate Your ROI
+              </Link>
+            </div>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/contact"
-                className="px-8 py-4 bg-gradient-to-r from-kuwex-cyan to-kuwex-blue text-black font-semibold rounded-full hover:shadow-[0_0_30px_rgba(0,229,255,0.3)] transition-all duration-300 hover:scale-[1.02] flex items-center gap-2"
+                className="px-8 py-3 text-gray-400 hover:text-kuwex-cyan transition-colors text-sm"
               >
-                Get Free AI Audit <ArrowRight size={18} />
+                Or contact us directly →
               </Link>
               <Link
                 href="/services"
-                className="px-8 py-4 border border-[#2F3336] rounded-full text-white hover:border-kuwex-cyan/50 transition-all duration-300"
+                className="px-8 py-3 text-gray-400 hover:text-kuwex-cyan transition-colors text-sm"
               >
                 View All Services
               </Link>

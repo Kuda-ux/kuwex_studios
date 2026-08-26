@@ -3,7 +3,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
-import { ArrowRight, Instagram, Facebook, Youtube, Linkedin, Twitter, Globe, ShoppingBag, Smartphone, Calendar, Clock, User } from "lucide-react";
+import { ArrowRight, Instagram, Facebook, Youtube, Linkedin, Twitter, Globe, ShoppingBag, Smartphone, Calendar, Clock, User, Brain, Calculator, Star } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -521,6 +521,81 @@ export default function Home() {
             <Link href="/services/branding" className="px-4 py-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300">Branding & Design</Link>
             <Link href="/services/software-development" className="px-4 py-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300">Software Development Zimbabwe</Link>
             <Link href="/services/applied-ai" className="px-4 py-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300">AI & Business Automation Zimbabwe</Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Free Tools & Resources */}
+      <section className="py-20 px-4 bg-[#0A0A0A]">
+        <div className="container mx-auto max-w-6xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <div className="vibrant-badge mx-auto mb-6 w-fit">
+              <span className="w-2 h-2 bg-kuwex-cyan rounded-full animate-pulse" />
+              <span className="text-sm text-gray-400">Free Tools & Resources</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Try Our <span className="vibrant-gradient-text">Free Business Tools</span>
+            </h2>
+            <p className="text-gray-400 max-w-2xl mx-auto">
+              See how AI can transform your business — get instant insights with our free interactive tools.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="x-card-vibrant rounded-2xl p-8 text-center group"
+            >
+              <div className="w-14 h-14 bg-gradient-to-br from-kuwex-cyan/10 to-kuwex-blue/10 border border-kuwex-cyan/20 rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:shadow-[0_0_25px_rgba(0,229,255,0.2)] transition-all duration-300">
+                <Brain size={28} className="text-kuwex-cyan" />
+              </div>
+              <h3 className="text-lg font-bold text-white mb-2">AI Readiness Quiz</h3>
+              <p className="text-gray-400 text-sm mb-6">Answer 10 questions and get your AI Readiness Score instantly. See how your business compares.</p>
+              <Link href="/ai-readiness-quiz" className="inline-flex items-center gap-2 text-kuwex-cyan font-semibold text-sm hover:gap-3 transition-all">
+                Take the Quiz <ArrowRight size={16} />
+              </Link>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="x-card-vibrant rounded-2xl p-8 text-center group"
+            >
+              <div className="w-14 h-14 bg-gradient-to-br from-kuwex-cyan/10 to-kuwex-blue/10 border border-kuwex-cyan/20 rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:shadow-[0_0_25px_rgba(0,229,255,0.2)] transition-all duration-300">
+                <Calculator size={28} className="text-kuwex-cyan" />
+              </div>
+              <h3 className="text-lg font-bold text-white mb-2">AI ROI Calculator</h3>
+              <p className="text-gray-400 text-sm mb-6">Calculate how much your business could save with AI automation. Get instant ROI projections.</p>
+              <Link href="/roi-calculator" className="inline-flex items-center gap-2 text-kuwex-cyan font-semibold text-sm hover:gap-3 transition-all">
+                Calculate Savings <ArrowRight size={16} />
+              </Link>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="x-card-vibrant rounded-2xl p-8 text-center group"
+            >
+              <div className="w-14 h-14 bg-gradient-to-br from-kuwex-cyan/10 to-kuwex-blue/10 border border-kuwex-cyan/20 rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:shadow-[0_0_25px_rgba(0,229,255,0.2)] transition-all duration-300">
+                <Star size={28} className="text-kuwex-cyan" />
+              </div>
+              <h3 className="text-lg font-bold text-white mb-2">Client Results</h3>
+              <p className="text-gray-400 text-sm mb-6">See real results from Zimbabwean businesses we&apos;ve helped grow. Case studies and testimonials.</p>
+              <Link href="/testimonials" className="inline-flex items-center gap-2 text-kuwex-cyan font-semibold text-sm hover:gap-3 transition-all">
+                View Results <ArrowRight size={16} />
+              </Link>
+            </motion.div>
           </div>
         </div>
       </section>

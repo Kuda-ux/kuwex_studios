@@ -129,6 +129,33 @@ Yes. KuWeX Studios builds AI chatbots that deploy on WhatsApp Business API, hand
 ### What is an AI readiness audit?
 An AI readiness audit assesses your current systems, data quality, workflows, and team capabilities to identify the best AI automation opportunities. KuWeX Studios provides free AI readiness audits that include a prioritized list of automation use cases, ROI projections, and a recommended implementation roadmap. Book yours at info@kuwexstudios.co.zw or +263 719 066 891.
 
+## Free Interactive Tools
+
+KuWeX Studios offers free interactive tools to help businesses assess their digital and AI readiness:
+
+### AI Readiness Quiz
+- URL: https://kuwexstudios.co.zw/ai-readiness-quiz
+- 10-question interactive quiz that scores a business's AI readiness across 10 categories
+- Categories: Digital Infrastructure, Data Management, Customer Communication, Marketing, Operations, AI Awareness, Automation, Analytics, Team Readiness, Budget & Strategy
+- Results levels: AI-Ready Leader (75%+), AI-Ready (50%+), AI Beginner (25%+), Needs Digital Foundation (<25%)
+- Includes: score breakdown by category, email capture for detailed report, shareable results, personalized recommendations
+- Free, no signup required to see results
+
+### AI ROI Calculator
+- URL: https://kuwexstudios.co.zw/roi-calculator
+- Interactive tool that calculates potential savings from AI automation
+- Inputs: number of employees, average salary, % of time on manual tasks, daily customer queries, average response time
+- Outputs: estimated annual savings, monthly savings breakdown, ROI percentage, hours saved, AI implementation cost estimate
+- Based on industry averages: 65% reduction in manual tasks, 90% reduction in query handling costs
+- Free, instant results, shareable
+
+### Client Testimonials & Case Studies
+- URL: https://kuwexstudios.co.zw/testimonials
+- Real client reviews with star ratings and specific business results
+- Case studies with challenge, solution, and quantified results
+- Industries covered: Tourism, Construction, E-commerce, Engineering, Solar/Energy, Retail
+- Key stats: 50+ projects delivered, 4.9-star rating, 98% client satisfaction, 150+ keywords on page 1
+
 ## Portfolio (Live Client Work)
 
 - [Kwedu Experience](https://kwedu-experience.vercel.app/) — Tourism website
