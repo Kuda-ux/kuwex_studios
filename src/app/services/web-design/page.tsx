@@ -3,6 +3,7 @@
 import { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ServiceQuoteForm from "@/components/ServiceQuoteForm";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import {
@@ -309,6 +310,13 @@ export default function WebDesignPage() {
               </Link>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Free Quote Form */}
+      <section className="py-20 px-4 bg-black border-t border-[#2F3336]/40">
+        <div className="container mx-auto max-w-3xl">
+          <ServiceQuoteForm serviceName="Web Design & Development" serviceValue="web-dev" />
         </div>
       </section>
 

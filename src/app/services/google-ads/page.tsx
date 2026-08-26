@@ -2,6 +2,7 @@
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ServiceQuoteForm from "@/components/ServiceQuoteForm";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Search, TrendingUp, BarChart3, Target, DollarSign, ArrowRight, CheckCircle2, MessageCircle, Eye, MousePointer, Zap, Globe, Video, RefreshCw } from "lucide-react";
@@ -180,6 +181,13 @@ export default function GoogleAdsPage() {
             <Link href="/services/web-design" className="px-4 py-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300">Web Design Zimbabwe</Link>
             <Link href="/services/branding" className="px-4 py-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300">Branding Services</Link>
           </div>
+        </div>
+      </section>
+
+      {/* Free Quote Form */}
+      <section className="py-20 px-4 bg-black border-t border-[#2F3336]/40">
+        <div className="container mx-auto max-w-3xl">
+          <ServiceQuoteForm serviceName="Google Ads Management" serviceValue="google-ads" />
         </div>
       </section>
 

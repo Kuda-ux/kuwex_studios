@@ -212,6 +212,7 @@ const jsonLd = [
 import { ThemeProvider } from "./providers";
 import ContactWidget from "@/components/ContactWidget";
 import CookieConsent from "@/components/CookieConsent";
+import ExitIntentPopup from "@/components/ExitIntentPopup";
 
 export default function RootLayout({
   children,
@@ -270,6 +271,7 @@ export default function RootLayout({
         >
           {children}
           <ContactWidget />
+          <ExitIntentPopup />
           <CookieConsent />
           <script
             type="application/ld+json"

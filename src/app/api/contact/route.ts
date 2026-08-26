@@ -112,6 +112,65 @@ export async function POST(request: NextRequest) {
           { status: 500 }
         );
       }
+
+      // Send auto-responder confirmation to the submitter
+      const serviceLabels: Record<string, string> = {
+        'branding': 'Digital Branding & Creative Design',
+        'web-dev': 'Web & Mobile App Development',
+        'multimedia': 'Multimedia Production',
+        'marketing': 'Digital Marketing',
+        'consultancy': 'Innovation Research & Consultancy',
+      };
+      const serviceLabel = serviceLabels[service] || 'your project';
+
+      const autoResponderHtml = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <div style="background: linear-gradient(135deg, #00E5FF, #0085FF); padding: 30px; border-radius: 12px 12px 0 0; text-align: center;">
+            <h1 style="color: #000; margin: 0; font-size: 28px;">Thank You, ${firstName}!</h1>
+            <p style="color: #000; margin: 8px 0 0; font-size: 16px; opacity: 0.85;">We've received your message</p>
+          </div>
+          <div style="background: #16181C; padding: 30px; border-radius: 0 0 12px 12px; border: 1px solid #2F3336;">
+            <p style="color: #fff; font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
+              Hi ${firstName},
+            </p>
+            <p style="color: #71767B; font-size: 15px; line-height: 1.6; margin: 0 0 20px;">
+              Thank you for reaching out to KuWeX Studios. We've received your enquiry about <strong style="color: #00E5FF;">${serviceLabel}</strong> and our team is already reviewing your message.
+            </p>
+            <div style="background: #000; padding: 20px; border-radius: 8px; border: 1px solid #2F3336; margin: 20px 0;">
+              <p style="color: #71767B; margin: 0 0 8px; font-size: 13px;">Your message:</p>
+              <p style="color: #fff; margin: 0; font-size: 14px; line-height: 1.6; white-space: pre-wrap;">${message}</p>
+            </div>
+            <p style="color: #71767B; font-size: 15px; line-height: 1.6; margin: 20px 0;">
+              <strong style="color: #fff;">What happens next?</strong>
+            </p>
+            <ul style="color: #71767B; font-size: 15px; line-height: 1.8; padding-left: 20px; margin: 0 0 20px;">
+              <li>We'll review your project details within the next few hours</li>
+              <li>You'll receive a personalised response within 24 hours</li>
+              <li>Need to talk sooner? Call or WhatsApp us at <strong style="color: #00E5FF;">+263 719 066 891</strong></li>
+            </ul>
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="https://wa.me/263719066891" style="background: #25D366; color: #fff; text-decoration: none; padding: 14px 32px; border-radius: 30px; font-weight: bold; display: inline-block; font-size: 15px;">Chat on WhatsApp</a>
+            </div>
+            <hr style="border: none; border-top: 1px solid #2F3336; margin: 20px 0;" />
+            <p style="color: #71767B; font-size: 13px; margin: 0; line-height: 1.6;">
+              KuWeX Studios — Zimbabwe's #1 Digital Marketing Agency<br/>
+              <a href="https://kuwexstudios.co.zw" style="color: #00E5FF; text-decoration: none;">kuwexstudios.co.zw</a> · info@kuwexstudios.co.zw · +263 719 066 891
+            </p>
+          </div>
+        </div>
+      `;
+
+      const { error: autoResponderError } = await resend.emails.send({
+        from: FROM_EMAIL,
+        to: email,
+        subject: `We've received your message, ${firstName}!`,
+        html: autoResponderHtml,
+      });
+
+      if (autoResponderError) {
+        console.error('Auto-responder email error:', autoResponderError);
+        // Don't fail the request — the notification email was sent successfully
+      }
     } else {
       console.warn('RESEND_API_KEY is not set — contact form submission saved to DB only.');
     }

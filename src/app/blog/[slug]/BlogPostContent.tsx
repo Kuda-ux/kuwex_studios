@@ -2,9 +2,10 @@
 
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
-import { Calendar, Clock, ArrowLeft, User, Share2, Linkedin, Facebook, Twitter, ArrowRight, MessageCircle } from "lucide-react";
+import { Calendar, Clock, ArrowLeft, User, Share2, Linkedin, Facebook, Twitter, ArrowRight, MessageCircle, Send, CheckCircle, AlertCircle, Loader2, Sparkles } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { blogPostsMeta } from "@/lib/blog-meta";
@@ -221,24 +222,179 @@ export default function BlogPostContent({ post, relatedPosts }: Props) {
         </section>
       )}
 
-      {/* CTA */}
-      <section className="py-20 px-4 relative">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(0,229,255,0.04),transparent_50%)]" />
-        <div className="container mx-auto max-w-3xl text-center relative z-10">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">Need Help With Your <span className="vibrant-gradient-text">Digital Strategy?</span></h2>
-          <p className="text-gray-400 mb-8">KuWeX Studios helps Zimbabwe businesses grow online with expert web design, SEO, and digital marketing.</p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/contact" className="px-8 py-4 bg-gradient-to-r from-kuwex-cyan to-kuwex-blue text-black font-semibold rounded-full hover:shadow-[0_0_30px_rgba(0,229,255,0.3)] transition-all duration-300 flex items-center gap-2">
-              Get Free Consultation <ArrowRight size={18} />
-            </Link>
-            <Link href="/services" className="px-8 py-4 border border-[#2F3336] rounded-full text-white hover:border-kuwex-cyan/50 transition-all duration-300">
-              View Our Services
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* Contextual CTA with Lead Form */}
+      <BlogCTA post={post} />
 
       <Footer />
     </main>
+  );
+}
+
+const categoryCTAs: Record<string, { title: string; desc: string; service: string }> = {
+  'SEO': {
+    title: 'Rank #1 on Google',
+    desc: 'Get a free SEO audit for your Zimbabwe business. See exactly what\u2019s holding your website back from ranking higher.',
+    service: 'seo-services',
+  },
+  'Web Design': {
+    title: 'Need a New Website?',
+    desc: 'Get a free quote for a custom, fast, SEO-ready website built for Zimbabwe\u2019s mobile-first audience.',
+    service: 'web-dev',
+  },
+  'Google Ads': {
+    title: 'Get More Customers with Google Ads',
+    desc: 'Stop wasting ad spend. Get a free Google Ads consultation and let us build campaigns that convert.',
+    service: 'google-ads',
+  },
+  'Branding': {
+    title: 'Build a Brand That Lasts',
+    desc: 'From logo to full brand identity \u2014 get a free consultation on how to make your business unforgettable.',
+    service: 'branding',
+  },
+  'Digital Strategy': {
+    title: 'Grow Your Business Online',
+    desc: 'Get a free 30-minute digital strategy consultation. We\u2019ll identify your biggest opportunities for online growth.',
+    service: 'marketing',
+  },
+  'Social Media': {
+    title: 'Dominate Social Media',
+    desc: 'Get a free social media audit and content strategy session for your Zimbabwe business.',
+    service: 'social-media-marketing',
+  },
+};
+
+function BlogCTA({ post }: { post: BlogPost }) {
+  const cta = categoryCTAs[post.category] || {
+    title: 'Grow Your Business Online',
+    desc: 'Get a free consultation with KuWeX Studios. We help Zimbabwe businesses succeed online with web design, SEO, and digital marketing.',
+    service: 'marketing',
+  };
+
+  const [formData, setFormData] = useState({ name: '', email: '' });
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus('loading');
+    setErrorMessage('');
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName: formData.name,
+          lastName: '',
+          email: formData.email,
+          company: '',
+          service: cta.service,
+          message: `Lead from blog post: "${post.title}" \u2014 interested in ${cta.title}`,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to submit.');
+      }
+
+      setStatus('success');
+      setFormData({ name: '', email: '' });
+    } catch (err) {
+      setStatus('error');
+      setErrorMessage(err instanceof Error ? err.message : 'Something went wrong.');
+    }
+  };
+
+  return (
+    <section className="py-20 px-4 relative">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(0,229,255,0.04),transparent_50%)]" />
+      <div className="container mx-auto max-w-3xl relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="x-card-vibrant rounded-3xl p-8 md:p-10"
+        >
+          {status === 'success' ? (
+            <div className="flex flex-col items-center justify-center py-8 text-center">
+              <div className="w-14 h-14 bg-green-500/10 border border-green-500/30 rounded-full flex items-center justify-center mb-4">
+                <CheckCircle size={28} className="text-green-400" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">Request Received!</h3>
+              <p className="text-gray-400 text-sm max-w-sm">
+                We&apos;ll contact you within 24 hours. Check your email for confirmation.
+              </p>
+            </div>
+          ) : (
+            <>
+              <div className="flex items-center gap-2 mb-4">
+                <Sparkles size={18} className="text-kuwex-cyan" />
+                <span className="text-xs font-bold text-kuwex-cyan uppercase tracking-wider">Free Consultation</span>
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold mb-3 text-white">
+                {cta.title.split(' ').slice(0, -1).join(' ')} <span className="vibrant-gradient-text">{cta.title.split(' ').slice(-1)}</span>
+              </h2>
+              <p className="text-gray-400 mb-6">{cta.desc}</p>
+
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {status === 'error' && (
+                  <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/30 rounded-xl px-3 py-2.5">
+                    <AlertCircle size={16} className="text-red-400 flex-shrink-0" />
+                    <p className="text-red-400 text-xs">{errorMessage}</p>
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    placeholder="Your name"
+                    className="w-full bg-black border border-[#2F3336] rounded-xl px-4 py-3 text-white placeholder:text-gray-600 text-sm focus:outline-none focus:border-kuwex-cyan/50 focus:ring-1 focus:ring-kuwex-cyan/50 transition-all"
+                  />
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder="Your email"
+                    className="w-full bg-black border border-[#2F3336] rounded-xl px-4 py-3 text-white placeholder:text-gray-600 text-sm focus:outline-none focus:border-kuwex-cyan/50 focus:ring-1 focus:ring-kuwex-cyan/50 transition-all"
+                  />
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <button
+                    type="submit"
+                    disabled={status === 'loading'}
+                    className="flex-1 bg-gradient-to-r from-[#00E5FF] to-[#0085FF] text-black font-bold py-3.5 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-[0_0_30px_rgba(0,229,255,0.4)] disabled:opacity-60 disabled:cursor-not-allowed text-sm"
+                  >
+                    {status === 'loading' ? (
+                      <><Loader2 size={16} className="animate-spin" /> Sending...</>
+                    ) : (
+                      <>Get Free Consultation <Send size={16} /></>
+                    )}
+                  </button>
+                  <Link
+                    href="/services"
+                    className="px-6 py-3.5 border border-[#2F3336] rounded-xl text-white hover:border-kuwex-cyan/50 transition-all duration-300 text-sm font-medium text-center flex items-center justify-center gap-2"
+                  >
+                    View Services <ArrowRight size={14} />
+                  </Link>
+                </div>
+
+                <p className="text-center text-gray-600 text-xs">
+                  Free consultation · No obligations · Response within 24 hours
+                </p>
+              </form>
+            </>
+          )}
+        </motion.div>
+      </div>
+    </section>
   );
 }

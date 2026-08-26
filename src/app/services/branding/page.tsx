@@ -2,6 +2,7 @@
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ServiceQuoteForm from "@/components/ServiceQuoteForm";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Palette, PenTool, Eye, Layers, BookOpen, Package, ArrowRight, CheckCircle2, MessageCircle, Star, Sparkles, FileText, Image } from "lucide-react";
@@ -180,6 +181,13 @@ export default function BrandingPage() {
             <Link href="/services/seo-services" className="px-4 py-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300">SEO Services</Link>
             <Link href="/services/google-ads" className="px-4 py-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300">Google Ads Zimbabwe</Link>
           </div>
+        </div>
+      </section>
+
+      {/* Free Quote Form */}
+      <section className="py-20 px-4 bg-black border-t border-[#2F3336]/40">
+        <div className="container mx-auto max-w-3xl">
+          <ServiceQuoteForm serviceName="Branding & Creative Design" serviceValue="branding" />
         </div>
       </section>
 
