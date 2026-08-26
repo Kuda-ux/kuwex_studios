@@ -9,7 +9,8 @@ import {
   Globe, Smartphone, Database, Server, Layout,
   Camera, Play, Mic, Film, ImageIcon,
   BarChart3, Target, Search, Mail, Megaphone,
-  GraduationCap, Rocket, LineChart, Users, Brain
+  GraduationCap, Rocket, LineChart, Users, Brain,
+  Cpu, Bot, Workflow, Boxes, GitBranch, Zap, Lock, Network, Cloud
 } from "lucide-react";
 import Link from "next/link";
 
@@ -480,6 +481,235 @@ const ConsultancyVisual = () => {
   );
 };
 
+const SoftwareDevVisual = () => {
+  const devTools = [
+    { icon: Server, name: "AWS", color: "#FF9900" },
+    { icon: Database, name: "PostgreSQL", color: "#336791" },
+    { icon: GitBranch, name: "CI/CD", color: "#00E5FF" },
+    { icon: Boxes, name: "Docker", color: "#2496ED" },
+    { icon: Cloud, name: "Cloud", color: "#0085FF" },
+  ];
+  
+  return (
+    <div className="relative h-80 lg:h-full min-h-[400px] bg-gradient-to-br from-[#0a0a0a] via-[#0f0f0f] to-[#16181C] flex items-center justify-center overflow-hidden">
+      {/* Background glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-cyan-500/20 rounded-full blur-3xl" />
+      
+      {/* 3D Server/Architecture visualization */}
+      <div className="relative">
+        <motion.div 
+          initial={{ rotateY: -10, rotateX: 8 }}
+          animate={{ rotateY: [-10, -5, -10], rotateX: [8, 3, 8] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          className="relative w-64 h-44 bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] rounded-xl border border-cyan-500/30 shadow-2xl overflow-hidden p-4"
+          style={{ transformStyle: "preserve-3d", perspective: "1000px" }}
+        >
+          {/* Architecture diagram */}
+          <div className="flex flex-col gap-2">
+            {/* API Gateway layer */}
+            <div className="flex items-center gap-2 bg-[#16181C] rounded-lg p-2 border border-cyan-500/20">
+              <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+              <div className="flex-1 h-1.5 bg-[#0a0a0a] rounded-full overflow-hidden">
+                <div className="h-full w-[85%] bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full" />
+              </div>
+              <span className="text-[9px] text-gray-500">API</span>
+            </div>
+            {/* Microservices layer */}
+            <div className="grid grid-cols-3 gap-1.5">
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="bg-[#16181C] rounded-lg p-1.5 border border-[#2F3336]/60 text-center">
+                  <div className="w-1.5 h-1.5 bg-cyan-400/60 rounded-full mx-auto mb-1 animate-pulse" style={{ animationDelay: `${i * 0.3}s` }} />
+                  <div className="text-[8px] text-gray-600">SVC-{i + 1}</div>
+                </div>
+              ))}
+            </div>
+            {/* Database layer */}
+            <div className="flex items-center gap-2 bg-[#16181C] rounded-lg p-2 border border-blue-500/20">
+              <Database size={12} className="text-blue-400" />
+              <div className="flex-1 h-1.5 bg-[#0a0a0a] rounded-full overflow-hidden">
+                <div className="h-full w-[92%] bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full" />
+              </div>
+              <span className="text-[9px] text-gray-500">DB</span>
+            </div>
+          </div>
+          
+          {/* Uptime badge */}
+          <div className="absolute top-2 right-2 bg-cyan-500/10 border border-cyan-500/30 rounded px-1.5 py-0.5">
+            <span className="text-[9px] text-cyan-400 font-bold">99.9%</span>
+          </div>
+        </motion.div>
+        
+        {/* Floating code block */}
+        <motion.div
+          animate={{ y: [-5, 5, -5] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -right-6 -top-4 bg-[#16181C] rounded-lg border border-[#2F3336] px-2 py-1 shadow-lg"
+        >
+          <span className="text-[9px] font-mono text-cyan-400">{`{ }`}</span>
+        </motion.div>
+        
+        {/* Orbiting dev tools */}
+        {devTools.map((tool, i) => {
+          const angle = (i * 360) / devTools.length;
+          const radius = 120;
+          const x = Math.cos((angle - 90) * (Math.PI / 180)) * radius;
+          const y = Math.sin((angle - 90) * (Math.PI / 180)) * radius;
+          
+          return (
+            <motion.div
+              key={tool.name}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5 + i * 0.1 }}
+              className="absolute w-12 h-12 bg-[#16181C] rounded-xl border border-[#2F3336] flex items-center justify-center shadow-lg hover:scale-110 hover:border-cyan-500/50 transition-all cursor-pointer group"
+              style={{ 
+                left: `calc(50% + ${x}px - 24px)`, 
+                top: `calc(50% + ${y}px - 24px)` 
+              }}
+            >
+              <tool.icon size={22} style={{ color: tool.color }} />
+              <span className="absolute -bottom-6 text-[10px] text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">{tool.name}</span>
+            </motion.div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+const AppliedAIVisual = () => {
+  const aiTools = [
+    { icon: Bot, name: "Chatbot", color: "#00E5FF" },
+    { icon: Workflow, name: "Automation", color: "#0085FF" },
+    { icon: Brain, name: "AI Model", color: "#EC4899" },
+    { icon: Zap, name: "Real-time", color: "#F59E0B" },
+    { icon: Lock, name: "Secure", color: "#10B981" },
+  ];
+  
+  return (
+    <div className="relative h-80 lg:h-full min-h-[400px] bg-gradient-to-br from-[#0a0a0a] via-[#0f0f0f] to-[#16181C] flex items-center justify-center overflow-hidden">
+      {/* Background glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-cyan-500/20 rounded-full blur-3xl" />
+      
+      {/* 3D AI Brain visualization */}
+      <div className="relative">
+        <motion.div 
+          initial={{ rotateY: -5 }}
+          animate={{ rotateY: [-5, 5, -5] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          className="relative"
+          style={{ transformStyle: "preserve-3d", perspective: "1000px" }}
+        >
+          {/* Central AI core */}
+          <div className="relative w-44 h-44 bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] rounded-full border border-cyan-500/30 shadow-2xl flex items-center justify-center">
+            {/* Glowing core */}
+            <motion.div
+              animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.7, 0.4] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="absolute inset-6 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-full blur-sm"
+            />
+            
+            {/* Neural network nodes */}
+            <div className="relative z-10">
+              <div className="flex flex-col items-center gap-2">
+                <div className="flex gap-2">
+                  {[0, 1, 2].map((i) => (
+                    <motion.div
+                      key={i}
+                      animate={{ opacity: [0.3, 1, 0.3] }}
+                      transition={{ duration: 1.5, delay: i * 0.2, repeat: Infinity }}
+                      className="w-2 h-2 bg-cyan-400 rounded-full"
+                    />
+                  ))}
+                </div>
+                <motion.div
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="w-3 h-3 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50"
+                />
+                <div className="flex gap-2">
+                  {[0, 1, 2].map((i) => (
+                    <motion.div
+                      key={i}
+                      animate={{ opacity: [0.3, 1, 0.3] }}
+                      transition={{ duration: 1.5, delay: i * 0.2 + 0.5, repeat: Infinity }}
+                      className="w-2 h-2 bg-blue-400 rounded-full"
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+            
+            {/* Orbiting particles */}
+            {[...Array(3)].map((_, i) => (
+              <motion.div
+                key={i}
+                animate={{ rotate: 360 }}
+                transition={{ duration: 8 + i * 2, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-0"
+              >
+                <div 
+                  className="absolute w-2.5 h-2.5 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50"
+                  style={{ top: '0%', left: '50%', transform: 'translateX(-50%)' }}
+                />
+              </motion.div>
+            ))}
+          </div>
+          
+          {/* Connection lines */}
+          <svg className="absolute inset-0 w-full h-full" style={{ transform: 'scale(2.2)' }}>
+            {aiTools.map((_, i) => {
+              const angle = (i * 360) / aiTools.length - 90;
+              const x2 = 50 + Math.cos(angle * (Math.PI / 180)) * 40;
+              const y2 = 50 + Math.sin(angle * (Math.PI / 180)) * 40;
+              return (
+                <motion.line
+                  key={i}
+                  x1="50%"
+                  y1="50%"
+                  x2={`${x2}%`}
+                  y2={`${y2}%`}
+                  stroke="#00E5FF"
+                  strokeWidth="0.5"
+                  strokeDasharray="4 4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.3 }}
+                  transition={{ delay: 0.5 + i * 0.1 }}
+                />
+              );
+            })}
+          </svg>
+        </motion.div>
+        
+        {/* Orbiting AI tools */}
+        {aiTools.map((tool, i) => {
+          const angle = (i * 360) / aiTools.length;
+          const radius = 115;
+          const x = Math.cos((angle - 90) * (Math.PI / 180)) * radius;
+          const y = Math.sin((angle - 90) * (Math.PI / 180)) * radius;
+          
+          return (
+            <motion.div
+              key={tool.name}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5 + i * 0.1 }}
+              className="absolute w-12 h-12 bg-[#16181C] rounded-xl border border-[#2F3336] flex items-center justify-center shadow-lg hover:scale-110 hover:border-cyan-500/50 transition-all cursor-pointer group"
+              style={{ 
+                left: `calc(50% + ${x}px - 24px)`, 
+                top: `calc(50% + ${y}px - 24px)` 
+              }}
+            >
+              <tool.icon size={22} style={{ color: tool.color }} />
+              <span className="absolute -bottom-6 text-[10px] text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">{tool.name}</span>
+            </motion.div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
 const services = [
   {
     id: "branding",
@@ -525,6 +755,24 @@ const services = [
     features: ["Corporate Innovation Programs", "Digital Transformation Training", "Startup Consultancy", "Feasibility Studies", "Strategy Development", "Technology Advisory"],
     visual: <ConsultancyVisual />,
     gradient: "from-yellow-500 to-orange-500"
+  },
+  {
+    id: "software-dev",
+    title: "Custom Software Development",
+    icon: Cpu,
+    description: "Scalable, secure enterprise software for large corporates in Zimbabwe. We build custom ERPs, CRMs, fintech platforms, and AI-powered systems that handle millions of transactions with 99.9% uptime.",
+    features: ["Custom ERPs & CRMs", "Fintech & Payment Systems", "Microservices Architecture", "Cloud Infrastructure (AWS)", "CI/CD & DevOps", "API-First Design"],
+    visual: <SoftwareDevVisual />,
+    gradient: "from-cyan-500 to-blue-600"
+  },
+  {
+    id: "applied-ai",
+    title: "Applied AI & Business Automation",
+    icon: Bot,
+    description: "Transforming corporate operations in Zimbabwe through intelligent workflows, automated customer engagement, and custom AI systems. WhatsApp chatbots, workflow automation, predictive analytics, and AI marketing — built for Zimbabwe's AI economy.",
+    features: ["AI Chatbots (WhatsApp, Web)", "Business Workflow Automation", "AI Marketing Automation", "Document Intelligence & OCR", "Predictive Analytics", "AI Voice & Call Automation"],
+    visual: <AppliedAIVisual />,
+    gradient: "from-cyan-400 to-teal-500"
   }
 ];
 
