@@ -194,6 +194,45 @@ In addition to core services, KuWeX Studios helps Zimbabwean businesses prepare 
 - AI strategy development for SMEs, NGOs, and corporates
 - Training and workshops on AI tools for business
 
+## Service 6: Custom Software Development
+
+URL: https://kuwexstudios.co.zw/services/software-development
+
+### What We Build
+- Custom ERP systems (Enterprise Resource Planning) — unify accounting, inventory, HR, procurement, reporting
+- Custom CRM platforms (Customer Relationship Management) — lead scoring, sales pipelines, customer portals
+- Business process automation — document approvals, automated reporting, email/SMS/WhatsApp automation
+- Fintech & payment systems — payment gateways, mobile money integration (EcoCash, Paynow), digital wallets, lending platforms
+- AI & machine learning integration — chatbots, predictive analytics, document OCR, sentiment analysis, recommendation engines
+- Multi-platform systems — web apps, mobile apps (iOS & Android), desktop clients, API services sharing one backend
+- Inventory management systems with real-time stock tracking
+- HR and payroll systems with automated calculations
+- Procurement workflows with approval chains and audit trails
+- Government-grade secure platforms compliant with Zimbabwe Data Protection Act
+
+### Technology Stack
+- Languages: TypeScript, Python, Go
+- Frameworks: Next.js 14, React 18, Node.js, Express
+- Databases: PostgreSQL, MongoDB, Redis, Turso (LibSQL)
+- Cloud: AWS, Google Cloud, Azure, Vercel
+- DevOps: Docker, Kubernetes, GitHub Actions (CI/CD)
+- AI: OpenAI, Anthropic, open-source LLMs
+- Architecture: Microservices, event-driven, cloud-native, API-first
+
+### Pricing
+- MVP Development: from $5,000 (4-8 weeks, core features, 1 platform, basic cloud deployment, 3 months support)
+- Enterprise Software: from $15,000 (custom ERP/CRM/BPM, multi-platform, third-party integrations, advanced security, 6 months support, CI/CD pipeline)
+- Large-Scale Systems: custom pricing (microservices architecture, multi-region deployment, AI/ML integration, 24/7 monitoring & SLA, dedicated development team, 12 months support, source code ownership)
+
+### Why KuWeX Studios for Enterprise Software
+- 99.9% uptime guarantee with 24/7 monitoring
+- Sub-200ms API response times
+- Cloud-native architecture that scales from 100 to 1,000,000+ users
+- Bank-grade security (JWT, OAuth 2.0, RBAC, encryption at rest and in transit)
+- Agile methodology — working software in weeks, not months
+- We understand Zimbabwe's enterprise landscape: compliance, procurement, data protection
+- Source code ownership for large-scale projects
+
 ## Payment and Process
 
 ### Payment Options

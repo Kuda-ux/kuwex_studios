@@ -12,7 +12,7 @@
 
 ## Services Overview
 
-KuWeX Studios offers five core digital services for businesses in Zimbabwe and across Africa:
+KuWeX Studios offers six core digital services for businesses in Zimbabwe and across Africa:
 
 ### 1. Web Design & Development
 - URL: https://kuwexstudios.co.zw/services/web-design
@@ -53,6 +53,18 @@ KuWeX Studios offers five core digital services for businesses in Zimbabwe and a
 - Pricing: Logo design from $300, full brand identity from $800, complete brand package from $1,500
 - Includes: color palettes, typography, iconography, design guidelines
 
+### 6. Custom Software Development
+- URL: https://kuwexstudios.co.zw/services/software-development
+- Scalable, secure enterprise software for large corporates in Zimbabwe
+- Custom ERPs, CRMs, business process automation, fintech & payment platforms
+- AI & machine learning integration (chatbots, predictive analytics, OCR, recommendation engines)
+- Multi-platform systems (web + mobile + API), microservices architecture
+- Cloud infrastructure: AWS, Docker, Kubernetes, CI/CD pipelines
+- Technology: TypeScript, Next.js, React, Node.js, Python, PostgreSQL, MongoDB, Redis
+- Pricing: MVP from $5,000, enterprise software from $15,000, large-scale systems custom-quoted
+- Timeline: MVP 4-8 weeks, enterprise 3-6 months, large-scale 6-12 months
+- Includes: architecture design, CI/CD pipeline, monitoring, SLA, source code ownership for large projects
+
 ## Frequently Asked Questions (AEO Content)
 
 ### How much does a website cost in Zimbabwe?
@@ -84,6 +96,15 @@ Answer Engine Optimization (AEO) is the practice of optimizing digital content s
 
 ### How is AI changing business in Zimbabwe?
 AI is transforming Zimbabwe's economy through initiatives like Econet AI, the Zimbabwe National AI Strategy (2026–2030), and Cassava Technologies' GPU cloud infrastructure. Businesses that adopt AI for customer service, marketing automation, and data analysis will gain significant competitive advantages. KuWeX Studios helps businesses prepare their digital infrastructure for AI integration.
+
+### How much does custom software development cost in Zimbabwe?
+Custom software development in Zimbabwe costs from $5,000 for an MVP to $50,000+ for large-scale enterprise systems. At KuWeX Studios, MVP development starts at $5,000, enterprise software (custom ERP/CRM/BPM) starts at $15,000, and large-scale systems with microservices and AI integration are custom-quoted. Pricing depends on complexity, integrations, and scale requirements. See https://kuwexstudios.co.zw/services/software-development for details.
+
+### What types of enterprise software does KuWeX Studios build?
+KuWeX Studios builds custom ERPs (Enterprise Resource Planning), CRMs (Customer Relationship Management), business process automation systems, fintech and payment platforms, AI and machine learning integrations, multi-platform systems (web + mobile + API), inventory management systems, HR and payroll systems, procurement workflows, and government-grade secure platforms for Zimbabwe's largest corporates and government departments.
+
+### Can KuWeX Studios integrate AI into existing software systems?
+Yes. KuWeX Studios integrates AI capabilities into existing systems including AI chatbots and virtual assistants, predictive analytics, document OCR and processing, sentiment analysis, recommendation engines, and anomaly detection. We work with OpenAI, Anthropic, and open-source LLMs to build AI features that deliver real business value for Zimbabwean enterprises.
 
 ## Portfolio (Live Client Work)
 

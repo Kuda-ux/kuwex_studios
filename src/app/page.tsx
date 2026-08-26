@@ -61,6 +61,41 @@ const services = [
     )
   },
   {
+    title: "Custom Software Development",
+    desc: "Scalable, secure enterprise software systems built for large corporates. ERPs, CRMs, fintech platforms, and AI-powered solutions.",
+    href: "/services/software-development",
+    visual: (
+      <div className="relative h-52 bg-gradient-to-br from-[#0a1628] via-[#16181C] to-[#0a0a0a] rounded-xl p-5 overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_40%,rgba(0,229,255,0.08),transparent_60%)]" />
+        <div className="text-xs text-gray-500 mb-2 relative z-10">System Architecture</div>
+        <div className="space-y-1.5 relative z-10">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 bg-kuwex-cyan rounded-full animate-pulse" />
+            <div className="flex-1 h-1.5 bg-[#16181C] rounded-full overflow-hidden">
+              <div className="h-full w-[85%] bg-gradient-to-r from-kuwex-cyan to-kuwex-blue rounded-full" />
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 bg-kuwex-blue rounded-full" />
+            <div className="flex-1 h-1.5 bg-[#16181C] rounded-full overflow-hidden">
+              <div className="h-full w-[92%] bg-gradient-to-r from-kuwex-blue to-kuwex-cyan rounded-full" />
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 bg-gray-600 rounded-full" />
+            <div className="flex-1 h-1.5 bg-[#16181C] rounded-full overflow-hidden">
+              <div className="h-full w-[70%] bg-gradient-to-r from-gray-600 to-kuwex-cyan rounded-full" />
+            </div>
+          </div>
+        </div>
+        <div className="mt-3 flex items-center justify-between relative z-10">
+          <span className="text-xs text-gray-600">Uptime</span>
+          <span className="text-kuwex-cyan text-sm font-bold">99.9%</span>
+        </div>
+      </div>
+    )
+  },
+  {
     title: "Digital Marketing",
     desc: "We help businesses grow using data-driven, AI-powered marketing strategies built for conversions and visibility.",
     href: "/services/seo-services",
@@ -220,7 +255,8 @@ const serviceSchema = {
       { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "SEO Services Zimbabwe", "url": "https://kuwexstudios.co.zw/services/seo-services" } },
       { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Social Media Marketing Zimbabwe", "url": "https://kuwexstudios.co.zw/services/social-media-marketing" } },
       { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Google Ads Management Zimbabwe", "url": "https://kuwexstudios.co.zw/services/google-ads" } },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Branding & Design Zimbabwe", "url": "https://kuwexstudios.co.zw/services/branding" } }
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Branding & Design Zimbabwe", "url": "https://kuwexstudios.co.zw/services/branding" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Custom Software Development Zimbabwe", "url": "https://kuwexstudios.co.zw/services/software-development" } }
     ]
   }
 };
@@ -455,6 +491,7 @@ export default function Home() {
             <Link href="/services/social-media-marketing" className="px-4 py-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300">Social Media Marketing</Link>
             <Link href="/services/google-ads" className="px-4 py-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300">Google Ads Zimbabwe</Link>
             <Link href="/services/branding" className="px-4 py-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300">Branding & Design</Link>
+            <Link href="/services/software-development" className="px-4 py-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300">Software Development Zimbabwe</Link>
           </div>
         </div>
       </section>
