@@ -123,6 +123,33 @@ const services = [
         </svg>
       </div>
     )
+  },
+  {
+    title: "Applied AI & Business Automation",
+    desc: "Transform operations with AI chatbots, workflow automation, predictive analytics, and automated customer engagement. Built for Zimbabwe's AI economy.",
+    href: "/services/applied-ai",
+    visual: (
+      <div className="relative h-52 bg-gradient-to-br from-[#0a1628] via-[#16181C] to-[#0a0a0a] rounded-xl p-5 overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,229,255,0.1),transparent_60%)]" />
+        <div className="text-xs text-gray-500 mb-2 relative z-10">AI Engine</div>
+        <div className="relative z-10 flex flex-col items-center justify-center h-32">
+          <div className="w-16 h-16 rounded-full border-2 border-kuwex-cyan/30 flex items-center justify-center mb-2">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-kuwex-cyan/20 to-kuwex-blue/20 border border-kuwex-cyan/40 flex items-center justify-center">
+              <div className="w-2 h-2 bg-kuwex-cyan rounded-full animate-pulse" />
+            </div>
+          </div>
+          <div className="flex gap-1">
+            <div className="w-1.5 h-1.5 bg-kuwex-cyan rounded-full animate-pulse" />
+            <div className="w-1.5 h-1.5 bg-kuwex-blue rounded-full animate-pulse" style={{ animationDelay: '0.2s' }} />
+            <div className="w-1.5 h-1.5 bg-kuwex-cyan rounded-full animate-pulse" style={{ animationDelay: '0.4s' }} />
+          </div>
+        </div>
+        <div className="absolute bottom-3 left-5 right-5 flex items-center justify-between relative z-10">
+          <span className="text-xs text-gray-600">Automation</span>
+          <span className="text-kuwex-cyan text-sm font-bold">24/7</span>
+        </div>
+      </div>
+    )
   }
 ];
 
@@ -256,7 +283,8 @@ const serviceSchema = {
       { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Social Media Marketing Zimbabwe", "url": "https://kuwexstudios.co.zw/services/social-media-marketing" } },
       { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Google Ads Management Zimbabwe", "url": "https://kuwexstudios.co.zw/services/google-ads" } },
       { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Branding & Design Zimbabwe", "url": "https://kuwexstudios.co.zw/services/branding" } },
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Custom Software Development Zimbabwe", "url": "https://kuwexstudios.co.zw/services/software-development" } }
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Custom Software Development Zimbabwe", "url": "https://kuwexstudios.co.zw/services/software-development" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Applied AI & Business Automation Zimbabwe", "url": "https://kuwexstudios.co.zw/services/applied-ai" } }
     ]
   }
 };
@@ -492,6 +520,7 @@ export default function Home() {
             <Link href="/services/google-ads" className="px-4 py-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300">Google Ads Zimbabwe</Link>
             <Link href="/services/branding" className="px-4 py-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300">Branding & Design</Link>
             <Link href="/services/software-development" className="px-4 py-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300">Software Development Zimbabwe</Link>
+            <Link href="/services/applied-ai" className="px-4 py-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300">AI & Business Automation Zimbabwe</Link>
           </div>
         </div>
       </section>

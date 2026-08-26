@@ -233,6 +233,41 @@ URL: https://kuwexstudios.co.zw/services/software-development
 - We understand Zimbabwe's enterprise landscape: compliance, procurement, data protection
 - Source code ownership for large-scale projects
 
+## Service 7: Applied AI & Business Automation
+
+URL: https://kuwexstudios.co.zw/services/applied-ai
+
+### What We Deploy
+- AI customer support agents — 24/7 chatbots on WhatsApp, website, Facebook Messenger (English, Shona, Ndebele)
+- Business workflow automation — document approvals, data entry, report generation, invoice processing, inventory alerts
+- AI marketing automation — personalized email campaigns, WhatsApp broadcasts, SMS sequences triggered by customer behavior
+- Document intelligence & OCR — extract data from invoices, receipts, contracts, ID documents, forms
+- AI analytics & business intelligence — sales forecasting, customer churn prediction, demand planning, market trend analysis
+- AI voice & call automation — AI receptionist, appointment reminders, payment follow-up calls, customer surveys, call transcription
+
+### AI Technology Stack
+- Language Models: OpenAI GPT-4, Claude (Anthropic), Google Gemini, Llama 3 (Meta)
+- AI Frameworks: LangChain, Hugging Face
+- Vector Databases: Pinecone
+- Messaging: WhatsApp Business API, Twilio (Voice & SMS)
+- Speech: OpenAI Whisper (speech-to-text)
+- Document Processing: Tesseract OCR
+- Workflow Automation: n8n, Zapier
+
+### Pricing
+- AI Pilot Project: from $3,000 (2-4 weeks, 1 AI use case, WhatsApp or web deployment, basic integration, staff training, 2 months support)
+- AI Transformation: from $10,000 (3-6 AI use cases, multi-platform deployment, CRM/ERP integration, custom AI model training, workflow automation, 6 months support, staff training & change management)
+- Enterprise AI Systems: custom pricing (unlimited AI use cases, custom LLM fine-tuning, full system integration, predictive analytics suite, dedicated AI team, 12 months support, SLA & 24/7 monitoring)
+
+### Why KuWeX Studios for AI
+- Pilot-first approach — see working AI within weeks, measure ROI, then scale
+- 80% reduction in manual work through intelligent automation
+- 65% cost reduction with 24/7 AI operations
+- 3x faster customer response times
+- Data privacy and compliance with Zimbabwe Data Protection Act
+- Multi-language AI support (English, Shona, Ndebele)
+- We understand Zimbabwe's AI landscape: Econet Gemini AI, National AI Strategy 2026-2030, Cassava GPU cloud
+
 ## Payment and Process
 
 ### Payment Options

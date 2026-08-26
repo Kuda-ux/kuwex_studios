@@ -454,6 +454,9 @@ export default function SoftwareDevelopmentPage() {
             <Link href="/services/social-media-marketing" className="px-4 py-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300">
               Social Media Marketing
             </Link>
+            <Link href="/services/applied-ai" className="px-4 py-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300">
+              AI & Business Automation
+            </Link>
           </div>
         </div>
       </section>

@@ -736,6 +736,9 @@ export default function Services() {
             <Link href="/services/software-development" className="px-4 py-3 bg-[#16181C] border border-[#2F3336]/60 rounded-xl text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300 text-center">
               Software Development Zimbabwe
             </Link>
+            <Link href="/services/applied-ai" className="px-4 py-3 bg-[#16181C] border border-[#2F3336]/60 rounded-xl text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300 text-center">
+              AI & Business Automation
+            </Link>
           </div>
           <div className="flex flex-wrap gap-3 mt-4">
             <Link href="/locations/harare" className="px-4 py-2 bg-[#16181C] border border-[#2F3336]/60 rounded-full text-sm text-gray-400 hover:text-kuwex-cyan hover:border-kuwex-cyan/30 transition-all duration-300">
