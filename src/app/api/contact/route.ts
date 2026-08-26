@@ -11,10 +11,10 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { firstName, lastName, email, company, service, message } = body;
 
-    // Basic validation
-    if (!firstName || !lastName || !email || !message) {
+    // Basic validation — lastName is optional (some forms only collect a single name)
+    if (!firstName || !email || !message) {
       return NextResponse.json(
-        { error: 'First name, last name, email, and message are required.' },
+        { error: 'Name, email, and message are required.' },
         { status: 400 }
       );
     }
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const fullName = `${firstName} ${lastName}`;
+    const fullName = lastName ? `${firstName} ${lastName}` : firstName;
     const timestamp = nowIso();
 
     // Save to Turso leads table
