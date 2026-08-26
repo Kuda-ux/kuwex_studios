@@ -47,6 +47,32 @@ const jsonLd = [
       { "@type": "ListItem", "position": 3, "name": "Branding & Design", "item": `${BASE}/services/branding` },
     ],
   },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How much does logo design cost in Zimbabwe?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Logo design in Zimbabwe costs from $300 for a basic logo to $1,500+ for a complete brand identity package. At KuWeX Studios, logo design starts at $300, a full brand identity package (logo + colors + typography) starts at $800, and a complete brand package (strategy + identity + guidelines + collateral) starts at $1,500." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is included in a brand identity package?",
+        "acceptedAnswer": { "@type": "Answer", "text": "KuWeX Studios brand identity packages include: primary and secondary logo designs, color palette selection, typography recommendations, iconography, brand guidelines document, and social media visual templates. The complete brand package also includes brand strategy, positioning, messaging guidelines, and marketing collateral (business cards, letterheads)." }
+      },
+      {
+        "@type": "Question",
+        "name": "How long does branding take?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Logo design takes 1-2 weeks. A full brand identity package takes 2-3 weeks. A complete brand package with strategy and guidelines takes 3-5 weeks. KuWeX Studios involves clients at every stage with review and revision rounds to ensure the final brand perfectly represents your business." }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you offer brand strategy consulting in Zimbabwe?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. KuWeX Studios offers brand strategy consulting including brand positioning, target audience definition, brand voice and messaging, competitive analysis, and brand architecture. This is included in our complete brand package or available as standalone consulting from $500." }
+      },
+    ],
+  },
 ];
 
 export default function BrandingLayout({ children }: { children: React.ReactNode }) {

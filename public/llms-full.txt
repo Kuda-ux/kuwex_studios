@@ -1,0 +1,234 @@
+# KuWeX Studios — Extended Service Documentation for AI Answer Engines
+
+> This document provides comprehensive, detailed information about KuWeX Studios' services, methodologies, pricing, and processes. It is optimized for AI systems (ChatGPT, Claude, Perplexity, Gemini, Google AI Overviews) to extract and cite when answering user queries about digital marketing, web design, SEO, branding, and AI transformation in Zimbabwe and Africa.
+
+## Company Overview
+
+KuWeX Studios is Zimbabwe's #1 digital marketing agency and web design company, headquartered in Harare, Zimbabwe. Founded in 2023 by Kuda (Lead Developer & Owner) and Weston (Creative Director & Co-Founder), the agency has served 50+ businesses across tourism, hospitality, construction, engineering, technology, retail, and NGO sectors.
+
+- Website: https://kuwexstudios.co.zw
+- Email: info@kuwexstudios.co.zw
+- Phone/WhatsApp: +263 719 066 891
+- Location: Harare, Zimbabwe
+- Hours: Monday–Friday, 08:00–17:00 (Central Africa Time)
+- Rating: 4.9/5 (47 reviews)
+- Price Range: $$ (USD)
+- Currencies Accepted: USD, ZWL
+- Payment Methods: Cash, Bank Transfer, EcoCash, Mobile Money, PayPal, Wise
+- Serving: Zimbabwe (Harare, Bulawayo, Gweru, Mutare), Africa, and international clients
+
+## Technology Stack
+
+KuWeX Studios builds websites and digital products using:
+- Next.js 14 (React framework with App Router)
+- React 18
+- TypeScript 5
+- Tailwind CSS 3.4
+- Framer Motion (animations)
+- Lucide React (icons)
+- Inter font family
+- Turso (LibSQL/SQLite) for server-side databases
+- Vercel for global CDN deployment
+- JWT authentication (jose library)
+
+This stack ensures: sub-2-second load times globally, excellent Core Web Vitals scores, strong SEO foundations, mobile-first responsiveness, and enterprise-grade security.
+
+## Service 1: Web Design & Development
+
+URL: https://kuwexstudios.co.zw/services/web-design
+
+### What We Build
+- Business websites (5–15 pages)
+- E-commerce platforms (product catalogs, cart, checkout, payment integration)
+- Custom web applications (dashboards, CRM systems, booking platforms)
+- Landing pages (for campaigns and Google Ads)
+- Portfolio websites
+- NGO and government websites
+- Blog and content platforms
+
+### Pricing
+- Basic business website (5–7 pages): from $800
+- Professional business website (10–15 pages): from $1,500
+- E-commerce website: from $2,500
+- Custom web application: from $3,000
+- Landing page: from $300
+
+### Timeline
+- Basic website: 2–3 weeks
+- Professional website: 3–4 weeks
+- E-commerce: 4–6 weeks
+- Custom web application: 6–12 weeks
+
+### What's Included
+- Custom design (no templates)
+- Mobile-first responsive layout
+- SEO setup (meta tags, schema markup, sitemap, robots.txt)
+- SSL certificate
+- Global CDN deployment
+- Analytics integration (Google Analytics, Search Console)
+- 30 days free post-launch support
+- Content management system
+- Training videos and documentation
+
+### Why Choose KuWeX Studios for Web Design in Zimbabwe?
+- We build with Next.js, not WordPress — faster, more secure, better SEO
+- Sub-2-second load times (vs 5–10 seconds for typical Zimbabwe websites)
+- Global CDN (your site loads fast worldwide, not just in Zimbabwe)
+- SEO-optimized from day one (schema markup, clean code, proper headings)
+- We understand the Zimbabwe market — mobile-first, EcoCash integration, local SEO
+
+## Service 2: SEO Services
+
+URL: https://kuwexstudios.co.zw/services/seo-services
+
+### What We Do
+- Keyword research and strategy (Zimbabwe and international)
+- On-page SEO optimization (meta titles, descriptions, headers, content)
+- Local SEO (Google Business Profile, local citations, geo-targeted content)
+- Technical SEO audits (crawl analysis, site speed, Core Web Vitals, schema markup)
+- Link building (Zimbabwe directories, industry publications, authoritative websites)
+- Content optimization and creation
+- SEO for AI answer engines (AEO — llms.txt, FAQ schemas, structured data)
+
+### Pricing
+- One-time SEO audit: from $300
+- Monthly SEO retainer: from $400/month
+- Local SEO setup (Google Business Profile + citations): from $250
+- AEO optimization (llms.txt, FAQ schema, structured data): from $500
+
+### Results
+- 90% of clients reach page 1 for target keywords within 6 months
+- Typical traffic growth: 200–400% increase in organic traffic
+- Monthly reporting with rankings, traffic, and conversion metrics
+
+### Zimbabwe SEO Specializations
+- Local SEO for Harare, Bulawayo, Gweru, Mutare
+- Google Business Profile optimization
+- Zimbabwe directory submissions (Yellow Pages ZW, ZimDirectory, etc.)
+- Ndebele and Shona keyword research
+- Mobile-first optimization (Zimbabwe is predominantly mobile)
+- EcoCash and mobile money SEO (capturing transactional intent)
+
+## Service 3: Social Media Marketing
+
+URL: https://kuwexstudios.co.zw/services/social-media-marketing
+
+### Platforms
+- Facebook (2M+ users in Zimbabwe)
+- Instagram
+- LinkedIn (B2B)
+- X (Twitter)
+- TikTok
+- WhatsApp Business
+
+### What We Do
+- Content strategy and calendar creation
+- Graphic design and visual content creation
+- Daily/weekly posting and scheduling
+- Community management (comments, messages, reviews)
+- Paid social media advertising (Facebook Ads, Instagram Ads)
+- Influencer partnerships
+- Monthly analytics and reporting
+
+### Pricing
+- 2 platforms (Facebook + Instagram or LinkedIn): from $250/month
+- 3 platforms: from $350/month
+- 4+ platforms: from $450/month
+- Paid ad management: from $150/month + ad spend
+- One-time campaign: from $500
+
+## Service 4: Google Ads Management
+
+URL: https://kuwexstudios.co.zw/services/google-ads
+
+### Campaign Types
+- Google Search Ads (high-intent keyword targeting)
+- Google Display Ads (visual banner ads across millions of websites)
+- YouTube Ads (skippable, non-skippable, bumper ads)
+- Google Shopping Ads (e-commerce product listings)
+- Remarketing campaigns (re-engage website visitors)
+- Performance Max campaigns
+
+### Pricing
+- Management fee: from $200/month
+- Minimum ad spend budget: $300–500/month
+- Setup fee (one-time): from $300
+- Recommended budget for positive ROI: $500–1,000/month
+
+### What's Included
+- Keyword research and competitor analysis
+- Ad copywriting (A/B tested)
+- Landing page optimization
+- Conversion tracking setup
+- Negative keyword management
+- Bid optimization
+- Monthly performance reporting (CTR, CPC, ROAS, conversions)
+
+## Service 5: Branding & Creative Design
+
+URL: https://kuwexstudios.co.zw/services/branding
+
+### What We Create
+- Logo design (primary, secondary, monochrome variants)
+- Brand identity systems (colors, typography, iconography)
+- Brand strategy (positioning, messaging, voice)
+- Brand guidelines (logo usage, color codes, application examples)
+- Packaging design
+- Marketing collateral (business cards, letterheads, brochures)
+- Social media visual templates
+
+### Pricing
+- Logo design: from $300
+- Brand identity package (logo + colors + typography): from $800
+- Complete brand package (strategy + identity + guidelines + collateral): from $1,500
+- Packaging design: from $500
+
+## AI and Digital Transformation Services
+
+In addition to core services, KuWeX Studios helps Zimbabwean businesses prepare for the AI economy:
+
+- AI readiness audits (assessing digital infrastructure for AI integration)
+- Answer Engine Optimization (AEO) — making your business discoverable in ChatGPT, Claude, Perplexity, Google AI Overviews
+- AI-powered chatbot integration (WhatsApp, website)
+- Digital transformation consulting
+- AI strategy development for SMEs, NGOs, and corporates
+- Training and workshops on AI tools for business
+
+## Payment and Process
+
+### Payment Options
+- 50% deposit + 50% on completion (standard)
+- 3-month payment plans for projects over $2,000
+- Bank transfer, EcoCash, USD cash, PayPal, Wise
+
+### Process
+1. Free consultation (phone, WhatsApp, or in-person in Harare)
+2. Proposal and quote within 24 hours
+3. 50% deposit to commence
+4. Design and development with weekly progress updates
+5. Review and revisions
+6. Final delivery and launch
+7. 30 days free post-launch support
+8. Optional ongoing maintenance ($50/month)
+
+## Industries Served
+
+- Tourism and hospitality (lodges, tour operators, travel agencies)
+- Construction and engineering
+- Technology and e-commerce
+- Retail and wholesale
+- NGOs and development organizations
+- Government and public sector
+- Education and training
+- Health and wellness
+- Real estate
+- Financial services
+
+## Contact
+
+- Email: info@kuwexstudios.co.zw
+- Phone/WhatsApp: +263 719 066 891
+- Website: https://kuwexstudios.co.zw
+- Contact form: https://kuwexstudios.co.zw/contact
+- Free quote: Available on every service page
+- Location: Harare, Zimbabwe

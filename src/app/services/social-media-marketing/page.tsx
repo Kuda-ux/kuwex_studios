@@ -3,6 +3,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ServiceQuoteForm from "@/components/ServiceQuoteForm";
+import ServiceFAQ from "@/components/ServiceFAQ";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Facebook, Instagram, Linkedin, Twitter, TrendingUp, Users, BarChart3, Megaphone, ArrowRight, CheckCircle2, MessageCircle, Heart, Share2, Eye, PenTool, Target } from "lucide-react";
@@ -188,6 +189,17 @@ export default function SocialMediaMarketingPage() {
           </div>
         </div>
       </section>
+
+      {/* FAQ Section — AEO optimized visible content for AI answer engines */}
+      <ServiceFAQ
+        serviceName="Social Media Marketing"
+        faqs={[
+          { q: "How much does social media marketing cost in Zimbabwe?", a: "Social media marketing in Zimbabwe costs from $250/month for 2 platforms (Facebook + Instagram or LinkedIn) to $450+/month for 4+ platforms. KuWeX Studios packages include content calendar creation, daily posting, graphic design, community management, and monthly analytics. Paid advertising management starts at $150/month plus ad spend." },
+          { q: "Which social media platforms work best for Zimbabwe businesses?", a: "Facebook is the most popular platform in Zimbabwe with 2M+ users, making it essential for most businesses. Instagram is ideal for visual brands (fashion, food, hospitality). LinkedIn works well for B2B and professional services. WhatsApp Business is critical for direct customer communication in Zimbabwe. TikTok is growing rapidly among younger demographics. KuWeX Studios recommends the best platforms based on your target audience and industry." },
+          { q: "Do you manage paid social media advertising in Zimbabwe?", a: "Yes. KuWeX Studios manages Facebook Ads, Instagram Ads, and LinkedIn Ads for Zimbabwe businesses. We handle targeting, ad creative, A/B testing, budget optimization, and conversion tracking. Paid ad management starts at $150/month plus ad spend. Most clients see positive ROI with $200-500/month in ad spend." },
+          { q: "How often will you post on my social media accounts?", a: "KuWeX Studios posts daily on each platform (5-7 posts per week per platform). We create a monthly content calendar for approval before posting. Content includes graphics, images, videos, polls, and industry news tailored to your brand voice and audience." },
+        ]}
+      />
 
       {/* Free Quote Form */}
       <section className="py-20 px-4 bg-black border-t border-[#2F3336]/40">

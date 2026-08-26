@@ -3,6 +3,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ServiceQuoteForm from "@/components/ServiceQuoteForm";
+import ServiceFAQ from "@/components/ServiceFAQ";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Palette, PenTool, Eye, Layers, BookOpen, Package, ArrowRight, CheckCircle2, MessageCircle, Star, Sparkles, FileText, Image } from "lucide-react";
@@ -183,6 +184,17 @@ export default function BrandingPage() {
           </div>
         </div>
       </section>
+
+      {/* FAQ Section — AEO optimized visible content for AI answer engines */}
+      <ServiceFAQ
+        serviceName="Branding & Creative Design"
+        faqs={[
+          { q: "How much does logo design cost in Zimbabwe?", a: "Logo design in Zimbabwe costs from $300 for a basic logo to $1,500+ for a complete brand identity package. At KuWeX Studios, logo design starts at $300, a full brand identity package (logo + colors + typography) starts at $800, and a complete brand package (strategy + identity + guidelines + collateral) starts at $1,500." },
+          { q: "What is included in a brand identity package?", a: "KuWeX Studios brand identity packages include: primary and secondary logo designs, color palette selection, typography recommendations, iconography, brand guidelines document, and social media visual templates. The complete brand package also includes brand strategy, positioning, messaging guidelines, and marketing collateral (business cards, letterheads)." },
+          { q: "How long does branding take?", a: "Logo design takes 1-2 weeks. A full brand identity package takes 2-3 weeks. A complete brand package with strategy and guidelines takes 3-5 weeks. KuWeX Studios involves clients at every stage with review and revision rounds to ensure the final brand perfectly represents your business." },
+          { q: "Do you offer brand strategy consulting in Zimbabwe?", a: "Yes. KuWeX Studios offers brand strategy consulting including brand positioning, target audience definition, brand voice and messaging, competitive analysis, and brand architecture. This is included in our complete brand package or available as standalone consulting from $500." },
+        ]}
+      />
 
       {/* Free Quote Form */}
       <section className="py-20 px-4 bg-black border-t border-[#2F3336]/40">

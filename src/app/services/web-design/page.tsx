@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ServiceQuoteForm from "@/components/ServiceQuoteForm";
+import ServiceFAQ from "@/components/ServiceFAQ";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import {
@@ -312,6 +313,19 @@ export default function WebDesignPage() {
           </motion.div>
         </div>
       </section>
+
+      {/* FAQ Section — AEO optimized visible content for AI answer engines */}
+      <ServiceFAQ
+        serviceName="Web Design & Development"
+        faqs={[
+          { q: "How much does a website cost in Zimbabwe?", a: "Website costs in Zimbabwe range from $800 for a basic business website to $5,000+ for complex e-commerce or custom web applications. At KuWeX Studios, basic websites start at $800, professional business sites at $1,500, e-commerce from $2,500, and custom web applications from $3,000. All packages include mobile optimization, SEO setup, SSL, CDN, and 30 days support." },
+          { q: "How long does it take to build a website in Zimbabwe?", a: "Basic websites (5-7 pages) take 2-3 weeks. Professional business sites (10-15 pages) take 3-4 weeks. E-commerce sites take 4-6 weeks. Custom web applications take 6-12 weeks. KuWeX Studios provides detailed timelines during consultation." },
+          { q: "What technology does KuWeX Studios use to build websites?", a: "We use Next.js 14 (React framework), TypeScript, Tailwind CSS, and deploy on global CDN networks (Vercel). This ensures your website is fast, secure, mobile-optimized, and ranks well on Google. Unlike WordPress sites, our sites load in under 2 seconds globally." },
+          { q: "Do you offer website maintenance and support in Zimbabwe?", a: "Yes. All websites include 30 days of free post-launch support. After that, we offer monthly maintenance packages starting at $50/month including content updates, security monitoring, backups, performance optimization, and technical support." },
+          { q: "Can you redesign my existing website?", a: "Absolutely. We specialize in website redesigns and migrations. We audit your current site, preserve SEO rankings, improve design and user experience, migrate content, set up proper redirects, and ensure zero downtime. Redesigns start at $1,200." },
+          { q: "Do you build e-commerce websites in Zimbabwe?", a: "Yes. We build e-commerce websites with product catalogs, shopping carts, checkout systems, and payment integration including EcoCash, Paynow, and international gateways. E-commerce sites start at $2,500 and take 4-6 weeks to build." },
+        ]}
+      />
 
       {/* Free Quote Form */}
       <section className="py-20 px-4 bg-black border-t border-[#2F3336]/40">

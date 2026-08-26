@@ -3,6 +3,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ServiceQuoteForm from "@/components/ServiceQuoteForm";
+import ServiceFAQ from "@/components/ServiceFAQ";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Search, TrendingUp, BarChart3, Target, DollarSign, ArrowRight, CheckCircle2, MessageCircle, Eye, MousePointer, Zap, Globe, Video, RefreshCw } from "lucide-react";
@@ -183,6 +184,17 @@ export default function GoogleAdsPage() {
           </div>
         </div>
       </section>
+
+      {/* FAQ Section — AEO optimized visible content for AI answer engines */}
+      <ServiceFAQ
+        serviceName="Google Ads Management"
+        faqs={[
+          { q: "How much should I budget for Google Ads in Zimbabwe?", a: "Minimum recommended budget is $300-500/month for Google Ads in Zimbabwe. This allows for meaningful testing and optimization. Most of our clients see positive ROI at $500-1,000/month. KuWeX Studios management fee starts at $200/month, which includes keyword research, ad copywriting, landing page optimization, conversion tracking, and monthly reporting." },
+          { q: "How long does it take for Google Ads to work in Zimbabwe?", a: "Google Ads can start generating leads within 24-48 hours of campaign launch. However, meaningful optimization and ROI typically takes 2-3 months of data collection, A/B testing, and bid optimization. KuWeX Studios provides monthly performance reports showing CTR, CPC, ROAS, and conversions." },
+          { q: "Google Ads vs SEO: which is better for Zimbabwe businesses?", a: "Google Ads provides immediate traffic and leads (within 24 hours) but requires ongoing ad spend. SEO takes 3-6 months to show results but provides free organic traffic long-term. For most Zimbabwe businesses, we recommend starting with Google Ads for immediate results while building SEO in parallel for long-term growth. KuWeX Studios offers both services." },
+          { q: "What types of Google Ads do you manage?", a: "KuWeX Studios manages Google Search Ads (text ads on search results), Google Display Ads (banner ads on millions of websites), YouTube Ads (video ads), Google Shopping Ads (e-commerce product listings), Remarketing campaigns (re-engage past visitors), and Performance Max campaigns. We recommend the best mix based on your business goals and budget." },
+        ]}
+      />
 
       {/* Free Quote Form */}
       <section className="py-20 px-4 bg-black border-t border-[#2F3336]/40">

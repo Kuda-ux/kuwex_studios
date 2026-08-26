@@ -124,6 +124,48 @@ Allow: /
 User-agent: Bytespider
 Allow: /
 
+User-agent: Amazonbot
+Allow: /
+
+User-agent: Amazonbot-Extended
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Claude-Sonnet
+Allow: /
+
+User-agent: AI2Bot
+Allow: /
+
+User-agent: AI2Bot-Dolma
+Allow: /
+
+User-agent: Diffbot
+Allow: /
+
+User-agent: ImagesiftBot
+Allow: /
+
+User-agent: Omgilibot
+Allow: /
+
+User-agent: Omgili
+Allow: /
+
+User-agent: webzio-ai
+Allow: /
+
+User-agent: webzio
+Allow: /
+
+User-agent: SmartReader
+Allow: /
+
+User-agent: Timpibot
+Allow: /
+
 # Block known spam/scraper bots
 User-agent: AhrefsBot
 Disallow: /
@@ -170,3 +212,4 @@ Sitemap: https://kuwexstudios.co.zw/news-sitemap.xml
 # RSS Feed & AI Discovery
 # https://kuwexstudios.co.zw/rss.xml
 # https://kuwexstudios.co.zw/llms.txt
+# https://kuwexstudios.co.zw/llms-full.txt

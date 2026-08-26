@@ -46,6 +46,32 @@ const jsonLd = [
       { "@type": "ListItem", "position": 3, "name": "Google Ads", "item": `${BASE}/services/google-ads` },
     ],
   },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How much should I budget for Google Ads in Zimbabwe?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Minimum recommended budget is $300-500/month for Google Ads in Zimbabwe. This allows for meaningful testing and optimization. Most of our clients see positive ROI at $500-1,000/month. KuWeX Studios management fee starts at $200/month, which includes keyword research, ad copywriting, landing page optimization, conversion tracking, and monthly reporting." }
+      },
+      {
+        "@type": "Question",
+        "name": "How long does it take for Google Ads to work in Zimbabwe?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Google Ads can start generating leads within 24-48 hours of campaign launch. However, meaningful optimization and ROI typically takes 2-3 months of data collection, A/B testing, and bid optimization. KuWeX Studios provides monthly performance reports showing CTR, CPC, ROAS, and conversions." }
+      },
+      {
+        "@type": "Question",
+        "name": "Google Ads vs SEO: which is better for Zimbabwe businesses?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Google Ads provides immediate traffic and leads (within 24 hours) but requires ongoing ad spend. SEO takes 3-6 months to show results but provides free organic traffic long-term. For most Zimbabwe businesses, we recommend starting with Google Ads for immediate results while building SEO in parallel for long-term growth. KuWeX Studios offers both services." }
+      },
+      {
+        "@type": "Question",
+        "name": "What types of Google Ads do you manage?",
+        "acceptedAnswer": { "@type": "Answer", "text": "KuWeX Studios manages Google Search Ads (text ads on search results), Google Display Ads (banner ads on millions of websites), YouTube Ads (video ads), Google Shopping Ads (e-commerce product listings), Remarketing campaigns (re-engage past visitors), and Performance Max campaigns. We recommend the best mix based on your business goals and budget." }
+      },
+    ],
+  },
 ];
 
 export default function GoogleAdsLayout({ children }: { children: React.ReactNode }) {
