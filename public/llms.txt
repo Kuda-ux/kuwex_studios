@@ -135,26 +135,36 @@ KuWeX Studios offers free interactive tools to help businesses assess their digi
 
 ### AI Readiness Quiz
 - URL: https://kuwexstudios.co.zw/ai-readiness-quiz
-- 10-question interactive quiz that scores a business's AI readiness across 10 categories
-- Categories: Digital Infrastructure, Data Management, Customer Communication, Marketing, Operations, AI Awareness, Automation, Analytics, Team Readiness, Budget & Strategy
-- Results levels: AI-Ready Leader (75%+), AI-Ready (50%+), AI Beginner (25%+), Needs Digital Foundation (<25%)
-- Includes: score breakdown by category, email capture for detailed report, shareable results, personalized recommendations
+- Free 10-question interactive quiz that scores a Zimbabwean business's AI readiness across 10 categories
+- Categories: Digital Presence, Customer Data, Customer Communication, Digital Marketing, Daily Operations, AI Awareness, Process Automation, Business Intelligence, Team Readiness, Investment Readiness
+- Questions use Zimbabwe-specific language (WhatsApp, Facebook, EcoCash, receipt books, POS systems)
+- Results levels: AI-Ready Leader (75%+), AI-Ready (50%+), AI Beginner (25%+), Build Digital Foundation First (<25%)
+- Each level includes personalized recommendations with specific Zimbabwe context and pricing
+- Includes: score breakdown by category, email capture for detailed PDF report, shareable WhatsApp results, trust signals (50+ businesses helped, 4.9★ rating)
+- "Why AI Matters for Zimbabwean SMEs" section with Zimbabwe AI economy stats (65% manual work reduction, 3x faster responses, $15K+ annual savings)
+- Visible FAQ section with 6 Zimbabwe-specific Q&As for AEO
 - Free, no signup required to see results
 
 ### AI ROI Calculator
 - URL: https://kuwexstudios.co.zw/roi-calculator
-- Interactive tool that calculates potential savings from AI automation
-- Inputs: number of employees, average salary, % of time on manual tasks, daily customer queries, average response time
-- Outputs: estimated annual savings, monthly savings breakdown, ROI percentage, hours saved, AI implementation cost estimate
-- Based on industry averages: 65% reduction in manual tasks, 90% reduction in query handling costs
-- Free, instant results, shareable
+- Free interactive tool that calculates potential savings from AI automation for Zimbabwean businesses
+- Sector presets: Retail & Shop, Tourism & Hospitality, Construction & Engineering, Professional Services, E-commerce & Tech, Manufacturing
+- Each preset loads Zimbabwe-appropriate salary benchmarks ($350-$800/month) and operational patterns
+- Inputs: number of employees (1-500), average monthly salary per employee in USD ($200-$5,000), % of time on manual tasks (10-90%), daily customer queries (5-500), average response time (1-48 hours)
+- Outputs: estimated annual savings, monthly savings breakdown (workflow automation + AI customer support), ROI percentage, hours saved, AI implementation cost estimate
+- Based on industry averages: 65% reduction in manual tasks, 90% reduction in query handling costs, validated against KuWeX Studios client data in Zimbabwe
+- Includes: trust signals, "How It Works" 3-step guide, visible FAQ section with 6 Zimbabwe-specific Q&As for AEO
+- Free, instant results, shareable on WhatsApp
 
 ### Client Testimonials & Case Studies
 - URL: https://kuwexstudios.co.zw/testimonials
-- Real client reviews with star ratings and specific business results
-- Case studies with challenge, solution, and quantified results
-- Industries covered: Tourism, Construction, E-commerce, Engineering, Solar/Energy, Retail
+- Real client reviews with 5-star ratings, quotes, and specific business results from Zimbabwean businesses
+- 3 detailed case studies with challenge, solution, and quantified metrics
+- Industries covered: Tourism, Construction & Engineering, E-commerce, Solar & Energy, Retail & Fashion, Pool Services
 - Key stats: 50+ projects delivered, 4.9-star rating, 98% client satisfaction, 150+ keywords on page 1
+- Case study results: 15x more inquiries, 400% organic traffic growth, 10,000+ monthly transactions, 300% mobile booking increase
+- Visible FAQ section with 5 Zimbabwe-specific Q&As for AEO
+- CTAs to contact, AI Readiness Quiz, and project inquiry
 
 ## Portfolio (Live Client Work)
 

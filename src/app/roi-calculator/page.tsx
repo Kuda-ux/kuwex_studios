@@ -5,10 +5,46 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import ServiceFAQ from "@/components/ServiceFAQ";
 import {
   Calculator, TrendingUp, DollarSign, Clock, Users, ArrowRight,
-  MessageCircle, Share2, Zap, CheckCircle2,
+  MessageCircle, Share2, Zap, CheckCircle2, Building2, Shield, Star, Briefcase,
 } from "lucide-react";
+
+type Sector = {
+  name: string;
+  icon: typeof Building2;
+  employees: number;
+  salary: number;
+  manualHours: number;
+  queries: number;
+  responseTime: number;
+};
+
+const sectors: Sector[] = [
+  { name: "Retail & Shop", icon: Building2, employees: 5, salary: 350, manualHours: 70, queries: 40, responseTime: 6 },
+  { name: "Tourism & Hospitality", icon: Building2, employees: 15, salary: 450, manualHours: 55, queries: 80, responseTime: 4 },
+  { name: "Construction & Engineering", icon: Building2, employees: 25, salary: 600, manualHours: 65, queries: 30, responseTime: 8 },
+  { name: "Professional Services", icon: Briefcase, employees: 8, salary: 800, manualHours: 50, queries: 25, responseTime: 3 },
+  { name: "E-commerce & Tech", icon: Building2, employees: 12, salary: 700, manualHours: 45, queries: 100, responseTime: 2 },
+  { name: "Manufacturing", icon: Building2, employees: 50, salary: 400, manualHours: 75, queries: 20, responseTime: 12 },
+];
+
+const roiFaqs = [
+  { q: "How much can a Zimbabwean business save with AI automation?", a: "Zimbabwean businesses can save 50-80% on manual operational costs with AI automation. Based on KuWeX Studios' client data, a 10-employee company spending 60% of time on manual tasks can save $15,000-$25,000 annually. A 50-employee company can save $75,000+. Use the free ROI Calculator at https://kuwexstudios.co.zw/roi-calculator to get a customized estimate for your business." },
+  { q: "Is the AI ROI calculator free for Zimbabwean businesses?", a: "Yes, the KuWeX Studios AI ROI Calculator is 100% free for all Zimbabwean businesses. Adjust the sliders to match your business — number of employees, average salary, percentage of manual tasks, daily customer queries, and response time — and get instant ROI projections. No signup, no email required, instant results." },
+  { q: "How accurate is the AI ROI calculator for Zimbabwe?", a: "The calculator uses industry-standard AI automation savings rates: 65% reduction in manual task time and 90% reduction in customer query handling costs. These figures are based on global AI automation studies and validated against KuWeX Studios' real client results in Zimbabwe. Actual savings vary by industry and implementation scope. Book a free consultation for a detailed ROI analysis tailored to your business." },
+  { q: "What is the ROI of AI automation for SMEs in Zimbabwe?", a: "Zimbabwean SMEs typically see 200-500% ROI in the first year of AI automation. A $3,000 AI pilot project (e.g., a WhatsApp chatbot) can save $15,000+ annually in labor costs. A $10,000 AI transformation package can save $50,000+. Use the free ROI Calculator at https://kuwexstudios.co.zw/roi-calculator to calculate your specific ROI." },
+  { q: "How much does AI automation cost for a small business in Zimbabwe?", a: "AI automation for Zimbabwean small businesses starts at $3,000 for a pilot project (e.g., WhatsApp AI chatbot or single workflow automation). Full AI transformation packages start at $10,000. Enterprise AI systems are custom-quoted. KuWeX Studios always starts with a pilot so you see ROI before scaling. See https://kuwexstudios.co.zw/services/applied-ai for full pricing." },
+  { q: "What business processes can be automated with AI in Zimbabwe?", a: "Zimbabwean businesses can automate: customer support (WhatsApp AI chatbots), data entry and document processing (OCR), invoicing and receipt generation, appointment scheduling and reminders, inventory alerts and reorder triggers, email and WhatsApp marketing sequences, report generation, payment follow-ups, and sales lead qualification. The ROI Calculator shows potential savings for each category." },
+];
+
+const trustStats = [
+  { icon: Building2, value: "50+", label: "Zimbabwean Businesses Helped" },
+  { icon: Star, value: "4.9★", label: "Client Satisfaction Rating" },
+  { icon: Shield, value: "100%", label: "Free & Confidential" },
+  { icon: TrendingUp, value: "65%", label: "Avg. Manual Work Reduction" },
+];
 
 export default function ROICalculator() {
   const [employees, setEmployees] = useState(10);
@@ -16,6 +52,7 @@ export default function ROICalculator() {
   const [manualHours, setManualHours] = useState(60);
   const [customerQueries, setCustomerQueries] = useState(50);
   const [responseTime, setResponseTime] = useState(4);
+  const [selectedSector, setSelectedSector] = useState<string | null>(null);
 
   const results = useMemo(() => {
     const totalMonthlyHours = employees * (manualHours / 100) * 160;
@@ -46,7 +83,16 @@ export default function ROICalculator() {
     };
   }, [employees, avgSalary, manualHours, customerQueries, responseTime]);
 
-  const shareText = `My business could save $${results.totalAnnualSavings.toLocaleString()}/year with AI automation! Calculate your savings: https://kuwexstudios.co.zw/roi-calculator`;
+  const shareText = `My Zimbabwean business could save $${results.totalAnnualSavings.toLocaleString()}/year with AI automation! Calculate your savings: https://kuwexstudios.co.zw/roi-calculator`;
+
+  const applySector = (sector: Sector) => {
+    setSelectedSector(sector.name);
+    setEmployees(sector.employees);
+    setAvgSalary(sector.salary);
+    setManualHours(sector.manualHours);
+    setCustomerQueries(sector.queries);
+    setResponseTime(sector.responseTime);
+  };
 
   return (
     <main className="min-h-screen bg-black text-white">
@@ -60,7 +106,7 @@ export default function ROICalculator() {
         <div className="container mx-auto max-w-4xl relative z-10 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="vibrant-badge mx-auto mb-8 w-fit">
             <Calculator size={16} className="text-kuwex-cyan" />
-            <span className="text-sm text-gray-400">Free AI ROI Calculator</span>
+            <span className="text-sm text-gray-400">Free AI ROI Calculator for Zimbabwe</span>
           </motion.div>
 
           <motion.h1
@@ -78,15 +124,51 @@ export default function ROICalculator() {
             transition={{ delay: 0.2 }}
             className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed"
           >
-            See how much your business could save with AI automation.
-            Adjust the sliders to match your business and get instant ROI projections.
+            See how much your Zimbabwean business could save with AI automation.
+            Pick your sector, adjust the sliders, and get instant ROI projections in USD.
           </motion.p>
+
+          {/* Trust Stats */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 max-w-3xl mx-auto"
+          >
+            {trustStats.map((stat, i) => (
+              <div key={i} className="text-center">
+                <stat.icon size={20} className="text-kuwex-cyan mx-auto mb-2" />
+                <p className="text-2xl font-black text-white">{stat.value}</p>
+                <p className="text-xs text-gray-500 mt-1">{stat.label}</p>
+              </div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
       {/* Calculator */}
       <section className="pb-24 px-4">
         <div className="container mx-auto max-w-5xl">
+          {/* Sector Presets */}
+          <div className="mb-8">
+            <p className="text-sm text-gray-400 mb-3 text-center">Quick start — pick your business sector:</p>
+            <div className="flex flex-wrap gap-2 justify-center">
+              {sectors.map((sector) => (
+                <button
+                  key={sector.name}
+                  onClick={() => applySector(sector)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium border transition-all duration-300 ${
+                    selectedSector === sector.name
+                      ? "bg-kuwex-cyan/10 border-kuwex-cyan/50 text-kuwex-cyan"
+                      : "bg-[#16181C] border-[#2F3336]/60 text-gray-400 hover:border-kuwex-cyan/30 hover:text-white"
+                  }`}
+                >
+                  {sector.name}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Inputs */}
             <motion.div
@@ -118,7 +200,7 @@ export default function ROICalculator() {
                 {/* Avg Salary */}
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <label className="text-sm text-gray-400">Average monthly salary (USD)</label>
+                    <label className="text-sm text-gray-400">Average monthly salary per employee (USD)</label>
                     <span className="text-kuwex-cyan font-bold text-lg">${avgSalary}</span>
                   </div>
                   <input
@@ -257,25 +339,85 @@ export default function ROICalculator() {
                 >
                   <Zap size={16} /> Get a Free AI Audit <ArrowRight size={16} />
                 </Link>
-                <a
-                  href={`https://wa.me/?text=${encodeURIComponent(shareText)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-6 py-3 border border-[#2F3336] rounded-xl text-white hover:border-kuwex-cyan/50 transition-all duration-300 flex items-center justify-center gap-2 text-sm font-medium"
-                >
-                  <Share2 size={16} /> Share Your Results
-                </a>
+                <div className="flex gap-3">
+                  <Link
+                    href="/ai-readiness-quiz"
+                    className="flex-1 px-6 py-3 border border-[#2F3336] rounded-xl text-white hover:border-kuwex-cyan/50 transition-all duration-300 flex items-center justify-center gap-2 text-sm font-medium"
+                  >
+                    <CheckCircle2 size={16} className="text-kuwex-cyan" /> Take AI Quiz
+                  </Link>
+                  <a
+                    href={`https://wa.me/?text=${encodeURIComponent(shareText)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 px-6 py-3 border border-[#2F3336] rounded-xl text-white hover:border-kuwex-cyan/50 transition-all duration-300 flex items-center justify-center gap-2 text-sm font-medium"
+                  >
+                    <Share2 size={16} /> Share on WhatsApp
+                  </a>
+                </div>
               </div>
             </motion.div>
           </div>
 
           {/* Disclaimer */}
           <p className="text-xs text-gray-600 text-center mt-8 max-w-2xl mx-auto">
-            These estimates are based on industry averages for AI automation savings (65% reduction in manual tasks, 90% reduction in query handling costs).
+            These estimates are based on industry averages for AI automation savings (65% reduction in manual tasks, 90% reduction in query handling costs) and validated against KuWeX Studios client data in Zimbabwe.
             Actual results vary by business. Book a free consultation for a detailed ROI analysis tailored to your business.
           </p>
         </div>
       </section>
+
+      {/* How It Works */}
+      <section className="py-20 px-4 bg-[#0A0A0A] border-t border-[#2F3336]/40">
+        <div className="container mx-auto max-w-4xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <div className="vibrant-badge mx-auto mb-6 w-fit">
+              <Calculator size={16} className="text-kuwex-cyan" />
+              <span className="text-sm text-gray-400">How It Works</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              From <span className="vibrant-gradient-text">Calculator</span> to Implementation
+            </h2>
+            <p className="text-gray-400 max-w-2xl mx-auto">
+              See your savings, then let KuWeX Studios make it happen. Here&apos;s how we turn your ROI projection into real business results.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { step: "1", title: "Calculate Your ROI", desc: "Use the free calculator above to see your potential savings. Pick your sector, adjust the sliders, and get instant projections." },
+              { step: "2", title: "Free Consultation", desc: "Book a 30-minute call with KuWeX Studios. We'll review your business, validate the numbers, and propose a pilot project with clear ROI milestones." },
+              { step: "3", title: "Deploy & Save", desc: "We implement your AI automation — WhatsApp chatbot, workflow automation, or full AI transformation. Most pilots launch in 2-4 weeks with measurable ROI." },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="x-card-vibrant rounded-2xl p-6"
+              >
+                <div className="w-10 h-10 rounded-full bg-kuwex-cyan/10 border border-kuwex-cyan/30 flex items-center justify-center mb-4">
+                  <span className="text-kuwex-cyan font-bold">{item.step}</span>
+                </div>
+                <h3 className="text-white font-bold mb-2">{item.title}</h3>
+                <p className="text-sm text-gray-400 leading-relaxed">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section — AEO optimized visible content for AI answer engines */}
+      <ServiceFAQ
+        serviceName="AI ROI Calculator"
+        faqs={roiFaqs}
+      />
 
       <Footer />
     </main>
