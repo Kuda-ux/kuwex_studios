@@ -3,9 +3,17 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
-import { ArrowRight, Instagram, Facebook, Youtube, Linkedin, Twitter, Globe, ShoppingBag, Smartphone, Calendar, Clock, User, Brain, Calculator, Star } from "lucide-react";
+import { ArrowRight, Instagram, Facebook, Youtube, Linkedin, Twitter, Globe, ShoppingBag, Smartphone, Calendar, Clock, User, Brain, Calculator, Star, Plane, Home as HomeIcon, Mountain, Wheat, HeartPulse, ShoppingCart, HardHat, GraduationCap, Landmark, Scale, Factory, HeartHandshake, Truck, UtensilsCrossed, TrendingUp } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { industries } from "@/lib/industries";
+
+const homeIconMap: Record<string, LucideIcon> = {
+  Plane, Home: HomeIcon, Mountain, Wheat, HeartPulse, ShoppingCart,
+  HardHat, GraduationCap, Landmark, Scale, Factory, HeartHandshake,
+  Truck, UtensilsCrossed,
+};
 
 // Platform icons for the 3D display - social media & web platforms
 const platformIcons = [
@@ -659,6 +667,66 @@ export default function Home() {
                 </div>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Industries Section */}
+      <section className="py-28 bg-black relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_30%,rgba(0,133,255,0.04),transparent_50%)]" />
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-16 text-center"
+          >
+            <div className="vibrant-badge mx-auto mb-6">
+              <span className="w-2 h-2 bg-kuwex-cyan rounded-full" />
+              <span className="text-sm text-gray-400">Industry-Specific Solutions</span>
+            </div>
+            <h2 className="section-heading mb-4">
+              Digital marketing for <span className="vibrant-gradient-text">every industry</span>
+            </h2>
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+              We build industry-specific websites, SEO strategies, and digital marketing campaigns tailored to the Zimbabwean market.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-10">
+            {industries.map((industry, i) => {
+              const Icon = homeIconMap[industry.icon] || TrendingUp;
+              return (
+                <motion.div
+                  key={industry.slug}
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: Math.min(i * 0.04, 0.3) }}
+                >
+                  <Link
+                    href={`/industries/${industry.slug}`}
+                    className="group flex flex-col items-center gap-3 p-5 rounded-2xl bg-[#16181C]/60 border border-[#2F3336]/40 hover:border-kuwex-cyan/30 hover:bg-[#16181C] transition-all duration-300"
+                  >
+                    <div className="w-12 h-12 rounded-xl bg-kuwex-cyan/5 border border-kuwex-cyan/10 flex items-center justify-center group-hover:bg-kuwex-cyan/10 group-hover:border-kuwex-cyan/20 transition-all">
+                      <Icon size={22} className="text-gray-500 group-hover:text-kuwex-cyan transition-colors" />
+                    </div>
+                    <span className="text-xs md:text-sm text-gray-400 group-hover:text-white text-center font-medium transition-colors">
+                      {industry.shortName}
+                    </span>
+                  </Link>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <div className="text-center">
+            <Link
+              href="/industries"
+              className="inline-flex items-center gap-2 border border-[#2F3336] text-white px-8 py-3.5 rounded-full font-bold hover:bg-white/5 hover:border-kuwex-cyan/30 transition-all duration-300"
+            >
+              View All Industries <ArrowRight size={18} />
+            </Link>
           </div>
         </div>
       </section>
