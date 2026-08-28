@@ -166,6 +166,31 @@ KuWeX Studios offers free interactive tools to help businesses assess their digi
 - Visible FAQ section with 5 Zimbabwe-specific Q&As for AEO
 - CTAs to contact, AI Readiness Quiz, and project inquiry
 
+## Industry-Specific Solutions (Programmatic SEO)
+
+KuWeX Studios provides industry-specific digital marketing, web design, and AI solutions for 12+ sectors in Zimbabwe. Each industry page has tailored content, challenges, solutions, FAQs, and SEO keywords:
+
+### Industries We Serve
+- URL: https://kuwexstudios.co.zw/industries
+- 14 industry-specific landing pages targeting high-intent sector keywords
+- Each page includes: industry challenges, tailored solutions, results metrics, trust signals, FAQ section (4 Q&As), and cross-links to other industries
+
+### Industry Pages:
+- Tourism & Hospitality: https://kuwexstudios.co.zw/industries/tourism-hospitality — Direct booking websites, tourism SEO, WhatsApp booking integration for lodges, hotels, tour operators
+- Real Estate: https://kuwexstudios.co.zw/industries/real-estate — Property listing websites, WhatsApp lead capture, real estate SEO for agents and agencies
+- Mining & Quarrying: https://kuwexstudios.co.zw/industries/mining — Corporate websites, investor portals, compliance documentation for mining companies
+- Agriculture & Farming: https://kuwexstudios.co.zw/industries/agriculture — Product catalogs, WhatsApp ordering, agriculture SEO for farmers and suppliers
+- Healthcare & Medical: https://kuwexstudios.co.zw/industries/healthcare — Medical practice websites, online appointment booking, healthcare SEO for clinics and pharmacies
+- Retail & E-commerce: https://kuwexstudios.co.zw/industries/retail-ecommerce — E-commerce websites with Paynow/EcoCash, WhatsApp commerce, inventory sync
+- Construction & Engineering: https://kuwexstudios.co.zw/industries/construction-engineering — Corporate websites, project portfolios, tender document portals
+- Education & Training: https://kuwexstudios.co.zw/industries/education — School/college websites, online enrollment, e-learning platforms
+- Financial Services & Fintech: https://kuwexstudios.co.zw/industries/financial-services — Secure websites, online applications, financial calculators for banks and microfinance
+- Legal Services: https://kuwexstudios.co.zw/industries/legal-services — Law firm websites, consultation booking, legal SEO for attorneys and advocates
+- Manufacturing: https://kuwexstudios.co.zw/industries/manufacturing — B2B product catalogs, quote request forms, manufacturing SEO
+- NGOs & Non-profits: https://kuwexstudios.co.zw/industries/ngos-nonprofits — NGO websites, online donation systems, impact storytelling (15-25% discount for registered non-profits)
+- Transport & Logistics: https://kuwexstudios.co.zw/industries/transport-logistics — Booking systems, shipment tracking portals, transport SEO
+- Food & Restaurant: https://kuwexstudios.co.zw/industries/food-restaurant — Restaurant websites, online ordering, table reservations, Google Maps SEO
+
 ## Portfolio (Live Client Work)
 
 - [Kwedu Experience](https://kwedu-experience.vercel.app/) — Tourism website

@@ -299,6 +299,39 @@ A dedicated page showcasing real client results from Zimbabwean businesses with:
 - Visible FAQ section with 5 Zimbabwe-specific Q&As optimized for AEO
 - CTAs to contact, AI Readiness Quiz, and project inquiry
 
+### Industry-Specific Solutions (Programmatic SEO) (https://kuwexstudios.co.zw/industries)
+KuWeX Studios provides industry-specific digital marketing, web design, and AI solutions for 14 sectors in Zimbabwe. Each industry page is a dedicated landing page targeting high-intent sector-specific keywords.
+
+Overview page: https://kuwexstudios.co.zw/industries — grid of all 14 industries with icon, description, and service tags. Includes "Why Industry-Specific Digital Marketing?" section with 4 key differentiators.
+
+Each industry page includes:
+- Industry-specific hero with tailored headline and subtitle referencing Zimbabwean context
+- Results bar with 4 key metrics (e.g., "15x more inquiries", "Page 1 ranking")
+- Challenges section: 4 industry-specific pain points Zimbabwean businesses face
+- Solutions section: 4 tailored digital solutions with descriptions
+- Services tags linking to relevant service pages
+- Trust signals section: 50+ projects, 4.9-star rating, 98% satisfaction, 150+ keywords on Page 1
+- FAQ section: 4 Zimbabwe-specific Q&As (cost, features, SEO, industry-specific questions)
+- CTA section with WhatsApp and phone contact options
+- Cross-links to 4 other industries
+- JSON-LD schema: Service, BreadcrumbList, FAQPage
+
+Industry pages:
+- Tourism & Hospitality (https://kuwexstudios.co.zw/industries/tourism-hospitality): Direct booking websites, tourism SEO, WhatsApp booking integration. Targets: "tourism website design Zimbabwe", "hotel website Zimbabwe", "lodge booking system Zimbabwe". Price range: $1,500-$5,000.
+- Real Estate (https://kuwexstudios.co.zw/industries/real-estate): Property listing websites with CMS, WhatsApp lead capture, real estate SEO. Targets: "real estate website Zimbabwe", "property website design Zimbabwe". Price range: $1,500-$5,000.
+- Mining & Quarrying (https://kuwexstudios.co.zw/industries/mining): Corporate websites, investor portals, compliance documentation. Targets: "mining company website Zimbabwe", "mining SEO Zimbabwe". Price range: $2,500-$8,000.
+- Agriculture & Farming (https://kuwexstudios.co.zw/industries/agriculture): Product catalogs, WhatsApp ordering, agriculture SEO. Targets: "agriculture website Zimbabwe", "farming website design Zimbabwe". Price range: $1,500-$5,000.
+- Healthcare & Medical (https://kuwexstudios.co.zw/industries/healthcare): Medical practice websites, online appointment booking, healthcare SEO. Targets: "healthcare website Zimbabwe", "clinic website design Zimbabwe". Price range: $1,500-$5,000.
+- Retail & E-commerce (https://kuwexstudios.co.zw/industries/retail-ecommerce): E-commerce websites with Paynow/EcoCash, WhatsApp commerce, inventory sync. Targets: "e-commerce website Zimbabwe", "online shop website Zimbabwe". Price range: $2,500-$10,000.
+- Construction & Engineering (https://kuwexstudios.co.zw/industries/construction-engineering): Corporate websites, project portfolios, tender document portals. Targets: "construction company website Zimbabwe", "construction SEO Zimbabwe". Price range: $2,000-$6,000.
+- Education & Training (https://kuwexstudios.co.zw/industries/education): School/college websites, online enrollment, e-learning platforms. Targets: "school website Zimbabwe", "college website design Zimbabwe". Price range: $2,000-$8,000.
+- Financial Services & Fintech (https://kuwexstudios.co.zw/industries/financial-services): Secure websites, online applications, financial calculators. Targets: "financial services website Zimbabwe", "bank website Zimbabwe". Price range: $3,000-$10,000.
+- Legal Services (https://kuwexstudios.co.zw/industries/legal-services): Law firm websites, consultation booking, legal SEO. Targets: "law firm website Zimbabwe", "lawyer website design Zimbabwe". Price range: $2,000-$6,000.
+- Manufacturing (https://kuwexstudios.co.zw/industries/manufacturing): B2B product catalogs, quote request forms, manufacturing SEO. Targets: "manufacturing website Zimbabwe", "factory website design Zimbabwe". Price range: $2,500-$8,000.
+- NGOs & Non-profits (https://kuwexstudios.co.zw/industries/ngos-nonprofits): NGO websites, online donation systems, impact storytelling. 15-25% discount for registered non-profits. Targets: "NGO website Zimbabwe", "non-profit website design Zimbabwe". Price range: $1,500-$6,000.
+- Transport & Logistics (https://kuwexstudios.co.zw/industries/transport-logistics): Booking systems, shipment tracking portals, transport SEO. Targets: "transport website Zimbabwe", "logistics website design Zimbabwe". Price range: $2,000-$8,000.
+- Food & Restaurant (https://kuwexstudios.co.zw/industries/food-restaurant): Restaurant websites, online ordering, table reservations, Google Maps SEO. Targets: "restaurant website Zimbabwe", "food website design Harare". Price range: $1,500-$5,000.
+
 ## Payment and Process
 
 ### Payment Options
