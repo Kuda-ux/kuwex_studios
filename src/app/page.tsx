@@ -3,11 +3,18 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
-import { ArrowRight, Instagram, Facebook, Youtube, Linkedin, Twitter, Globe, ShoppingBag, Smartphone, Calendar, Clock, User, Brain, Calculator, Star, Plane, Home as HomeIcon, Mountain, Wheat, HeartPulse, ShoppingCart, HardHat, GraduationCap, Landmark, Scale, Factory, HeartHandshake, Truck, UtensilsCrossed, TrendingUp } from "lucide-react";
+import { ArrowRight, Instagram, Facebook, Youtube, Linkedin, Globe, ShoppingBag, Smartphone, Calendar, Clock, User, Brain, Calculator, Star, Plane, Home as HomeIcon, Mountain, Wheat, HeartPulse, ShoppingCart, HardHat, GraduationCap, Landmark, Scale, Factory, HeartHandshake, Truck, UtensilsCrossed, TrendingUp } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { industries } from "@/lib/industries";
+
+// Custom X (formerly Twitter) logo SVG
+const XLogo = ({ size = 20, style }: { size?: number; style?: React.CSSProperties }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" style={style}>
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
+);
 
 const homeIconMap: Record<string, LucideIcon> = {
   Plane, Home: HomeIcon, Mountain, Wheat, HeartPulse, ShoppingCart,
@@ -15,16 +22,16 @@ const homeIconMap: Record<string, LucideIcon> = {
   Truck, UtensilsCrossed,
 };
 
-// Platform icons for the 3D display - social media & web platforms
+// Platform icons — enhanced with gradient glows and brand colors
 const platformIcons = [
-  { icon: Instagram, name: "Instagram", color: "#E4405F", gradient: "from-[#833AB4] via-[#E4405F] to-[#FCAF45]" },
-  { icon: Facebook, name: "Facebook", color: "#1877F2" },
-  { icon: Youtube, name: "YouTube", color: "#FF0000" },
-  { icon: Twitter, name: "X", color: "#ffffff" },
-  { icon: Linkedin, name: "LinkedIn", color: "#0A66C2" },
-  { icon: Globe, name: "Website", color: "#00E5FF" },
-  { icon: ShoppingBag, name: "E-commerce", color: "#FF9900" },
-  { icon: Smartphone, name: "Mobile", color: "#34D399" },
+  { icon: Instagram, name: "Instagram", color: "#E4405F", glow: "#E4405F", gradient: "linear-gradient(135deg, #833AB4, #E4405F, #FCAF45)" },
+  { icon: Facebook, name: "Facebook", color: "#1877F2", glow: "#1877F2", gradient: "linear-gradient(135deg, #1877F2, #42A5F5)" },
+  { icon: Youtube, name: "YouTube", color: "#FF0000", glow: "#FF0000", gradient: "linear-gradient(135deg, #FF0000, #FF5252)" },
+  { icon: XLogo, name: "X", color: "#ffffff", glow: "#ffffff", gradient: "linear-gradient(135deg, #ffffff, #a0a0a0)" },
+  { icon: Linkedin, name: "LinkedIn", color: "#0A66C2", glow: "#0A66C2", gradient: "linear-gradient(135deg, #0A66C2, #42A5F5)" },
+  { icon: Globe, name: "Website", color: "#00E5FF", glow: "#00E5FF", gradient: "linear-gradient(135deg, #00E5FF, #0085FF)" },
+  { icon: ShoppingBag, name: "E-commerce", color: "#FF9900", glow: "#FF9900", gradient: "linear-gradient(135deg, #FF9900, #FFC107)" },
+  { icon: Smartphone, name: "Mobile", color: "#34D399", glow: "#34D399", gradient: "linear-gradient(135deg, #34D399, #10B981)" },
 ];
 
 // X Business Style - Service Cards Data
@@ -441,20 +448,34 @@ export default function Home() {
                     return (
                       <div
                         key={`outer-${platform.name}`}
-                        className="absolute w-11 h-11 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center group cursor-pointer transition-transform duration-300 hover:scale-125"
+                        className="absolute group cursor-pointer"
                         style={{
-                          left: `calc(50% + ${x}% - 22px)`,
-                          top: `calc(50% + ${y}% - 22px)`,
-                          background: `linear-gradient(135deg, ${platform.color}15, ${platform.color}30)`,
-                          border: `1px solid ${platform.color}40`,
-                          backdropFilter: 'blur(8px)',
+                          left: `calc(50% + ${x}% - 28px)`,
+                          top: `calc(50% + ${y}% - 28px)`,
                           animation: 'orbit-rotate-reverse 25s linear infinite',
                         }}
                       >
-                        <platform.icon size={20} style={{ color: platform.color }} />
-                        <span className="absolute -bottom-7 left-1/2 -translate-x-1/2 text-[9px] text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                          {platform.name}
-                        </span>
+                        {/* Glow halo */}
+                        <div
+                          className="absolute inset-0 rounded-2xl blur-md opacity-60 group-hover:opacity-100 transition-opacity duration-300"
+                          style={{ background: platform.gradient }}
+                        />
+                        {/* Icon container */}
+                        <div
+                          className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-125"
+                          style={{
+                            background: `${platform.color}15`,
+                            border: `1px solid ${platform.color}50`,
+                            backdropFilter: 'blur(12px)',
+                            boxShadow: `0 0 20px ${platform.glow}30, inset 0 0 10px ${platform.glow}10`,
+                          }}
+                        >
+                          <platform.icon size={22} style={{ color: platform.color, filter: `drop-shadow(0 0 4px ${platform.glow}80)` }} />
+                          {/* Tooltip */}
+                          <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[9px] text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none bg-[#16181C]/90 px-2 py-1 rounded-md border border-[#2F3336]/60">
+                            {platform.name}
+                          </span>
+                        </div>
                       </div>
                     );
                   })}
@@ -466,12 +487,12 @@ export default function Home() {
                   style={{ animation: 'orbit-rotate-reverse 18s linear infinite' }}
                 >
                   {[
-                    { icon: Globe, name: 'SEO', color: '#00E5FF' },
-                    { icon: ShoppingBag, name: 'E-commerce', color: '#FF9900' },
-                    { icon: Smartphone, name: 'Mobile Apps', color: '#34D399' },
-                    { icon: Brain, name: 'AI Solutions', color: '#A855F7' },
-                    { icon: Star, name: 'Branding', color: '#FCAF45' },
-                    { icon: TrendingUp, name: 'Analytics', color: '#0085FF' },
+                    { icon: Globe, name: 'SEO', color: '#00E5FF', glow: '#00E5FF' },
+                    { icon: ShoppingBag, name: 'E-commerce', color: '#FF9900', glow: '#FF9900' },
+                    { icon: Smartphone, name: 'Mobile Apps', color: '#34D399', glow: '#34D399' },
+                    { icon: Brain, name: 'AI Solutions', color: '#A855F7', glow: '#A855F7' },
+                    { icon: Star, name: 'Branding', color: '#FCAF45', glow: '#FCAF45' },
+                    { icon: TrendingUp, name: 'Analytics', color: '#0085FF', glow: '#0085FF' },
                   ].map((item, i) => {
                     const angle = (i * 360) / 6;
                     const radius = 46;
@@ -480,20 +501,34 @@ export default function Home() {
                     return (
                       <div
                         key={`mid-${item.name}`}
-                        className="absolute w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center group cursor-pointer transition-transform duration-300 hover:scale-125"
+                        className="absolute group cursor-pointer"
                         style={{
-                          left: `calc(50% + ${x}% - 18px)`,
-                          top: `calc(50% + ${y}% - 18px)`,
-                          background: `linear-gradient(135deg, ${item.color}10, ${item.color}25)`,
-                          border: `1px solid ${item.color}30`,
-                          backdropFilter: 'blur(8px)',
+                          left: `calc(50% + ${x}% - 22px)`,
+                          top: `calc(50% + ${y}% - 22px)`,
                           animation: 'orbit-rotate 18s linear infinite',
                         }}
                       >
-                        <item.icon size={16} style={{ color: item.color }} />
-                        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                          {item.name}
-                        </span>
+                        {/* Glow halo */}
+                        <div
+                          className="absolute inset-0 rounded-xl blur-md opacity-50 group-hover:opacity-90 transition-opacity duration-300"
+                          style={{ background: `linear-gradient(135deg, ${item.color}, ${item.glow})` }}
+                        />
+                        {/* Icon container */}
+                        <div
+                          className="relative w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-125"
+                          style={{
+                            background: `${item.color}15`,
+                            border: `1px solid ${item.color}40`,
+                            backdropFilter: 'blur(12px)',
+                            boxShadow: `0 0 15px ${item.glow}25, inset 0 0 8px ${item.glow}10`,
+                          }}
+                        >
+                          <item.icon size={18} style={{ color: item.color, filter: `drop-shadow(0 0 3px ${item.glow}80)` }} />
+                          {/* Tooltip */}
+                          <span className="absolute -bottom-7 left-1/2 -translate-x-1/2 text-[8px] text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none bg-[#16181C]/90 px-2 py-1 rounded-md border border-[#2F3336]/60">
+                            {item.name}
+                          </span>
+                        </div>
                       </div>
                     );
                   })}
@@ -540,12 +575,15 @@ export default function Home() {
                     </div>
 
                     {/* KuWeX Logo */}
-                    <div className="text-center relative z-10">
-                      <div className="text-2xl sm:text-3xl font-bold leading-none">
-                        <span className="text-white">KuWe</span>
-                        <span className="text-kuwex-cyan">X</span>
-                      </div>
-                      <div className="text-[8px] sm:text-[9px] text-gray-500 tracking-[0.3em] mt-1">STUDIOS</div>
+                    <div className="relative z-10 flex items-center justify-center">
+                      <Image
+                        src="/logo.jpg"
+                        alt="KuWeX Studios"
+                        width={80}
+                        height={80}
+                        className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover"
+                        priority
+                      />
                     </div>
                   </div>
 
