@@ -310,12 +310,32 @@ export default function Home() {
       />
       <Navbar />
 
-      {/* Hero Section */}
+      {/* Hero Section — Digital Command Center */}
       <section className="pt-28 pb-20 px-4 min-h-screen flex items-center relative overflow-hidden">
-        {/* Background effects */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_50%,rgba(0,229,255,0.06),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_20%,rgba(0,133,255,0.04),transparent_50%)]" />
-        <div className="absolute top-1/3 left-0 w-[500px] h-[500px] bg-kuwex-cyan/[0.03] rounded-full blur-[120px]" />
+        {/* Animated grid background */}
+        <div
+          className="absolute inset-0 opacity-[0.15]"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(0,229,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.08) 1px, transparent 1px)',
+            backgroundSize: '50px 50px',
+            animation: 'grid-pan 20s linear infinite',
+          }}
+        />
+        {/* Radial glows */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_25%_50%,rgba(0,229,255,0.08),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_75%_30%,rgba(0,133,255,0.06),transparent_50%)]" />
+        <div className="absolute top-1/4 left-0 w-[600px] h-[600px] bg-kuwex-cyan/[0.04] rounded-full blur-[140px]" />
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-kuwex-blue/[0.04] rounded-full blur-[120px]" />
+        {/* Vertical data stream particles */}
+        <div className="absolute left-[8%] top-0 bottom-0 w-px overflow-hidden hidden lg:block">
+          <div className="w-px h-32 bg-gradient-to-b from-transparent via-kuwex-cyan/40 to-transparent" style={{ animation: 'data-stream 4s linear infinite' }} />
+        </div>
+        <div className="absolute right-[12%] top-0 bottom-0 w-px overflow-hidden hidden lg:block">
+          <div className="w-px h-24 bg-gradient-to-b from-transparent via-kuwex-blue/40 to-transparent" style={{ animation: 'data-stream 6s linear infinite 1s' }} />
+        </div>
+        <div className="absolute left-[20%] top-0 bottom-0 w-px overflow-hidden hidden lg:block">
+          <div className="w-px h-20 bg-gradient-to-b from-transparent via-kuwex-cyan/30 to-transparent" style={{ animation: 'data-stream 5s linear infinite 2s' }} />
+        </div>
 
         <div className="max-w-7xl mx-auto w-full relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -362,113 +382,224 @@ export default function Home() {
                   Explore Services
                 </Link>
               </div>
+
+              {/* Stats Bar */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="flex items-center gap-8 mt-12 pt-8 border-t border-[#2F3336]/40"
+              >
+                <div>
+                  <div className="text-2xl font-bold text-white">50+</div>
+                  <div className="text-xs text-gray-500 tracking-wide uppercase">Projects Delivered</div>
+                </div>
+                <div className="w-px h-10 bg-[#2F3336]/40" />
+                <div>
+                  <div className="text-2xl font-bold text-white">14</div>
+                  <div className="text-xs text-gray-500 tracking-wide uppercase">Industries Served</div>
+                </div>
+                <div className="w-px h-10 bg-[#2F3336]/40" />
+                <div>
+                  <div className="text-2xl font-bold text-kuwex-cyan">99.9%</div>
+                  <div className="text-xs text-gray-500 tracking-wide uppercase">Uptime</div>
+                </div>
+              </motion.div>
             </motion.div>
 
-            {/* Right Content - 3D Futuristic Computer */}
+            {/* Right Content — Holographic Command Center */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="w-full flex justify-center lg:justify-end"
+              className="w-full flex justify-center items-center relative"
             >
-              <div className="relative w-full max-w-md lg:max-w-lg">
-                {/* Glow Effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-kuwex-cyan/20 to-kuwex-blue/20 blur-3xl rounded-full" />
+              <div className="relative w-full max-w-[500px] aspect-square flex items-center justify-center">
 
-                {/* 3D Monitor Frame */}
-                <div className="relative">
-                  {/* Monitor */}
-                  <div className="relative bg-gradient-to-b from-[#3a3a3a] to-[#1a1a1a] rounded-3xl p-3 shadow-2xl border border-[#4a4a4a]">
-                    {/* Screen */}
-                    <div className="bg-gradient-to-br from-[#0a0a0a] via-[#0f0f0f] to-[#16181C] rounded-2xl p-6 sm:p-8 aspect-[4/3] flex flex-col items-center justify-center relative overflow-hidden">
-                      {/* Screen Glare */}
-                      <div className="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-white/5 to-transparent" />
+                {/* Pulse rings emanating from center */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="absolute w-40 h-40 rounded-full border border-kuwex-cyan/20" style={{ animation: 'pulse-ring 3s ease-out infinite' }} />
+                  <div className="absolute w-40 h-40 rounded-full border border-kuwex-cyan/20" style={{ animation: 'pulse-ring 3s ease-out infinite 1s' }} />
+                  <div className="absolute w-40 h-40 rounded-full border border-kuwex-cyan/20" style={{ animation: 'pulse-ring 3s ease-out infinite 2s' }} />
+                </div>
 
-                      {/* Orbiting Platform Icons Inside Screen */}
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        {/* Outer orbit ring */}
-                        <div className="absolute w-[85%] h-[85%] rounded-full border border-kuwex-cyan/10" />
+                {/* Decorative orbit rings */}
+                <div className="absolute w-[92%] h-[92%] rounded-full border border-kuwex-cyan/[0.06]" />
+                <div className="absolute w-[72%] h-[72%] rounded-full border border-kuwex-cyan/[0.08]" />
+                <div className="absolute w-[52%] h-[52%] rounded-full border border-kuwex-blue/[0.1]" />
 
-                        {/* Rotating container for orbiting icons */}
-                        <motion.div
-                          animate={{ rotate: 360 }}
-                          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                          className="absolute w-[85%] h-[85%]"
-                        >
-                          {/* Platform icons positioned in a circle */}
-                          {platformIcons.map((platform, i) => {
-                            const angle = (i * 360) / platformIcons.length;
-                            const radius = 42; // percentage from center
-                            const x = Math.cos((angle - 90) * (Math.PI / 180)) * radius;
-                            const y = Math.sin((angle - 90) * (Math.PI / 180)) * radius;
-
-                            return (
-                              <motion.div
-                                key={platform.name}
-                                initial={{ opacity: 0, scale: 0 }}
-                                animate={{
-                                  opacity: 1,
-                                  scale: 1,
-                                  rotate: -360 // Counter-rotate to keep icons upright
-                                }}
-                                transition={{
-                                  opacity: { delay: 0.6 + i * 0.1, duration: 0.3 },
-                                  scale: { delay: 0.6 + i * 0.1, duration: 0.3 },
-                                  rotate: { duration: 20, repeat: Infinity, ease: "linear" }
-                                }}
-                                className="absolute w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shadow-lg hover:scale-125 transition-transform duration-300 cursor-pointer group"
-                                style={{
-                                  left: `calc(50% + ${x}% - 20px)`,
-                                  top: `calc(50% + ${y}% - 20px)`,
-                                  background: platform.gradient
-                                    ? `linear-gradient(135deg, ${platform.color}20, ${platform.color}40)`
-                                    : `${platform.color}20`,
-                                  border: `1px solid ${platform.color}50`,
-                                }}
-                              >
-                                <platform.icon
-                                  size={20}
-                                  style={{ color: platform.color }}
-                                  className="sm:w-6 sm:h-6"
-                                />
-                                {/* Tooltip */}
-                                <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                                  {platform.name}
-                                </span>
-                              </motion.div>
-                            );
-                          })}
-                        </motion.div>
-
-                        {/* Inner glow ring */}
-                        <div className="absolute w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-gradient-to-r from-kuwex-cyan/5 to-kuwex-blue/5 animate-pulse" />
-                      </div>
-
-                      {/* KuWeX Logo on Screen - Center */}
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.4 }}
-                        className="text-center z-10 relative"
+                {/* Orbit Ring 1 — Outer (8 social icons, 25s rotation) */}
+                <div
+                  className="absolute w-[92%] h-[92%]"
+                  style={{ animation: 'orbit-rotate 25s linear infinite' }}
+                >
+                  {platformIcons.map((platform, i) => {
+                    const angle = (i * 360) / platformIcons.length;
+                    const radius = 46;
+                    const x = Math.cos((angle - 90) * (Math.PI / 180)) * radius;
+                    const y = Math.sin((angle - 90) * (Math.PI / 180)) * radius;
+                    return (
+                      <div
+                        key={`outer-${platform.name}`}
+                        className="absolute w-11 h-11 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center group cursor-pointer transition-transform duration-300 hover:scale-125"
+                        style={{
+                          left: `calc(50% + ${x}% - 22px)`,
+                          top: `calc(50% + ${y}% - 22px)`,
+                          background: `linear-gradient(135deg, ${platform.color}15, ${platform.color}30)`,
+                          border: `1px solid ${platform.color}40`,
+                          backdropFilter: 'blur(8px)',
+                          animation: 'orbit-rotate-reverse 25s linear infinite',
+                        }}
                       >
-                        <div className="text-3xl sm:text-4xl md:text-5xl font-bold mb-1">
-                          <span className="text-white">KuWe</span>
-                          <span className="text-kuwex-cyan">X</span>
-                        </div>
-                        <div className="text-xs sm:text-sm text-gray-400 tracking-[0.3em]">STUDIOS</div>
-                        <div className="mt-2 text-[10px] sm:text-xs text-gray-500">Grow on every platform</div>
-                      </motion.div>
+                        <platform.icon size={20} style={{ color: platform.color }} />
+                        <span className="absolute -bottom-7 left-1/2 -translate-x-1/2 text-[9px] text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                          {platform.name}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Orbit Ring 2 — Middle (6 service icons, 18s reverse) */}
+                <div
+                  className="absolute w-[72%] h-[72%]"
+                  style={{ animation: 'orbit-rotate-reverse 18s linear infinite' }}
+                >
+                  {[
+                    { icon: Globe, name: 'SEO', color: '#00E5FF' },
+                    { icon: ShoppingBag, name: 'E-commerce', color: '#FF9900' },
+                    { icon: Smartphone, name: 'Mobile Apps', color: '#34D399' },
+                    { icon: Brain, name: 'AI Solutions', color: '#A855F7' },
+                    { icon: Star, name: 'Branding', color: '#FCAF45' },
+                    { icon: TrendingUp, name: 'Analytics', color: '#0085FF' },
+                  ].map((item, i) => {
+                    const angle = (i * 360) / 6;
+                    const radius = 46;
+                    const x = Math.cos((angle - 90) * (Math.PI / 180)) * radius;
+                    const y = Math.sin((angle - 90) * (Math.PI / 180)) * radius;
+                    return (
+                      <div
+                        key={`mid-${item.name}`}
+                        className="absolute w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center group cursor-pointer transition-transform duration-300 hover:scale-125"
+                        style={{
+                          left: `calc(50% + ${x}% - 18px)`,
+                          top: `calc(50% + ${y}% - 18px)`,
+                          background: `linear-gradient(135deg, ${item.color}10, ${item.color}25)`,
+                          border: `1px solid ${item.color}30`,
+                          backdropFilter: 'blur(8px)',
+                          animation: 'orbit-rotate 18s linear infinite',
+                        }}
+                      >
+                        <item.icon size={16} style={{ color: item.color }} />
+                        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                          {item.name}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Orbit Ring 3 — Inner (4 small dots, 12s) */}
+                <div
+                  className="absolute w-[52%] h-[52%]"
+                  style={{ animation: 'orbit-rotate 12s linear infinite' }}
+                >
+                  {[0, 1, 2, 3].map((i) => {
+                    const angle = (i * 360) / 4 + 45;
+                    const radius = 46;
+                    const x = Math.cos((angle - 90) * (Math.PI / 180)) * radius;
+                    const y = Math.sin((angle - 90) * (Math.PI / 180)) * radius;
+                    return (
+                      <div
+                        key={`inner-dot-${i}`}
+                        className="absolute w-2 h-2 rounded-full bg-kuwex-cyan"
+                        style={{
+                          left: `calc(50% + ${x}% - 4px)`,
+                          top: `calc(50% + ${y}% - 4px)`,
+                          boxShadow: '0 0 10px rgba(0,229,255,0.6)',
+                        }}
+                      />
+                    );
+                  })}
+                </div>
+
+                {/* Central Holographic Core */}
+                <div className="relative z-10 flex flex-col items-center justify-center">
+                  {/* Breathing glow orb */}
+                  <div
+                    className="relative w-28 h-28 sm:w-36 sm:h-36 rounded-full bg-gradient-to-br from-[#0a1628] via-[#0f0f0f] to-[#16181C] border border-kuwex-cyan/30 flex items-center justify-center"
+                    style={{ animation: 'core-breathe 4s ease-in-out infinite' }}
+                  >
+                    {/* Inner rotating gradient ring */}
+                    <div
+                      className="absolute inset-2 rounded-full border border-kuwex-cyan/10"
+                      style={{ animation: 'orbit-rotate 8s linear infinite' }}
+                    >
+                      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-kuwex-cyan shadow-[0_0_8px_rgba(0,229,255,0.8)]" />
+                      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-kuwex-blue shadow-[0_0_6px_rgba(0,133,255,0.6)]" />
+                    </div>
+
+                    {/* KuWeX Logo */}
+                    <div className="text-center relative z-10">
+                      <div className="text-2xl sm:text-3xl font-bold leading-none">
+                        <span className="text-white">KuWe</span>
+                        <span className="text-kuwex-cyan">X</span>
+                      </div>
+                      <div className="text-[8px] sm:text-[9px] text-gray-500 tracking-[0.3em] mt-1">STUDIOS</div>
                     </div>
                   </div>
 
-                  {/* Monitor Stand */}
-                  <div className="flex justify-center">
-                    <div className="w-20 h-8 bg-gradient-to-b from-[#3a3a3a] to-[#1a1a1a] rounded-b-xl border-x border-b border-[#4a4a4a]" />
-                  </div>
-                  <div className="flex justify-center">
-                    <div className="w-40 h-3 bg-gradient-to-b from-[#2a2a2a] to-[#1a1a1a] rounded-full shadow-lg" />
+                  {/* Tagline below core */}
+                  <div className="mt-4 text-[10px] sm:text-xs text-gray-500 tracking-wider uppercase">
+                    Digital Growth Engine
                   </div>
                 </div>
+
+                {/* Floating service tags — positioned around the orbit */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.8 }}
+                  className="absolute top-[8%] right-[2%] hidden md:block"
+                  style={{ animation: 'float-tag 5s ease-in-out infinite' }}
+                >
+                  <div className="px-3 py-1.5 rounded-full bg-[#16181C]/80 border border-kuwex-cyan/20 backdrop-blur-sm text-[10px] text-gray-300 font-medium">
+                    SEO Ranking
+                  </div>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 1.0 }}
+                  className="absolute bottom-[12%] left-[0%] hidden md:block"
+                  style={{ animation: 'float-tag 6s ease-in-out infinite 1s' }}
+                >
+                  <div className="px-3 py-1.5 rounded-full bg-[#16181C]/80 border border-kuwex-blue/20 backdrop-blur-sm text-[10px] text-gray-300 font-medium">
+                    Web Design
+                  </div>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 1.2 }}
+                  className="absolute top-[40%] left-[-4%] hidden md:block"
+                  style={{ animation: 'float-tag 7s ease-in-out infinite 2s' }}
+                >
+                  <div className="px-3 py-1.5 rounded-full bg-[#16181C]/80 border border-[#A855F7]/20 backdrop-blur-sm text-[10px] text-gray-300 font-medium">
+                    AI Automation
+                  </div>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 1.4 }}
+                  className="absolute bottom-[40%] right-[-2%] hidden md:block"
+                  style={{ animation: 'float-tag 5.5s ease-in-out infinite 0.5s' }}
+                >
+                  <div className="px-3 py-1.5 rounded-full bg-[#16181C]/80 border border-[#FCAF45]/20 backdrop-blur-sm text-[10px] text-gray-300 font-medium">
+                    Branding
+                  </div>
+                </motion.div>
               </div>
             </motion.div>
           </div>
