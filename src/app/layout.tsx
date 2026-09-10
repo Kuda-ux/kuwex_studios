@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
@@ -292,18 +293,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
-        {/* Google Analytics */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-F6PCVXPBT1"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-F6PCVXPBT1');
-            `,
-          }}
-        />
+        {/* Google Analytics — deferred for performance */}
         <link rel="icon" href="/logo.jpg" type="image/jpeg" />
         <link rel="apple-touch-icon" href="/logo.jpg" />
         <meta name="theme-color" content="#00E5FF" />
@@ -313,12 +303,7 @@ export default function RootLayout({
         <link rel="alternate" type="application/xml" title="KuWeX Studios News Sitemap" href="https://kuwexstudios.co.zw/news-sitemap.xml" />
         {/* llms.txt for AI Answer Engine discovery (ChatGPT, Claude, Perplexity) */}
         <link rel="alternate" type="text/plain" title="LLM Instructions" href="https://kuwexstudios.co.zw/llms.txt" />
-        {/* Google AdSense — auto ads */}
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9834600630177693"
-          crossOrigin="anonymous"
-        />
+        {/* Google AdSense — deferred via Script component */}
       </head>
       <body className={cn("min-h-screen antialiased")} style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>
         <ThemeProvider
@@ -331,6 +316,21 @@ export default function RootLayout({
           <ContactWidget />
           <ExitIntentPopup />
           <CookieConsent />
+          <Script
+            src="https://www.googletagmanager.com/gtag/js?id=G-F6PCVXPBT1"
+            strategy="lazyOnload"
+          />
+          <Script id="ga-config" strategy="lazyOnload">{`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-F6PCVXPBT1');
+          `}</Script>
+          <Script
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9834600630177693"
+            strategy="lazyOnload"
+            crossOrigin="anonymous"
+          />
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

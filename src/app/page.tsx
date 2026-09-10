@@ -511,6 +511,7 @@ export default function Home() {
                   <div className="flex justify-end">
                     <Link
                       href={service.href}
+                      aria-label={`Learn more about ${service.title}`}
                       className="w-10 h-10 rounded-full bg-[#2F3336]/80 group-hover:bg-gradient-to-r group-hover:from-kuwex-cyan group-hover:to-kuwex-blue group-hover:text-black flex items-center justify-center transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(0,229,255,0.3)]"
                     >
                       <ArrowRight size={18} />

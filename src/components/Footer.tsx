@@ -45,19 +45,19 @@ export default function Footer() {
                 className="h-11 w-auto object-contain"
               />
             </Link>
-            <p className="text-gray-500 text-sm leading-relaxed mb-6 max-w-xs">
+            <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-xs">
               Building Africa&apos;s digital future with world-class creative technology and innovation.
             </p>
             <div className="space-y-3">
-              <a href="mailto:info@kuwexstudios.co.zw" className="flex items-center gap-2.5 text-gray-500 text-sm hover:text-kuwex-cyan transition-colors duration-300">
+              <a href="mailto:info@kuwexstudios.co.zw" className="flex items-center gap-2.5 text-gray-400 text-sm hover:text-kuwex-cyan transition-colors duration-300">
                 <Mail size={14} className="text-kuwex-cyan/60" />
                 info@kuwexstudios.co.zw
               </a>
-              <a href="tel:+263719066891" className="flex items-center gap-2.5 text-gray-500 text-sm hover:text-kuwex-cyan transition-colors duration-300">
+              <a href="tel:+263719066891" className="flex items-center gap-2.5 text-gray-400 text-sm hover:text-kuwex-cyan transition-colors duration-300">
                 <Phone size={14} className="text-kuwex-cyan/60" />
                 +263 719 066 891
               </a>
-              <div className="flex items-center gap-2.5 text-gray-500 text-sm">
+              <div className="flex items-center gap-2.5 text-gray-400 text-sm">
                 <MapPin size={14} className="text-kuwex-cyan/60" />
                 Harare, Zimbabwe
               </div>
@@ -70,7 +70,7 @@ export default function Footer() {
             <ul className="space-y-3">
               {footerLinks.services.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href} className="text-gray-500 text-sm hover:text-white hover:translate-x-0.5 transition-all duration-300 inline-block">
+                  <Link href={link.href} className="text-gray-400 text-sm hover:text-white hover:translate-x-0.5 transition-all duration-300 inline-block">
                     {link.name}
                   </Link>
                 </li>
@@ -84,7 +84,7 @@ export default function Footer() {
             <ul className="space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href} className="text-gray-500 text-sm hover:text-white hover:translate-x-0.5 transition-all duration-300 inline-block">
+                  <Link href={link.href} className="text-gray-400 text-sm hover:text-white hover:translate-x-0.5 transition-all duration-300 inline-block">
                     {link.name}
                   </Link>
                 </li>
@@ -98,7 +98,7 @@ export default function Footer() {
             <ul className="space-y-3">
               {footerLinks.resources.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href} className="text-gray-500 text-sm hover:text-white hover:translate-x-0.5 transition-all duration-300 inline-block">
+                  <Link href={link.href} className="text-gray-400 text-sm hover:text-white hover:translate-x-0.5 transition-all duration-300 inline-block">
                     {link.name}
                   </Link>
                 </li>
@@ -109,10 +109,10 @@ export default function Footer() {
 
         {/* Bottom */}
         <div className="border-t border-[#2F3336]/40 mt-14 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-gray-600 text-xs">
+          <p className="text-gray-500 text-xs">
             © {new Date().getFullYear()} KuWeX Studios. All rights reserved.
           </p>
-          <div className="flex items-center gap-6 text-xs text-gray-600">
+          <div className="flex items-center gap-6 text-xs text-gray-500">
             <Link href="/privacy" className="hover:text-kuwex-cyan transition-colors duration-300">Privacy</Link>
             <Link href="/terms" className="hover:text-kuwex-cyan transition-colors duration-300">Terms</Link>
             <Link href="/cookies" className="hover:text-kuwex-cyan transition-colors duration-300">Cookies</Link>
